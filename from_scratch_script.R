@@ -93,7 +93,7 @@ rstudioapi::navigateToFile("config/_default/params.yaml")
 rstudioapi::navigateToFile("content/authors/admin/_index.md")
 
 #let's create a post with the image we want for the header:
-blogdown::new_post(title = "aberte", 
+blogdown::new_post(title = "header", 
                    ext = '.Rmarkdown', 
                    subdir = "post")
 
