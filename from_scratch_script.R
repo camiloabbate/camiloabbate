@@ -48,7 +48,13 @@ file.edit(".gitignore")
 
 blogdown::check_gitignore()
 
-# Whether you change your Netlify site name or use the random one, go back to your configuration file and cchange the baseurl there to match where Netlify is publishing your site:
+#make sure to completely erase the lock file that it's located in
+# the git folder.. it's hard cuz sometimes it's hidden!!
+#use github desktop to commit as well, just in case
+
+# Whether you change your Netlify site name or use the random one,
+#go back to your configuration file and cchange the baseurl there to
+#match where Netlify is publishing your site:
 
 
 rstudioapi::navigateToFile("config/_default/config.yaml", line = 3)
