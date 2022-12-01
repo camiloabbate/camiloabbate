@@ -14,3 +14,7 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+<div align="center">
+    <img src="/assets/media/utah.jpg" width="400px"</img> 
+</div>

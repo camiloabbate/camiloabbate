@@ -29,7 +29,7 @@ subtitle = ""
   #gradient_end = "ForestGreen"
   
   # Background image.
-  #image = "image.jpg"  # Name of image in `static/media/`. CAMELOT!!! Actually, it's in assets/media 
+  # image = "utah.jpg"  # Name of image in `static/media/`. CAMELOT!!! Actually, it's in assets/media 
   #image_darken = 0.6  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
   #image_size = "contain"  #  Options are `cover` (default), `contain`, or `actual` size.
   #image_position = "center"  # Options include `left`, `center` (default), or `right`.
@@ -51,7 +51,7 @@ subtitle = ""
  css_class = ""
 +++ 
 
-![](utah.jpg)  
+ ![](utah.jpg)  
 <!--- this already knows that the directory is assets/media/ --->
 <!--- control size? or naa? / --->
 
