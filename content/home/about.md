@@ -6,6 +6,7 @@ widget: about
 # Activate this widget? true/false
 active: true
 
+
 # This file represents a page section.
 headless: true
 
@@ -19,5 +20,6 @@ title: Biography
 # See https://wowchemy.com/docs/get-started/#introduce-yourself
 author: admin
 ---
+
 
 
