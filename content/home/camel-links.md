@@ -41,7 +41,7 @@ subtitle = ""
 
 [design.spacing]
   # Customize the section spacing. Order is top, right, bottom, left.
-  padding = ["20px", "0", "20px", "0"]
+  padding = ["0", "0", "0", "0"]
 
 [advanced]
  # Custom CSS. 
@@ -51,10 +51,9 @@ subtitle = ""
  css_class = ""
 +++ 
 
- ![Alt Text](image.jpg) #this already knows that the directory is assets/media/
- 
- #now, how to adjust the size??
- 
- 
+![](utah.jpg)  
+<!--- this already knows that the directory is assets/media/ --->
+<!--- control size? or naa? / --->
+
 
 
