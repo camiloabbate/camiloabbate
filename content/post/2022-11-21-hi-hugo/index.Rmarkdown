@@ -18,3 +18,13 @@ projects: []
 ---
 
 ![my-first-image](cali.jpg)
+```{r echo=FALSE}
+library(ggplot2)
+oplot <- ggplot(Orange, aes(x = age, 
+                   y = circumference, 
+                   colour = Tree)) +
+  geom_point() +
+  geom_line() +
+  theme_bw()
+oplot
+```

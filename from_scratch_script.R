@@ -8,7 +8,7 @@
 # remotes::install_github("rstudio/blogdown")
 
 library(blogdown)
-new_site(theme = "wowchemy/starter-academic")
+# new_site(theme = "wowchemy/starter-academic")
 
 #After this last line: You should now see something like this. ??IMAGE?? 
 # Take a moment to read through these messages - importantly, 
@@ -28,17 +28,21 @@ blogdown::config_Rprofile()
 
 # Use the console to author a new .Rmarkdown post; I’ll name my post “Hi Hugo”:
 
-blogdown::new_post(title = "Hi Hugo", 
-                   ext = '.Rmarkdown', 
-                   subdir = "post")
+# blogdown::new_post(title = "Hi Hugo", 
+#                    ext = '.Rmarkdown', 
+#                    subdir = "post")
+# 
+# blogdown::new_post(title = "Another", 
+#                    ext = '.Rmarkdown', 
+#                    subdir = "post")
+# 
+# 
+# blogdown::new_post(title = "Last One", 
+#                    ext = '.Rmarkdown', 
+#                    subdir = "post")
 
-blogdown::new_post(title = "Another", 
-                   ext = '.Rmarkdown', 
-                   subdir = "post")
-
-
-blogdown::new_post(title = "Last One", 
-                   ext = '.Rmarkdown', 
+blogdown::new_post(title = "sirca_example",
+                   ext = '.Rmarkdown',
                    subdir = "post")
 
 
@@ -98,9 +102,23 @@ blogdown::new_post(title = "header",
 
 
 
+# Each widget you see is a *.md file in the content/home/ folder. 
+# The metadata at the top helps you configure each widget; namely whether it is active (true or false) and the 
+# widgets weight (ordering, actual numbers doesn’t matter- only relative to the other weights).
+# 
+# For example, to turn off the hero widget, use this code in your console and set active = false:
+  
+rstudioapi::navigateToFile("content/home/demo-hero.md", line = 5, column = 10)
 
 
+#Ok, let's see Camelot.. Let's look at demo-hero, there... I'm copy pasting and creating a new one called: camel-backgroud
+#the idea is that camel-background will have a cool image, you know!
 
+rstudioapi::navigateToFile("content/home/camel-background.md", line = 5, column = 10)
+
+#nope, it didn't work huh, just erased it....
+
+#So, it seems that the secret is in demo links: so I've created a camel-links (copy-paste-edit)
 
 
 

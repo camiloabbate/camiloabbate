@@ -3,6 +3,7 @@ widget: hero
 headless: true
 weight: 10
 title: 
+active: false
 hero_media: trueno.jpg
 design:
   background:
