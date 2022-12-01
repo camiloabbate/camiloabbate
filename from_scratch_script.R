@@ -114,15 +114,15 @@ rstudioapi::navigateToFile("content/home/demo-hero.md", line = 5, column = 10)
 #Ok, let's see Camelot.. Let's look at demo-hero, there... I'm copy pasting and creating a new one called: camel-backgroud
 #the idea is that camel-background will have a cool image, you know!
 
-rstudioapi::navigateToFile("content/home/camel-background.md", line = 5, column = 10)
+#rstudioapi::navigateToFile("content/home/camel-background.md", line = 5, column = 10)
 
 #nope, it didn't work huh, just erased it....
 
 #So, it seems that the secret is in demo links: so I've created a camel-links (copy-paste-edit)
 
+rstudioapi::navigateToFile("content/home/camel-links.md", line = 5, column = 10)
 
-
-
+# blogdown::serve_site()
 
 
 
