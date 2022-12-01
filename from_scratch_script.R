@@ -10,7 +10,6 @@
 library(blogdown)
 new_site(theme = "wowchemy/starter-academic")
 
-
 #After this last line: You should now see something like this. ??IMAGE?? 
 # Take a moment to read through these messages - importantly, 
 #it tells you how to start and stop the server so you can preview your site. 
