@@ -25,8 +25,8 @@ subtitle = ""
   # color = "navy"
   
   # Background gradient.
-  #gradient_start = "DarkGreen"
-  #gradient_end = "ForestGreen"
+  gradient_start = "DarkGreen"
+  gradient_end = "ForestGreen"
   
   # Background image.
   image = "utah.jpg"  # Name of image in `static/media/`. CAMELOT!!! Actually, it's in assets/media 
@@ -48,16 +48,9 @@ subtitle = ""
  css_style = ""
  
  # CSS class.
- css_class = ""
+ css_class = "fullscreen"
 +++ 
 
-text
-
-
-1 2 3 
-
-
-1
 
 
 
