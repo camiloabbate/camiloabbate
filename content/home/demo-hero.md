@@ -1,7 +1,7 @@
 ---
 # An instance of the Blank widget.
 # Documentation: https://wowchemy.com/docs/page-builder/
-widget: blank
+widget: "blank"
 
 # Activate this widget? true/false
 active: true
@@ -29,3 +29,15 @@ design:
 advanced:
   css_class: fullscreen
 ---
+
+
+Rozvíjejme obec k užitku nás všech
+- Plánujme s rozumem
+- Nekopírujme chyby ostatních obcí
+- Jedna obec, jedno srdce, jeden cíl
+- Zachovejme jednu z krás Posázaví
+- Váš hlas je s námi slyšet
+
+[Přihlašte se k odběru novinek](https://docs.google.com/forms/d/e/1FAIpQLSe7hRoejTstbG6nJZR3VAzkWoykDZ6zeayH7BFKf5xda5PrTg/viewform?usp=sf_link)
+
+[Přihlašte se do spolku](https://forms.gle/PaEdvTVJpjTwCwMC8)
