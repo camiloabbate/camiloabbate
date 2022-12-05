@@ -24,15 +24,16 @@ subtitle = ""
   # Background color.
   # color = "navy"
   
+  
   # Background gradient.
   gradient_start = "DarkGreen"
   gradient_end = "ForestGreen"
   
   # Background image.
-  image = "utah.jpg"  # Name of image in `static/media/`. CAMELOT!!! Actually, it's in assets/media 
+  image = "utah.jpg"  # Name of image in `assets/media`
   #image_darken = 0.6  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
   image_size = "cover"  #  Options are `cover` (default), `contain`, or `actual` size.
-  image_position = "center"  # Options include `left`, `center` (default), or `right`.
+  #image_position = "center"  # Options include `left`, `center` (default), or `right`.
   #image_parallax = true  # Use a fun parallax-like fixed background effect? true/false
   
   
@@ -52,7 +53,7 @@ subtitle = ""
 +++ 
 
 
-
+<div style="width:682px; height:784px"></div>
 
 
 
