@@ -1,35 +1,36 @@
 ---
-# An instance of the Blank widget.
-# Documentation: https://wowchemy.com/docs/page-builder/
-widget: "blank"
+# A Demo section created with the Blank widget.
+# Any elements can be added in the body: https://sourcethemes.com/academic/docs/writing-markdown-latex/
+# Add more sections by duplicating this file and customizing to your requirements.
 
-# Activate this widget? true/false
-active: true
+widget: "blank"  # See https://sourcethemes.com/academic/docs/page-builder/
+headless: true  # This file represents a page section.
+active: true  # Activate this widget? true/false
+weight: 10  # Order that this section will appear.
 
-# This file represents a page section.
-headless: true
-
-# Order that this section appears on the page.
-weight: 10
-
-title:
-subtitle:
+title: ""
+subtitle: ""
+logoimage: "utah.jpg"
 
 design:
-  columns: "1"
+  columns: '1'
   background:
-    image: utah.jpg
+    image: utah.jpg  # Name of image in `static/img/`.
+    image_darken: 0.6
+    image_position: center
     image_parallax: true
-    image_darken: 0.0 # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
-    image_position: center # options include `left`, `center` (default), or `right`.
-    image_size: cover # options are `cover` (default), `contain`, or `actual` size.
     text_color_light: true
   spacing:
-    padding: ["20px", "0", "20px", "0"]
-advanced:
-  css_class: fullscreen
----
+    # Customize the section spacing. Order is top, right, bottom, left.
+    padding: ["20px", "0", "20px", "100%"]
 
+advanced:
+ # Custom CSS. 
+ css_style: ""
+ 
+ # CSS class.
+ css_class: ""
+---
 
 Rozvíjejme obec k užitku nás všech
 - Plánujme s rozumem
