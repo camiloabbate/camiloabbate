@@ -22,7 +22,7 @@ design:
     text_color_light: true
   spacing:
     # Customize the section spacing. Order is top, right, bottom, left.
-    padding: ["20px", "0", "20px", "100%"]
+    padding: ["20px", "20px", "20px", "35%"]
 
 advanced:
  # Custom CSS. 
@@ -38,7 +38,3 @@ Rozvíjejme obec k užitku nás všech
 - Jedna obec, jedno srdce, jeden cíl
 - Zachovejme jednu z krás Posázaví
 - Váš hlas je s námi slyšet
-
-[Přihlašte se k odběru novinek](https://docs.google.com/forms/d/e/1FAIpQLSe7hRoejTstbG6nJZR3VAzkWoykDZ6zeayH7BFKf5xda5PrTg/viewform?usp=sf_link)
-
-[Přihlašte se do spolku](https://forms.gle/PaEdvTVJpjTwCwMC8)
