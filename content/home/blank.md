@@ -4,7 +4,7 @@
 widget: blank
 
 # Activate this widget? true/false
-active: false
+active: true
 
 # This file represents a page section.
 headless: true
@@ -28,9 +28,8 @@ design:
     padding: ["0px", "0", "0px", "0"]
 ---
 
-<p  id="left"><p style="color:white; font-size:40px; padding: 0px 0px 0px 0px"><u>Ecology, Theory,<br>Stats &amp; Code </u></p></p>
+<p  id="left"><p style="color:white; font-size:40px; padding: 0px 0px 0px 0px"><u> <br> </u></p></p>
 <br>
-<a id="academic-release" href="https://www.jpkrajewski.com/">Photo credit: JP Krajewski</a>
 <a id="academic-release" img="static/img/headers/equality.png"></a>
 
 
