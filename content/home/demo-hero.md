@@ -32,9 +32,4 @@ advanced:
  css_class: ""
 ---
 
-Rozvíjejme obec k užitku nás všech
-- Plánujme s rozumem
-- Nekopírujme chyby ostatních obcí
-- Jedna obec, jedno srdce, jeden cíl
-- Zachovejme jednu z krás Posázaví
-- Váš hlas je s námi slyšet
+![Alt text](utah.jpg)
