@@ -49,6 +49,13 @@ hero_media = "1.jpg"
 # Note. An optional note to show underneath the links.
 [cta_note]
   label = '<a class="js-github-release" href="https://sourcethemes.com/academic/updates" data-repo="gcushen/hugo-academic">Latest release<!-- V --></a>'
+  
+  [advanced]
+ # Custom CSS. 
+ css_style = ""
+ 
+ # CSS class.
+ css_class = ""
 +++
 
 **The Best Way to Create the Website You Want from Markdown (or Jupyter/RStudio)**

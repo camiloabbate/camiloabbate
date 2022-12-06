@@ -75,7 +75,3 @@ sitemap:
 minify:
   _merge: deep
 
-params:
-  header_image: "assets/media/1.jpg"
-
-
