@@ -10,7 +10,9 @@ weight: 10  # Order that this section will appear.
 
 title: ""
 subtitle: ""
-logoimage: "utah.jpg"
+
+
+
 
 design:
   columns: '1'
@@ -22,7 +24,7 @@ design:
     text_color_light: true
   spacing:
     # Customize the section spacing. Order is top, right, bottom, left.
-    padding: ["20px", "0", "20px", "100%"]
+    padding: ["20px", "0", "20px", "50%"]
 
 advanced:
  # Custom CSS. 
