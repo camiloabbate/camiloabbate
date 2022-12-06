@@ -4,7 +4,7 @@
 # Add more sections by duplicating this file and customizing to your requirements.
 
 widget = "markdown"  # See https://wowchemy.com/docs/page-builder/
-headless = true  # This file represents a page section.
+headless = false  # This file represents a page section.
 active = false  # Activate this widget? true/false
 weight = 15  # Order that this section will appear.
 
@@ -20,17 +20,25 @@ subtitle = ""
   #   Uncomment (by removing `#`) an option to apply it.
   #   Choose a light or dark text color by setting `text_color_light`.
   #   Any HTML color name or Hex value is valid.
+  image = "utah.jpg"
+  size = "cover"
+  repeat = "no-repeat"
+  height = "100%"
+  position = "center"
+  top = "0"
+  z-index =  "0"
+  gradient_start = 1
 
   # Background color.
   # color = "navy"
   
   
   # Background gradient.
-  gradient_start = "DarkGreen"
-  gradient_end = "ForestGreen"
+  #gradient_start = "DarkGreen"
+  #gradient_end = "ForestGreen"
   
   # Background image.
-  #image = "utah.jpg"  # Name of image in `assets/media`
+  #background-image = "utah.jpg"
   #image_darken = 0.6  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
   #image_size = "cover"  #  Options are `cover` (default), `contain`, or `actual` size.
   #image_position = "center"  # Options include `left`, `center` (default), or `right`.
@@ -53,10 +61,6 @@ subtitle = ""
 +++ 
 
 
-  <div class= "box">
-  <img src= "assets/media/utah.jpg" class= "img">
-  </div>
-<div style="width:682px; height:784px"></div>
 
 
 
