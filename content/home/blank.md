@@ -30,7 +30,7 @@ design:
 
 <p  id="left"><p style="color:white; font-size:40px; padding: 0px 0px 0px 0px"><u> <br> </u></p></p>
 <br>
-<a id="academic-release" img="static/img/headers/equality.png"></a>
+<a id="academic-release" img="static/img/headers/equality.jpg"></a>
 
 
 
