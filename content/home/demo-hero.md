@@ -12,17 +12,17 @@ title: ""
 subtitle: ""
 
 
-design:
-  columns: '1'
-  background:
-    image: utah.jpg  # Name of image in `static/img/`.
-    image_darken: 0.6
-    image_position: center
-    image_parallax: true
-    text_color_light: true
-  spacing:
-    # Customize the section spacing. Order is top, right, bottom, left.
-    padding: ["20px", "20px", "20px", "35%"]
+# design:
+#   columns: '1'
+#   background:
+#     image: utah.jpg  # Name of image in `static/img/`.
+#     image_darken: 0.6
+#     image_position: center
+#     image_parallax: true
+#     text_color_light: true
+#   spacing:
+#     # Customize the section spacing. Order is top, right, bottom, left.
+#     padding: ["20px", "20px", "20px", "35%"]
 
 advanced:
  # Custom CSS. 
