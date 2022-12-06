@@ -3,15 +3,13 @@
 # Any elements can be added in the body: https://sourcethemes.com/academic/docs/writing-markdown-latex/
 # Add more sections by duplicating this file and customizing to your requirements.
 
-widget: "blank"  # See https://sourcethemes.com/academic/docs/page-builder/
+widget: "hero"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless: true  # This file represents a page section.
 active: true  # Activate this widget? true/false
 weight: 10  # Order that this section will appear.
 
 title: ""
 subtitle: ""
-
-
 
 
 design:
@@ -24,7 +22,7 @@ design:
     text_color_light: true
   spacing:
     # Customize the section spacing. Order is top, right, bottom, left.
-    padding: ["20px", "0", "20px", "50%"]
+    padding: ["20px", "0", "20px", "100%"]
 
 advanced:
  # Custom CSS. 
