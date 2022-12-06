@@ -20,8 +20,8 @@ hero_media = "1.jpg"
   # color = "navy"
   
   # Background gradient.
-  gradient_start = "#4bb4e3"
-  gradient_end = "#2b94c3"
+  #gradient_start = "#4bb4e3"
+  #gradient_end = "#2b94c3"
   
   # Background image.
   image = "utah.jpg"  # Name of image in `static/media/`.
@@ -36,31 +36,18 @@ hero_media = "1.jpg"
 # Call to action links (optional).
 #   Display link(s) by specifying a URL and label below. Icon is optional for `[cta]`.
 #   Remove a link/note by deleting a cta/note block.
-[cta]
-  url = "https://sourcethemes.com/academic/docs/install/"
-  label = "Get Started"
-  icon_pack = "fas"
-  icon = "download"
-  
-[cta_alt]
-  url = "https://sourcethemes.com/academic/"
-  label = "View Documentation"
 
-# Note. An optional note to show underneath the links.
-[cta_note]
-  label = '<a class="js-github-release" href="https://sourcethemes.com/academic/updates" data-repo="gcushen/hugo-academic">Latest release<!-- V --></a>'
-  
-  [advanced]
+
+
+[advanced]
  # Custom CSS. 
- css_style = ""
+  css_style = ""
  
  # CSS class.
  css_class = ""
 +++
 
-**The Best Way to Create the Website You Want from Markdown (or Jupyter/RStudio)**
 
-Build **Anything** with Widgets
 
 
 
