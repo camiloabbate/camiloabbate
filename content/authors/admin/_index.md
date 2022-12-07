@@ -25,6 +25,17 @@ interests:
   - Data Science
   - Economics
   - Education
+education:
+  courses:
+  - course: PhD Student in Economics
+    institution: University of California, Santa Barbara
+    year: 
+  - course: MA in Economics
+    institution: University of California, Santa Barbara
+    year: 2020
+  - course: BA in Economics
+    institution: Universidad Nacional de Asuncion
+    year: 2014
 
 
 # Social/Academic Networking

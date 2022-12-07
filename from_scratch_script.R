@@ -46,6 +46,10 @@ blogdown::new_post(title = "sirca_example",
                    ext = '.Rmarkdown',
                    subdir = "post")
 
+blogdown::new_post(title = "paper1",
+                   ext = '.Rmarkdown',
+                   subdir = "research")
+
 
 file.edit(".gitignore")
 
