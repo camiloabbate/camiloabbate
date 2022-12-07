@@ -28,7 +28,7 @@ design:
     padding: ["80px", "0", "80px", "0"]
 ---
 
-<p  id="left"><p style="color:white; font-size:40px; padding: 0px 0px 0px 0px"><u> <br> </u></p></p>
+<p  id="left"><p style="color:white; font-size:40px; padding: 0px 0px 0px 0px"><u> <br> Opa, este drummer es bueno tio </u></p></p>
 <br>
 
 
