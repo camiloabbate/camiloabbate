@@ -65,8 +65,6 @@ email: ''
 highlight_name: true
 ---
 
-Hi. 
+This website is still under construction. Thanks for stopping by.
 
-Bye.
-
-{{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/demo_resume.pdf" "newtab" >}}cv{{< /staticref >}}.
+{{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/cv.pdf" "newtab" >}}cv{{< /staticref >}}
