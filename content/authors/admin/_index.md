@@ -54,9 +54,9 @@ social:
 # Link to a PDF of your resume/CV.
 # To use: copy your resume to `static/uploads/cv.pdf`, enable `ai` icons in `params.yaml`,
 # and uncomment the lines below.
- - icon: cv
-   icon_pack: ai
-   link: uploads/cv.pdf
+# - icon: cv
+# - icon_pack: ai
+# - link: uploads/cv.pdf
 
 # Enter email to display Gravatar (if Gravatar enabled in Config)
 email: ''
