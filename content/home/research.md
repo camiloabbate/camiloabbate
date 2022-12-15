@@ -6,17 +6,17 @@ widget: collection
 # This file represents a page section.
 headless: true
 
-active: false
+active: true
 
 # Order that this section appears on the page.
-weight: 80
+weight: 20
 
-title: Featured Publications
+title: Research
 subtitle: ''
 
 content:
   # Page type to display. E.g. post, talk, publication...
-  page_type: publication
+  page_type: research
   # Choose how many pages you would like to display (0 = all pages)
   count: 0
   # Filter on criteria
