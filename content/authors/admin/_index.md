@@ -18,7 +18,7 @@ organizations:
     url: https://www.ucsb.edu/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include education in developing economies.
+bio: 
 
 # Interests to show in About widget
 interests:
@@ -50,8 +50,8 @@ social:
     icon_pack: fab
     link: https://twitter.com/camiloabbate
     label: Follow me on Twitter
-    display:
-      header: true
+  #  display:
+  #    header: true
   #- icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
   #  icon_pack: fas
   #  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
