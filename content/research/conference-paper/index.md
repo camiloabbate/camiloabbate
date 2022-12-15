@@ -15,7 +15,7 @@ authors:
 #  - 'Equal contribution'
 
 date: '2022-12-11T00:00:00Z'
-#doi: ''
+doi: 'http://dx.doi.org/10.2139/ssrn.4295203'
 
 # Schedule page publish date (NOT publication's date).
 #publishDate: '2017-01-01T00:00:00Z'
