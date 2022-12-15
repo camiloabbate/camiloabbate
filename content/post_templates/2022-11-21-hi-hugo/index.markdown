@@ -1,14 +1,14 @@
 ---
-title: A beautiful image from Big Sur
+title: Hi Hugo
 author: ''
-date: '2022-12-14'
+date: '2022-11-21'
 slug: hi-hugo
 categories: []
 tags: []
 subtitle: ''
 summary: ''
 authors: []
-lastmod: "`r format(Sys.time(), '%d %B, %Y')`"
+lastmod: '2022-11-21T22:22:07-08:00'
 featured: no
 image:
   caption: ''
@@ -18,3 +18,4 @@ projects: []
 ---
 
 ![my-first-image](cali.jpg)
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
