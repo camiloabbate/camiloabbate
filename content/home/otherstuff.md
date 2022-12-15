@@ -3,20 +3,22 @@
 # Documentation: https://wowchemy.com/docs/page-builder/
 widget: collection
 
+active: false   ################################################
+
 # This file represents a page section.
 headless: true
 
 # Order that this section appears on the page.
 weight: 60
 
-title: Recent Posts
+title: Other Stuff
 subtitle:
 
 content:
   # Filter on criteria
   filters:
     folders:
-      - post
+      - otherstuff
     tag: ''
     category: ''
     publication_type: ''
