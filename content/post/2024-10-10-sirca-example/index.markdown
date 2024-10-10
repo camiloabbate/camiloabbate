@@ -1,14 +1,14 @@
 ---
-title: Hi Hugo
+title: sirca_example
 author: Camilo
 date: '2024-10-10'
-slug: hi-hugo
+slug: sirca-example
 categories: []
 tags: []
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2024-10-10T18:38:55-03:00'
+lastmod: '2024-10-10T18:39:20-03:00'
 featured: no
 image:
   caption: ''

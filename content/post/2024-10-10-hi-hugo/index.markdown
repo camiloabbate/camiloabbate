@@ -8,7 +8,7 @@ tags: []
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2024-10-10T18:07:14-03:00'
+lastmod: '2024-10-10T18:38:55-03:00'
 featured: no
 image:
   caption: ''
