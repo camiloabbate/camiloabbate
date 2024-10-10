@@ -10,7 +10,7 @@ last_name: Abbate
 superuser: true
 
 # Role/position/tagline
-role: PhD Student
+role: PhD Candidate in Economics
 
 # Organizations/Affiliations to show in About widget
 organizations:
