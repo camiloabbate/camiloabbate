@@ -17,14 +17,31 @@ marketing:
   seo:
     site_type: Person
     local_business_type: ''
-    org_name: ''
-    description: 'One, two, three'
+    org_name: 'Camilo Abbate'
+    description: 'The official website of Camilo Abbate, academic researcher in Economics.'
     twitter: 'nope'
+    title: "Camilo Abbate - Academic Research in Economics"
+    tags:
+    - "Research"
+    - "Academic"
+    - "Camilo Abbate"
+    - "Publications"
+    - "Econometrics"
+    - "Applied micro"
+    - "Paraguay"
+    - "UCSB"
+    - "Economics"
+
+# Social metadata
+    og_title: "Camilo Abbate - Academic Research and Profile"
+    og_description: "The official site for Camilo Abbate, showcasing research and academic contributions."
+    og_image: "https://camiloabbate.com/images/profile-image.jpg"  # Adjust URL to an actual image path
+
   analytics:
     google_analytics: ''
     baidu_tongji: ''
   verification:
-    google: ''
+    google: 'QRDXyc9v8UbNssT4GxmXV51TCno5F3b0EUlMkybgtqQ'
     baidu: ''
 
 # Site header
