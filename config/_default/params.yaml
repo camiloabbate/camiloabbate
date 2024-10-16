@@ -58,7 +58,7 @@ header:
 
 hero:
   enable: true
-  image: "img/utita.jpg"
+  image: "media/utiah.jpg"
   image_darken: 0.2               # Optional: overlay effect to make text readable
   height: "400px"                 # Adjust height for a horizontal format
   align: center                   # Image alignment
