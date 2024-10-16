@@ -30,6 +30,10 @@ doi: 'https://doi.org/10.1002/soej.12731'
 #publication: In *Wowchemy Conference*
 #publication_short: In *ICW*
 
+# Indicate the publication status
+published: true  # Add this line to indicate it's published
+publishDate: '2024-08-19T00:00:00Z'  # Use the actual date of publication if different
+
 abstract: Previous research has highlighted referee bias as a potential contributor to home field advantage in soccer. In order to shed light on the importance of referee bias, we exploit the staggered implementation of Video Assistant Referee (VAR) using data from the top domestic league in 16 countries between 2009 and 2019 to estimate the effect of objective review systems on home field advantage in soccer. Surprisingly, the implementation of VAR had negligible effects on home field advantage and various crucial match statistics despite decreased total offsides and yellow cards. These results provide suggestive evidence regarding the mechanisms through which referee bias might contribute to home field advantage and highlight how scope may limit the effectiveness of review processes in general.
 
 # Summary. An optional shortened abstract.
