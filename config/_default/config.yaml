@@ -5,7 +5,7 @@ theme: "starter-hugo-academic"
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
 title: Camilo Abbate # Website name
-baseURL: 'https://example.com/' # Website URL
+baseURL: 'https://camiloabbate.com/' # Website URL
 
 ############################
 ## LANGUAGE
@@ -72,6 +72,8 @@ security:
   _merge: deep
 sitemap:
   _merge: deep
+  changefreq: "monthly" # Set how frequently the content is likely to change
+  priority: 0.5 # Set the priority of the sitemap pages
 minify:
   _merge: deep
 
