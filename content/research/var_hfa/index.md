@@ -15,7 +15,7 @@ authors:
 #  - 'Equal contribution'
 
 date: '2022-12-11T00:00:00Z'
-doi: 'http://dx.doi.org/10.2139/ssrn.4295203'
+doi: 'https://doi.org/10.1002/soej.12731'
 
 # Schedule page publish date (NOT publication's date).
 #publishDate: '2017-01-01T00:00:00Z'
@@ -30,7 +30,7 @@ doi: 'http://dx.doi.org/10.2139/ssrn.4295203'
 #publication: In *Wowchemy Conference*
 #publication_short: In *ICW*
 
-abstract: Until recently, soccer referees operated with minimal technology assistance. Following the successful introduction of communication devices and goal-line technology, as well as the use of video review systems in various other athletic competitions, soccer leagues around the world implemented Video Assistant Referee (VAR) technology to further reduce mistakes and improve referee performance. This paper investigates the effect of Video Assistant Referee systems on home field advantage in soccer using a staggered adoption difference-in-differences framework and data from 16 leagues between 2009 and 2019. We find that the implementation of VAR had negligible effects on home field advantage despite impacting various match statistics for both home and away teams. These results have important implications for the impact of referees on home field advantage, especially in light of recent literature.
+abstract: Previous research has highlighted referee bias as a potential contributor to home field advantage in soccer. In order to shed light on the importance of referee bias, we exploit the staggered implementation of Video Assistant Referee (VAR) using data from the top domestic league in 16 countries between 2009 and 2019 to estimate the effect of objective review systems on home field advantage in soccer. Surprisingly, the implementation of VAR had negligible effects on home field advantage and various crucial match statistics despite decreased total offsides and yellow cards. These results provide suggestive evidence regarding the mechanisms through which referee bias might contribute to home field advantage and highlight how scope may limit the effectiveness of review processes in general.
 
 # Summary. An optional shortened abstract.
 # summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
