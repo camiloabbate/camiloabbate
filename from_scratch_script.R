@@ -8,7 +8,7 @@
 # remotes::install_github("rstudio/blogdown")
 
 library(blogdown)
-blogdown::serve_site()
+blogdown::serve_site() # stop_server()
 # new_site(theme = "wowchemy/starter-academic")
 
 #After this last line: You should now see something like this. ??IMAGE?? 
