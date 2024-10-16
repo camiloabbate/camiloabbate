@@ -56,6 +56,14 @@ header:
     show_search: true
     highlight_active_link: true
 
+hero:
+  enable: true
+  image: "img/utita.jpg"
+  image_darken: 0.2               # Optional: overlay effect to make text readable
+  height: "400px"                 # Adjust height for a horizontal format
+  align: center                   # Image alignment
+  show_title: false               # Hide the default page title on the image
+
 
 # Site footer
 
