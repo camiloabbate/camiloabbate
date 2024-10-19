@@ -1,37 +1,42 @@
 ---
-title: "More Rmd for now"
+title: "Web Scrapping with R"
 author: "Camilo Abbate"
 date: 2020-12-01T21:13:14-05:00
 categories: ["R"]
-tags: ["R Markdown", "plot", "regression"]
+tags: ["RSelenium", "Web Scrapping", "dynamic websites"]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-# R Markdown
+# Example of a script that scrapes a website
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+In this example, we will scrape the [Office of the Comptroller General from Paraguay](https://portaldjbr.contraloria.gov.py/portaldjbr/), that hosts thousands of financial statements of government employees. You'll need:
 
-You can embed an R code chunk like this:
+- [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/)
+- [Java](https://www.java.com/en/download/manual.jsp)
 
-```{r cars}
-summary(cars)
-fit <- lm(dist ~ speed, data = cars)
-fit
+
+# Setup
+
+First, clear the environment and load necessary libraries:
+
+```{r}
+rm(list = ls()) 
+
+library(pacman)
+pacman::p_load("RSelenium", "tidyverse", "tidylog", "netstat", "wdman","polite")
 ```
 
-# Including Plots
 
-You can also embed plots. See Figure \@ref(fig:pie) for example:
+Let's use the 2 presidents of Paraguay as examples:
 
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
+```{r}
+names_to_search <- c("Mario Abdo Benítez", "Horacio Cartes")
 ```
+
+
+
+
+

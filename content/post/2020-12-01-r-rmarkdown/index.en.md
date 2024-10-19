@@ -1,56 +1,42 @@
 ---
-title: "More Rmd for now"
+title: "Web Scrapping with R"
 author: "Camilo Abbate"
 date: 2020-12-01T21:13:14-05:00
 categories: ["R"]
-tags: ["R Markdown", "plot", "regression"]
+tags: ["RSelenium", "Web Scrapping", "dynamic websites"]
 ---
 
 
 
-# R Markdown
+# Example of a script that scrapes a website
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+In this example, we will scrape the [Office of the Comptroller General from Paraguay](https://portaldjbr.contraloria.gov.py/portaldjbr/), that hosts thousands of financial statements of government employees. You'll need:
 
-You can embed an R code chunk like this:
+- [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/)
+- [Java](https://www.java.com/en/download/manual.jsp)
 
 
-```r
-summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit <- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932
+# Setup
+
+First, clear the environment and load necessary libraries:
+
+
+``` r
+rm(list = ls()) 
+
+library(pacman)
+pacman::p_load("RSelenium", "tidyverse", "tidylog", "netstat", "wdman","polite")
 ```
 
-# Including Plots
 
-You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:
+Let's use the 2 presidents of Paraguay as examples:
 
 
-```r
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
+``` r
+names_to_search <- c("Mario Abdo Benítez", "Horacio Cartes")
 ```
 
-<div class="figure">
-<img src="{{< blogdown/postref >}}index.en_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
-<p class="caption">Figure 1: A fancy pie chart.</p>
-</div>
+
+
+
+
