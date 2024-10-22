@@ -25,7 +25,8 @@ First, clear the environment and load necessary libraries:
 rm(list = ls()) 
 
 library(pacman)
-pacman::p_load("RSelenium", "tidyverse", "tidylog", "netstat", "wdman","polite","rvest")
+pacman::p_load("RSelenium", "tidyverse", "tidylog", "netstat",
+               "wdman","polite","rvest")
 ```
 
 
@@ -41,7 +42,7 @@ bow("https://portaldjbr.contraloria.gov.py/portaldjbr/")
 ##    Crawl delay: 5 sec
 ##   The path is scrapable for this user-agent
 ```
-Let's use the 2 presidents of Paraguay as examples:
+Let's use 2 presidents of Paraguay as examples:
 
 
 ``` r
@@ -89,7 +90,8 @@ for (i in 1:length(names_to_search)){
   
   search_bar_location <- ".col-5 > input:nth-child(1)"
   
-  actual_search_bar <- remDr$findElement(using = "css selector", search_bar_location)
+  actual_search_bar <- remDr$findElement(using = "css selector",
+                                         search_bar_location)
   
   Sys.sleep(2)
   
@@ -117,7 +119,11 @@ for (i in 1:length(names_to_search)){
   for (j in 1:nrow(table_tibble)){
     
     # Click on the PDF file
-    remDr$findElement(using = 'css selector', value = paste0("div.row:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(",j,") > td:nth-child(5) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)"))$clickElement()
+    remDr$findElement(using = 'css selector', 
+                      value = paste0("div.row:nth-child(4) > div:nth-child(1) > div:nth-child(1) >
+                                     div:nth-child(2) > table:nth-child(1) > tbody:nth-child(2) >
+                                     tr:nth-child(",j,") > td:nth-child(5) > div:nth-child(1) >
+                                     div:nth-child(1) > button:nth-child(1)"))$clickElement()
     # Wait for the download to finish:
     Sys.sleep(5)
     
