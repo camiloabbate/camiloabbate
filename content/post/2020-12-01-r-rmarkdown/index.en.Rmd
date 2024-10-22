@@ -48,7 +48,7 @@ names_to_search <- c("Mario Abdo Benítez", "Horacio Cartes")
 
 # Start an RSelenium server and browser session:
 
-```{r}
+```{r, results='hide', message=FALSE, warning=FALSE}
 rD <- RSelenium::rsDriver(
   port = free_port(),
   browser = c("firefox"),
