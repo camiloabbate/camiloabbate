@@ -16,6 +16,8 @@ role: PhD Candidate in Economics
 organizations:
   - name: UC Santa Barbara
     url: https://www.ucsb.edu/
+    
+  - name: ecabbategranada [at] ucsb.edu
 
 # Short bio (displayed in user profile at end of posts)
 bio: 
@@ -41,13 +43,12 @@ bio:
 #   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
 #   form "mailto:your-email@example.com" or "/#contact" for contact widget.
 social:
-  - icon: envelope
-    icon_pack: fas
-    link: '/#contact'
-  - icon: twitter
-    icon_pack: fab
-    link: https://twitter.com/camiloabbate
-    label: Follow me on Twitter
+  #- icon: envelope
+  #  icon_pack: fas
+  #- icon: twitter
+  #  icon_pack: fab
+  #  link: https://twitter.com/camiloabbate
+  #  label: Follow me on Twitter
   #  display:
   #    header: true
   #- icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
@@ -78,3 +79,5 @@ I am a PhD candidate in Economics at the University of California, Santa Barbara
 My research interests are in the fields of Development Economics and Political Economy.
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/cv.pdf" "newtab" >}}cv{{< /staticref >}}
+
+
