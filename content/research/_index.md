@@ -1,5 +1,6 @@
 ---
-title: 
+type: section
+title: Research
 cms_exclude: true
 
 # View.
@@ -13,11 +14,14 @@ view: 2
 header:
   caption: ''
   image: ''
+  
+sections:
+  - title: Published Work
+    path: published_work
+  - title: Work in Progress
+    path: work_in_progress
+
 ---
 
 
-## Published Work
-
-
-## Work in Progress
 
