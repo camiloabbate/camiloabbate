@@ -1,5 +1,4 @@
 ---
-type: section
 title: 
 cms_exclude: true
 
@@ -15,12 +14,6 @@ header:
   caption: ''
   image: ''
   
-sections:
-  - title: Published Work
-    path: published_work
-  - title: Work in Progress
-    path: work_in_progress
-
 ---
 
 
