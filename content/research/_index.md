@@ -1,6 +1,6 @@
 ---
 type: section
-title: Research
+title: 
 cms_exclude: true
 
 # View.

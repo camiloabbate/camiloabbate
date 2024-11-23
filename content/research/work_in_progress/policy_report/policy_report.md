@@ -31,7 +31,7 @@ publication_types: 3
 
 # Indicate the publication status
 published: true  # Add this line to indicate it's published
-publishDate: '2024-08-19T00:00:00Z'  # Use the actual date of publication if different
+publishDate: '2024-06-19T00:00:00Z'  # Use the actual date of publication if different
 
 abstract: EDU
 
