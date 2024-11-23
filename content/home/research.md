@@ -1,10 +1,10 @@
 ---
 # An instance of the Featured widget.
 # Documentation: https://wowchemy.com/docs/page-builder/
-widget: collection
+widget: "portfolio"
 
 # This file represents a page section.
-headless: true
+headless: false
 
 active: true
 
@@ -22,7 +22,7 @@ content:
   count: 0
   # Filter on criteria
   filters:
-    featured_only: true
+    featured_only: false
     author: ''
     category: ''
     publication_type: ''
@@ -38,3 +38,4 @@ design:
   #   4 = Citation (publication only)
   view: 4
 ---
+
