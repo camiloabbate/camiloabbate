@@ -138,3 +138,7 @@ extensions:
 security:
   # Allow frame for embedding speaker notes in slides
   allow_frame: true
+  
+# Appearance
+params:
+  custom_scss: "scss/custom.scss"

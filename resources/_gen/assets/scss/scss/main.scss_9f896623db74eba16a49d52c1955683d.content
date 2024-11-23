@@ -9637,3 +9637,14 @@ div.chart {
   margin-right: auto;
   margin-bottom: 1rem;
   overflow-x: auto; }
+
+/* Example custom styles */
+.home-section {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
+#about {
+  margin-bottom: 0; }
+
+#research {
+  margin-top: 0; }

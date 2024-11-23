@@ -10,6 +10,7 @@ active: true
 
 # Order that this section appears on the page.
 weight: 14
+style: "margin-top: 10px;"
 
 title: Research
 subtitle: ''

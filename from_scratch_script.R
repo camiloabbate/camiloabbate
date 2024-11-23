@@ -131,3 +131,35 @@ rstudioapi::navigateToFile("content/home/camel-links.md", line = 5, column = 10)
 
 
 
+
+
+# More things that I'm learning ----
+
+# Verify the active theme: Check which theme is being used by your site. 
+# Open the config.toml (or config.yaml if you're using that) file 
+# at the root of your Hugo site and look for the theme setting. 
+# It's located in:
+# config>_default>config.yaml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
