@@ -10,15 +10,13 @@ last_name: Abbate
 superuser: true
 
 # Role/position/tagline
-role: PhD Candidate in Economics
+# role: PhD Candidate in Economics
 
 # Organizations/Affiliations to show in About widget
 organizations:
-  - name: UC Santa Barbara
-    url: https://www.ucsb.edu/
-    
   - name: ecabbategranada [at] ucsb.edu
-
+    #url: https://www.ucsb.edu/
+    
 # Short bio (displayed in user profile at end of posts)
 bio: 
 
@@ -54,9 +52,11 @@ social:
   #- icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
   #  icon_pack: fas
   #  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
-  - icon: github
-    icon_pack: fab
-    link: https://github.com/camiloabbate
+  #- icon: github
+  #  icon_pack: fab
+  #  link: https://github.com/camiloabbate
+  #  display:
+  #    header: true
   #- icon: linkedin
   #  icon_pack: fab
   #  link: https://www.linkedin.com/
@@ -75,9 +75,15 @@ email: ''
 highlight_name: true
 ---
 
-I am a PhD candidate in Economics at the University of California, Santa Barbara. 
+I am a PhD Candidate in Economics at the University of California, Santa Barbara. 
 My research interests are in the fields of Development Economics and Political Economy.
 
-{{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/cv.pdf" "newtab" >}}cv{{< /staticref >}}
+{{< staticref "uploads/cv.pdf" "newtab" >}} CV {{< /staticref >}}
 
+&nbsp; <!-- HTML non-breaking space -->
 
+[GitHub](https://github.com/camiloabbate) {{< icon name="github" pack="fab" >}} 
+
+[Research Gate](https://www.researchgate.net/profile/Camilo-Abbate)
+
+[LinkedIn](https://www.linkedin.com/in/camilo-abbate-a93407134/)
