@@ -1,6 +1,6 @@
 ---
 active: true
-title: 'Policy report'
+title: 'Decentralization in Developing Countries'
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
@@ -27,7 +27,7 @@ date: '2023-11-19T00:00:00Z'
 publication_types: ["3"]
 
 # Publication name and optional abbreviated publication name.
-publication: In *Wowchemy Conference*
+#publication: In *Wowchemy Conference*
 #publication_short: In *ICW*
 
 # Indicate the publication status
@@ -40,7 +40,7 @@ abstract: EDU
 # summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
 
 
-tags: ["policy report"]
+# tags: ["policy report"]
 
 # Display this page in the Featured widget?
 featured: false
