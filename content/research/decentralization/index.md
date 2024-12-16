@@ -34,7 +34,8 @@ publication_types: ["3"]
 published: true  # Add this line to indicate it's published
 publishDate: '2024-06-19T00:00:00Z'  # Use the actual date of publication if different
 
-abstract: EDU
+
+abstract: _forthcoming_
 
 # Summary. An optional shortened abstract.
 # summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
