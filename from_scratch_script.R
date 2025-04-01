@@ -6,10 +6,14 @@
 
 # if (!requireNamespace("remotes")) install.packages("remotes")
 # remotes::install_github("rstudio/blogdown")
+# install.packages("xfun") # should be aboe 0.41 version!!
 
 library(blogdown)
 blogdown::serve_site() # stop_server()
-# new_site(theme = "wowchemy/starter-academic")
+
+
+# blogdown::install_hugo("0.106.0")
+# new_site(theme = "wowchemy/starter-academic") 
 
 #After this last line: You should now see something like this. ??IMAGE?? 
 # Take a moment to read through these messages - importantly, 

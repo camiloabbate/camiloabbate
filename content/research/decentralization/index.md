@@ -51,7 +51,7 @@ featured: false
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4295203'
+url_pdf: 'https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0'
 # url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_dataset: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_poster: ''
