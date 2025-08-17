@@ -15,4 +15,14 @@ header:
 ---
 
 # Syllabus
- [Download PDF](/otherstuff/2025_Math_Camp_syllabus.pdf) 
+ [Download PDF](/mathcamp/2025_Math_Camp_syllabus.pdf) 
+ 
+ 
+ # Linear Algebra 
+ 
+ [Week 1 Notes](/mathcamp/2025_Math_Camp_syllabus.pdf) 
+ 
+ 
+ # Real Analysis 
+ 
+ [Week 1 Notes](/mathcamp/2025_Math_Camp_syllabus.pdf) 
