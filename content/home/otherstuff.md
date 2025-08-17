@@ -11,7 +11,7 @@ headless: true
 # Order that this section appears on the page.
 weight: 60
 
-title: Other Stuff
+title: Math Camp 2025
 subtitle:
 
 content:
