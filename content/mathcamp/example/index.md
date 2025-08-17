@@ -1,5 +1,7 @@
 ---
 title: Example Project
+cms_exclude: true
+draft: true # these two lines make them excluded I think
 summary: An example of using the in-built project page.
 tags:
   - Deep Learning
