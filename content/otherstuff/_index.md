@@ -1,5 +1,5 @@
 ---
-title: Other Stuff (working on it)
+title: Math Camp 2025
 cms_exclude: true
 
 # View.
