@@ -19,7 +19,7 @@ main:
   - name: Posts
     url: '/post/'
     weight: 50
-  - name: Other Stuff
+  - name: Math Camp
     url: '/otherstuff/'
     weight: 60
 

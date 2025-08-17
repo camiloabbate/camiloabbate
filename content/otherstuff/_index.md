@@ -13,3 +13,6 @@ header:
   caption: ''
   image: ''
 ---
+
+# Syllabus
+ [Download PDF](/otherstuff/2025_Math_Camp_syllabus.pdf) 
