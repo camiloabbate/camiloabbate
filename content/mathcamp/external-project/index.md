@@ -1,5 +1,7 @@
 ---
 title: External Project
+cms_exclude: true
+draft: true # to comment out the folder, so it doesn't show up in the website
 summary: An example of linking directly to an external project website using `external_link`.
 active: false
 tags:
