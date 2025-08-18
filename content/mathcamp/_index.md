@@ -15,7 +15,7 @@ header:
 ---
 
 # Syllabus
- [Download PDF](/mathcamp/2025_Math_Camp_syllabus.pdf) 
+ [Download PDF](/mathcamp/2025_MathCamp_syllabus.pdf) 
  
  
  # Linear Algebra 
