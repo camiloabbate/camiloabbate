@@ -25,4 +25,4 @@ header:
  
  # Real Analysis 
  
- [Week 1 Notes](/mathcamp/2025_Math_Camp_syllabus.pdf) 
+ [Week 1 Notes](/mathcamp/Week1_Analysis.pdf) 
