@@ -14,19 +14,25 @@ header:
   image: ''
 ---
 
-# Syllabus
+## Syllabus
  [Download PDF](/mathcamp/2025_MathCamp_syllabus.pdf) 
  
  
- # Linear Algebra 
+ ## Linear Algebra 
  
  [Week 1 Notes](/mathcamp/Week1_Linear_Algebra.pdf) 
  
  
- # Real Analysis 
+ ## Real Analysis 
  
  [Week 1 Notes](/mathcamp/Week1_Analysis.pdf) 
  
- # Other resources
+ ## Problem Sets
+ 
+ [Linear Algebra PS1](/mathcamp/PS1_LA.pdf) 
+ 
+ [Real Analysis PS1](/mathcamp/PS1_RA.pdf) 
+ 
+ ### Other resources
  
  [Linear Transformation Visualizer](https://shad.io/MatVis/) - Interactive tool for matrix operations.
