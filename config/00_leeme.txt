@@ -1,9 +1,0 @@
-Inside of _default:
-
--> config.yaml
--> languages.yaml
--> menu.yaml
--> params.yaml
-
-
-Menu.yaml controls the buttons on the navigation bar!!
