@@ -35,4 +35,8 @@ header:
  
  ### Other resources
  
+ [Rmd Week 1](/mathcamp/R_lecture_Week1.pdf)
+ 
+ [Rscript Week 1](/mathcamp/script1.R)
+ 
  [Linear Transformation Visualizer](https://shad.io/MatVis/) - Interactive tool for matrix operations.
