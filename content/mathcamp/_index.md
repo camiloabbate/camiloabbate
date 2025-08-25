@@ -22,10 +22,18 @@ header:
  
  [Week 1 Notes](/mathcamp/Week1_Linear_Algebra.pdf) 
  
+ [Week 2 Notes](/mathcamp/Week2_Linear_Algebra.pdf) 
+ 
+ [Week 3 Notes]
+ 
  
  ## Real Analysis 
  
  [Week 1 Notes](/mathcamp/Week1_Analysis.pdf) 
+ 
+ [Week 2 Notes](/mathcamp/Week2_Analysis.pdf) 
+ 
+ [Week 3 Notes]
  
  ## Problem Sets
  
