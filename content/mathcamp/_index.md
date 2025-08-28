@@ -14,9 +14,11 @@ header:
   image: ''
 ---
 
+<!--- let's use directly html code here for opening new tabs  -->
+
 ## Syllabus
- [Download PDF](/mathcamp/2025_MathCamp_syllabus.pdf){target="_blank"}
- 
+<!--- [Download PDF](/mathcamp/2025_MathCamp_syllabus.pdf){target="_blank"} -->
+<a href="/mathcamp/2025_MathCamp_syllabus.pdf" target="_blank">Download PDF</a> 
  
  ## Linear Algebra 
  
