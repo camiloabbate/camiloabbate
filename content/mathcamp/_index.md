@@ -83,3 +83,8 @@ header:
 <a href="/mathcamp/script1.R" target="_blank">Rscript Week 1</a>  
 
 <a href="https://shad.io/MatVis/" target="_blank">Linear Transformation Visualizer</a> - Interactive tool for matrix operations.  
+
+<a href="/mathcamp/weather_flights_NYC.Rmd" target="_blank">Rmd Week 2</a>
+
+
+

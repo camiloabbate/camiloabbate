@@ -1,0 +1,68 @@
+---
+title: "Weather conditions and NYC Flights"
+output: html_document
+date: "2025-08-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Generating a scatter plot of wind speed and departure delay
+
+In this document, we are working with weather data from airports in NYC and flights departing from here.
+Before we start, we need to clean the environment and load the packages we are going to use:
+
+```{r}
+library(pacman)
+
+p_load(tidyverse,tidylog,nycflights13)
+
+```
+
+## Join datasets
+
+Now that we have the packages up and running, let's do a join between the dataframes weather and flights.
+Careful, it might not be trivial to do the join, let's see
+
+```{r}
+flights_with_weather <- flights %>% left_join(weather)
+```
+
+As tidylog informs us, we are losing 1556 observations. That's fine for the purpose of this exercise.
+Let's overwrite the \textbf{flights\_with_weather} dataframe to only give us the exact matches:
+
+```{r}
+flights_with_weather <- flights %>% inner_join(weather)
+```
+
+### Now we are equipped to do the ggplot scatterplot
+
+Given that we have a dataframe with the two desired columns, ggpplot() + geom$\_$point() + geom$\_$smooth() should give us what we want. Let's just select a random sample of 10k flights:
+
+
+```{r}
+flights_with_weather %>% sample_n(10000) %>% ggplot() + 
+  geom_point(aes(x = wind_speed, y = dep_delay))
+```
+
+
+
+# Adding a regression line:
+
+```{r}
+flights_with_weather %>% sample_n(10000) %>% ggplot() + 
+  geom_point(aes(x = wind_speed, y = dep_delay)) + 
+  geom_smooth(aes(x = wind_speed, y = dep_delay), method = "lm", color = "red")
+
+```
+
+
+
+
+
+
+
+
+
+
