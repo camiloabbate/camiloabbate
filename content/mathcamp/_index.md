@@ -39,20 +39,22 @@ header:
  
  <!---[Week 2 Notes](/mathcamp/Week2_Linear_Algebra.pdf) -->
  
- [Week 3 Notes]
+ <!--- [Week 3 Notes] -->
  
  
  ## Real Analysis 
  
  <a href="/mathcamp/Week1_Analysis.pdf" target="_blank">Week 1 Notes</a>  
 
- <a href="/mathcamp/Week2_Analysis.pdf" target="_blank">Week 2 Notes</a>  
+ <a href="/mathcamp/Week2_Analysis.pdf" target="_blank">Week 2 Notes</a>
+ 
+ <a href="/mathcamp/Week3_Analysis.pdf" target="_blank">Week 3 Notes</a>  
  
  <!--- [Week 1 Notes](/mathcamp/Week1_Analysis.pdf) 
  
  [Week 2 Notes](/mathcamp/Week2_Analysis.pdf) -->
  
- [Week 3 Notes]
+ <!--- [Week 3 Notes] -->
  
  ## Problem Sets
  
