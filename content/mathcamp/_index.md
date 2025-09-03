@@ -32,7 +32,9 @@ header:
  
  <a href="/mathcamp/Week3_Linear_Algebra.pdf" target="_blank">Week 3 Notes</a> 
  
- <a href="/mathcamp/Week3_LA_slides_Tuesday.pdf" target="_blank">Week 3 Slides (Tuesday) </a> 
+ <a href="/mathcamp/Week3_LA_slides_Tuesday.pdf" target="_blank">Week 3 Slides (Tuesday) </a>
+ 
+ <a href="/mathcamp/Week3_LA_slides_Wed.pdf" target="_blank">Week 3 Slides (Wednesday) </a> 
  
  
  <!---[Week 1 Notes](/mathcamp/Week1_Linear_Algebra.pdf) -->
