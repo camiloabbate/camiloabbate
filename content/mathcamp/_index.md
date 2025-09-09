@@ -68,13 +68,21 @@ header:
  
  [Real Analysis PS2](/mathcamp/PS2_RA.pdf) -->
  
-<a href="/mathcamp/PS1_LA.pdf" target="_blank">Linear Algebra PS1</a>  
+<a href="/mathcamp/PS1_LA.pdf" target="_blank">Linear Algebra PS1</a> 
+
+<a href="/mathcamp/PS1_LA_Solutions.pdf" target="_blank">Linear Algebra PS1 - Solutions</a> 
 
 <a href="/mathcamp/PS1_RA.pdf" target="_blank">Real Analysis PS1</a>  
 
+<a href="/mathcamp/PS1_RA_Solutions.pdf" target="_blank">Real Analysis PS1 - Solutions</a>  
+
 <a href="/mathcamp/PS2_LA.pdf" target="_blank">Linear Algebra PS2</a>  
 
+<a href="/mathcamp/PS2_LA_Solutions.pdf" target="_blank">Linear Algebra PS2 - Solutions</a>  
+
 <a href="/mathcamp/PS2_RA.pdf" target="_blank">Real Analysis PS2</a>
+
+<a href="/mathcamp/PS2_RA_Solutions.pdf" target="_blank">Real Analysis PS2 - Solutions</a>
 
 <a href="/mathcamp/PS3_LA.pdf" target="_blank">Linear Algebra PS3</a>  
 
