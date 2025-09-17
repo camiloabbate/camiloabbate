@@ -86,7 +86,11 @@ header:
 
 <a href="/mathcamp/PS3_LA.pdf" target="_blank">Linear Algebra PS3</a>  
 
+<a href="/mathcamp/PS3_LA_Solutions.pdf" target="_blank">Linear Algebra PS3 - Solutions</a>  
+
 <a href="/mathcamp/PS3_RA.pdf" target="_blank">Real Analysis PS3</a>
+
+<a href="/mathcamp/PS3_RA_Solutions.pdf" target="_blank">Real Analysis PS3 - Solutions</a>
  
  
  ### Other resources
