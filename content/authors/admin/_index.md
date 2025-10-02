@@ -75,9 +75,8 @@ email: ''
 highlight_name: true
 ---
 
-I am a PhD Candidate in Economics at the University of California, Santa Barbara. 
-My research interests are in the fields of Development Economics, Public Economics and Economics of Education.
-
+Camilo Abbate is a PhD Candidate at the University of California, Santa Barbara. His research interests include Development, Public Economics, and the Economics of Education. 
+His recent work examines how intergovernmental transfers influence local government finances in Paraguay, as well as political outcomes and voter behavior. He holds an MA from Torcuato Di Tella University.
 {{< staticref "uploads/CV Enzo Camilo Abbate Granada.pdf" "newtab" >}} CV {{< /staticref >}}
 
 &nbsp; <!-- HTML non-breaking space -->
