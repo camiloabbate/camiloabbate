@@ -76,7 +76,7 @@ highlight_name: true
 ---
 
 I am a PhD Candidate in Economics at the University of California, Santa Barbara. 
-My research interests are in the fields of Development Economics and Political Economy.
+My research interests are in the fields of Development Economics, Public Economics and Economics of Education.
 
 {{< staticref "uploads/CV Enzo Camilo Abbate Granada.pdf" "newtab" >}} CV {{< /staticref >}}
 
