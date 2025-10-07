@@ -16,7 +16,7 @@ header:
 
 <!--- let's use directly html code here for opening new tabs  -->
 
-<a href="/mathcamp/intro_presentation.pdf" target="_blank">Intro Slides</a> 
+<a href="/mathcamp/intergov_transf_oct_2025.pdf" target="_blank">Intro Slides</a> 
 
 
 ## Syllabus
