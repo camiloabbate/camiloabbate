@@ -32,6 +32,12 @@ blogdown::new_post(title = "Hi Hugo",ext = '.Rmarkdown',subdir = "post")
 # if exists, opens; if not, creates new
 blogdown::config_Rprofile()
 
+blogdown::new_post(
+  title = "Replicating Uribe's Paper", 
+  ext = '.Rmarkdown', 
+  subdir = "post"
+)
+
 
 
 # Use the console to author a new .Rmarkdown post; I’ll name my post “Hi Hugo”:
