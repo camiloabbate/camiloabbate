@@ -24,7 +24,7 @@ This post hosts the replication package for:
 **Uribe, M. (2022).** *Title of the Paper.* AEJ: Macro.  
 [Original Paper PDF](https://www.columbia.edu/~mu2166/neoFisher/uribe_AEJ_macro_2022.pdf)
 
-The replication is performed in **MATLAB**. The package includes all `.m` scripts and a `.tex` document describing the replication steps.
+The replication is performed in **MATLAB**. The package includes all `.m` scripts and a `.pdf` document describing the replication steps.
 
 ## Download
 
@@ -38,7 +38,7 @@ or
 
 ## Instructions
 
-1. Unzip the package.  
-2. Open MATLAB and set the working directory to the unzipped folder.  
+1. Download and unzip the replication package.
+2. Open MATLAB and set the working directory to the folder containing the .m files.
 3. Follow the order of scripts as documented in replication_description.tex.
 4. The scripts reproduce the results reported in the paper.
