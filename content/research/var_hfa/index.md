@@ -54,7 +54,7 @@ featured: true
 # Custom links (uncomment lines below)
 links:
 - name: Replication Files (Secure)
-  url: /replication-gate/
+  url: /replication-gate.html
 
 url_pdf: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4295203'
 # url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
