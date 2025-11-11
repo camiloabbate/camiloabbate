@@ -51,6 +51,11 @@ featured: true
 # - name: Custom Link
 #   url: http://example.org
 
+# Custom links (uncomment lines below)
+links:
+- name: Replication Files (Secure)
+  url: /replication-gate/
+
 url_pdf: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4295203'
 # url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_dataset: 'https://github.com/wowchemy/wowchemy-hugo-themes'
@@ -94,3 +99,16 @@ Create your slides in Markdown - click the _Slides_ button to check out the exam
 
 #Supplementary notes can be added here, including [code, math, and images](https://wowchemy.com/docs/writing-markdown-latex/).
 -->
+
+<!--
+{{% callout note %}}
+Click the Cite button above to demo the feature to enable visitors to import publication metadata into their reference management software.
+{{% /callout %}}
+
+#{{% callout note %}}
+Create your slides in Markdown - click the Slides button to check out the example.
+{{% /callout %}}
+
+#Supplementary notes can be added here, including code, math, and images.
+-->
+
