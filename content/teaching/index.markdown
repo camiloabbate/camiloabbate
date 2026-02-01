@@ -4,9 +4,7 @@ output: blogdown::html_page
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 Over the last decade, I have accumulated extensive teaching experience across three countries (United States, Paraguay, and Argentina), instructing diverse undergraduate and graduate students. I foster an engaging and inclusive learning environment that encourages critical thinking and practical application, while adapting my pedagogical approach to meet each cohort's unique needs.
 
