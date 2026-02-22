@@ -9637,3 +9637,21 @@ div.chart {
   margin-right: auto;
   margin-bottom: 1rem;
   overflow-x: auto; }
+
+.article-container {
+  max-width: 1100px !important; }
+
+/* Prevent code blocks from causing horizontal scroll */
+pre {
+  white-space: pre-wrap !important;
+  word-break: break-all !important; }
+
+pre, pre code {
+  background-color: #f5f5f5 !important;
+  border-radius: 6px !important;
+  padding: 1rem !important; }
+
+code {
+  background-color: #f0f0f0 !important;
+  border-radius: 3px !important;
+  padding: 0.2em 0.4em !important; }
