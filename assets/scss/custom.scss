@@ -1,3 +1,9 @@
 .article-container {
-  max-width: 900px !important;
+  max-width: 1100px !important;
+}
+
+/* Prevent code blocks from causing horizontal scroll */
+pre {
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
 }
