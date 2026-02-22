@@ -12,7 +12,9 @@
 # install.packages("xfun") # should be aboe 0.41 version!!
 
 library(blogdown)
-blogdown::serve_site() # stop_server()
+blogdown::serve_site() 
+
+# stop_server()
 
 
 # blogdown::install_hugo("0.106.0")
