@@ -15,7 +15,6 @@ image:
   focal_point: ''
   preview_only: no
 projects: []
-aliases:
-  - /post/a-predictive-model-of-homelessness/
-redirect: "/post/a-predictive-model-of-homelessness/A-predictive-model-of-homelessness.html"
 ---
+
+<meta http-equiv="refresh" content="0; url=/post/a-predictive-model-of-homelessness/A-predictive-model-of-homelessness.html">
