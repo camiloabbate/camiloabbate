@@ -1,6 +1,7 @@
 ---
 title: "Weather conditions and NYC Flights"
 output: html_document
+date: "`r Sys.Date()`"
 cms_exclude: true
 ---
 
