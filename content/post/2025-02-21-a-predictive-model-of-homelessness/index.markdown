@@ -17,4 +17,4 @@ image:
 projects: []
 ---
 
-[View full document](/post/a-predictive-model-of-homelessness/A-predictive-model-of-homelessness.html){target="_blank"}
+<a href="/post/a-predictive-model-of-homelessness/A-predictive-model-of-homelessness.html" target="_blank">View full document</a>
