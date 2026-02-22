@@ -52,10 +52,8 @@ header:
 
 <br>
 
-<details>
+<!-- <details>
 <summary><strong>Weather Conditions and NYC Flights</strong></summary>
 <br>
-
 <a href="/others/nycflights/weather_flights_NYC.html" target="_blank">View full document</a>
-
-</details>
+</details> -->
