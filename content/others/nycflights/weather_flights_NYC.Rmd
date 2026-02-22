@@ -1,7 +1,6 @@
 ---
 title: "Weather conditions and NYC Flights"
 output: html_document
-date: "2025-08-29"
 cms_exclude: true
 ---
 
