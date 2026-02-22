@@ -1,0 +1,859 @@
+---
+title: "A Predictive Model of Homelessness"
+author: "Camilo Abbate and Emma Joergensen"
+date: Last updated `r format(Sys.Date(), format="%B %d %Y")`
+output:
+  #word_document: default
+  #pdf_document: default
+  html_document: 
+    toc: yes
+    toc_float: yes
+    code_folding: hide
+    number_sections: yes
+urlcolor: blue
+linkcolor: red
+header-includes:
+  - \usepackage{float}
+  - \usepackage{xcolor}
+  - \usepackage{color}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list = ls())
+library(pacman)
+pacman::p_load("tidyverse","dplyr","readxl","glue","magrittr","lubridate","lmtest",
+               "sandwich","fixest","broom","fmsb","car","ggplot2","janitor","gridExtra","data.table","DataCombine","ISLR","glmnet","tree","maptree","randomForest","gbm","ROCR","dplyr")
+```
+
+# Introduction
+
+This project generates a model that will predict the number of homeless
+people per capita in a given county in the United States. The period
+considered in the analysis is from 2007 to 2019 and the states
+considered are California, Texas, Florida, and New York.
+
+## Institutional Background
+
+The United States Department of Housing and Urban Development (HUD) is
+the federal organization in charge of administering housing and urban
+development laws. The HUD defines homelessness as an individual or
+family who lacks a fixed, regular, and adequate nighttime residence. In
+the exploratory data analysis section we will show that homelessness is
+more of an urban problem rather than rural.
+
+The Point-in-Time (PIT) count is a count of sheltered and unsheltered
+people experiencing homelessness. The HUD requires that each Continuum
+of Care (CoC) nationwide conducts this count in the last ten days of
+January (every year). A CoC can include multiple counties, please refer
+to the appendix for a detailed note on how we dealt with differences
+between county level and CoC counts. Data from the last fourteen years
+suggests that most of the homeless population in the US are concentrated
+in coastal states.
+
+Our review of the current academic literature on homelessness suggests
+that some of the main predictors of homelessness are unemployment and
+poverty, and unstable living arrangements. As such we decided to
+gather data on these factors to be used as potential covariates. We also consider various other factors that could potentially predict homelessness such as GDP and weather.
+
+## Why is this model useful?
+
+The count of homeless populations is a useful metric for state and local
+governments to use when determining various policies, and is essential to ensuring that adequate aid is provided. Furthermore, understanding what factors predict homelessness give governments and other agencies more information to create new policies and legislation aimed at reducing homelessness.
+
+## Loading Data and Packages
+
+In order to predict the count of homeless people in these four states,
+we built a panel containing various different data points that could
+potentially be used as covariates. We gathered data on population,
+unemployment rates, housing prices, GDP, weather, and other
+environmental factors, to name a few. In the appendix we have a section
+that cites all of these data sources. These sources include the BEA, US
+census Bureau, and the BLS, among others.
+
+A full copy of the codebook is included with our other files, but here
+are some important variables we will return to throughout this report:
+
+Dependent Variables:
+
+-   `homeless_share_pop` : the number of homeless people per capita
+
+-   `Salience`: a dummy variable indicating that at least 50% of the
+    homeless in the county are unsheltered
+
+$$
+\text{Salience} = 
+        \begin{cases}
+1  & \text{if more than 50} \% \hspace{.2cm} \text{of the homeless in that county are unsheltered}   \\
+0 & \text{otherwise} 
+\end{cases}
+$$
+
+Independent Variables:
+
+-   `panel` : this includes our complete panel of possible variables to
+    be used as indepnedent variables (4930 observations and 84
+    variables)
+
+-   `z_scores_scaled` : these variables are a subset of the 'panel'
+    after performing PCA (4930 observations and 64 variables)
+
+The structure of both data frames is similar: the variables between
+columns 1 to 7 are not used as covariates, while the variables in the
+middle are used as covariates:
+
+-   In the `panel`dataframe, the variables from columns 8 to 37 are used
+    as covariates
+
+-   In the `z_scores_scaled` dataframe, the variables from columns 8 to
+    17 are used as covariates
+
+*Note: please refer to the codebook for a full list of all potential
+covariates*
+
+------------------------------------------------------------------------
+
+# Data Cleaning
+
+This project required an extensive amount of data cleaning and web
+scraping, which resulted in a bunch of different data files and R
+scripts. So rather than including all of our data cleaning scripts here
+we have submitted a link to our google drive where you can access all of our data and R scripts.
+
+# Exploratory Data Analysis
+
+Now we can explore the data to get a better idea of how homelessness in the
+US has evolved over the past fourteen years. 
+
+Let us take a look at how the number of homeless people in the entire US
+has changed over the years 2007-2019:
+
+```{r}
+load("../../02_data_cleaning/data_for_graphs_n_tables.RData")
+ggplot(more_ggp, aes(x,y/1000, col=Group)) + 
+  geom_point() +geom_line() +
+  labs(x = "Year", y="Total Homeless", title="People Experiencing Homelessness (in thousands)")
+
+```
+
+
+However, this country-wide trend is quite different from trends in urban
+centers. Let's take a look at the count of homeless peole in some of the largest cities:
+
+```{r}
+#change CoC names so they can all fit in the graph:
+
+avg_overall$name2 = c("NYC","LA County","TX","Seattle","San Diego",rep(NA,387))
+
+barplot(avg_overall[1:5,]$avg, main = "Top CoC locations \n with most homeless in the last decade",names.arg = avg_overall[1:5,]$name2,las=2)
+
+```
+
+Same information as before, but with a time series graph:
+
+```{r}
+
+ggplot(top5_overall, aes(year,`Total Homeless`,colour = fct_reorder2(`CoC Name`,year,`Total Homeless`))) +
+  geom_point() +geom_line() +labs(colour = "CoC Name/location") +theme()
+
+```
+
+
+Let us look at how the count of homeless people in the large urban
+centers of Los Angeles and New York City has changed over the years
+2007-2019:
+
+```{r}
+ggplot(just_the_two, aes(x,y/1000, col=Group)) + 
+  geom_point() +geom_line() +
+  labs(x = "Year", y="Total Homeless", title="People Experiencing Homelessness (in thousands) \n LA CoC and NYC CoC")
+```
+
+The following figure shows the total number of people experiencing
+homelessness in the US in 2020:
+
+```{r}
+usmap::plot_usmap(data=states_homel, regions = "states", values = "total_2020", color = "grey",labels=FALSE) +
+  ggplot2::scale_fill_gradient(low="deepskyblue",high="deepskyblue4") + 
+  labs(title="Heat map people experiencing Homelessness, 2020") + theme(legend.position = c(0.9, 0.31), legend.key.size = unit(0.4, 'cm'))
+
+```
+
+This image shows us what percentage of the homeless population in each
+state is unsheltered:
+
+```{r}
+usmap::plot_usmap(data=shel_unshel,regions = "states", values = "pcg_unshel", color = "grey") +
+  ggplot2::scale_fill_gradient(low="papayawhip",high="peachpuff4") + labs(title="Heat map unsheltered homeless by State, 2020") +
+  theme(legend.position = "none")
+```
+
+From the last two figures we can see that the majority of homeless people are
+concentrated in the coastal states such as California, New York, Oregon
+and Florida. Both the East and the West Coast face this particular
+social and economic problem, but there are differences in the homeless
+populations across the states. It appears that on the West coast, the
+majority of the homeless population is unsheltered, whereas on the east
+coast the majority of the homeless people are sheltered. These east
+coast states include cold places such New York, Massachusetts, Connecticut
+and other northeastern states. Weather seems to be the first natural
+explanation for this phenomenon--snowy and cold places are more likely
+to enact legislation aimed at sheltering the homeless population to keep
+them out of the cold. Indeed this is the case in New York and Boston where they
+have a right to shelter mandate/policy. Certain local government
+authorities guarantee that each individual seeking a shelter would get
+one. Many states with warm weather don't have this same urgency to keep their homeless populations sheltered due to the warmer temperatures, so most states do not adhere to this legislation (e.g. California and
+Oregon).
+[right-to-shelter](https://apnews.com/article/north-america-us-news-ap-top-news-wa-state-wire-ca-state-wire-145e200283e5431f8218d367bd068931)
+
+# Model Building
+
+In this section we will present the steps of our model fitting process,
+where we fit the four models: *Logit*, *Regular OLS*, *Lasso*, and
+*Ridge* regressions. For each individual model we will take you through
+our process of splitting the data into training and tests sets, using
+cross-validation, and tuning our models.
+
+## Logit
+
+Now we present the logit model. The full script can be found in the attached script called `logit.R`
+
+1.  First we load the data, and create a subset of the panel that
+    includes only covariates, and create a function to caculate the
+    error rate:
+
+```{r}
+#load the full panel
+load("../../02_data_cleaning/full_panel/homeless_panel.RData")
+
+#load the PCA panel
+load("../../02_data_cleaning/full_panel/pca_panels.RData")
+
+set.seed(27061989)
+
+panel_subset_logit <- panel[,c(10:43,80)]
+
+#puts df into matrix mode:
+salience_models <- model.matrix(salience~., panel_subset_logit)
+
+#create a function to caculate the error rate:
+calc_error_rate <- function(predicted.value, true.value){
+  return(mean(true.value!=predicted.value))
+}
+```
+
+2.  Now we split the data into training and test sets, we split by using
+    80% of our observations across the four states of CA, TX, Fl, and NY
+    as our training set, and we use the remaining 20% as our test set:
+
+```{r}
+#split 80% of observations into the test set, and 20% into the test set
+train.indices = sample(nrow(salience_models), round(0.8*nrow(salience_models)))
+
+panel_logit_train = panel_subset_logit[train.indices,]
+panel_logit_test = panel_subset_logit[-train.indices,]
+```
+
+3.  Now it's time to run the Logit regression (using `salience` as the
+    dependent variable) and record our results:
+
+```{r}
+panel_logit <- glm(salience ~ ., 
+                   data = panel_logit_train, 
+                   family = 'binomial')
+
+summary(panel_logit)
+```
+
+4.  Now we can generate predictions and assign class labels for the
+    training data to calculate the training error:
+
+```{r}
+logit_pred_training <-predict(panel_logit,
+                              panel_logit_train,
+                              type="response")
+
+train_maj_rule_logit <- ifelse(logit_pred_training > 0.5, 1,0)
+
+calc_error_rate(train_maj_rule_logit, panel_logit_train$salience)
+```
+
+5.  Finally, we can generate predictions and assign class labels for the
+    test data to calculate the test error:
+
+```{r}
+algae_pred_test <- predict(panel_logit, 
+                           panel_logit_test,
+                           type="response")
+test_maj_rule_logit <-ifelse(algae_pred_test> 0.5,1,0)
+
+calc_error_rate(test_maj_rule_logit, panel_logit_test$salience) #This test error rate is our main result for Logit!
+```
+
+### Alternative to regular Logit: Logit with PCA variables as covariates
+
+Here we will repeat the same steps as above, but will use the PCA panel
+instead of the regular covariates panel. Recall we already loaded the
+PCA panel, so now we create a subset that includes all of our
+independent variables and our dependent variable (`salience`):
+
+```{r, message=FALSE, warning=FALSE}
+panel_subset_logit_PCA <- z_scores_scaled[,c(10:30,60)]
+
+salience_models_PCA <- model.matrix(salience~., panel_subset_logit_PCA)
+```
+
+2.  Now we split the data into training and test sets, we split by using
+    80% of all of our observations as our training set, and we use the
+    remaining 20% as our test set:
+
+```{r, message=FALSE, warning=FALSE}
+#let's use 80% of our observations to run the training (80% of all total observations across all four states)
+train.indices = sample(nrow(salience_models_PCA), round(0.8*nrow(salience_models_PCA)))
+
+panel_logit_train_PCA = panel_subset_logit_PCA[train.indices,]
+panel_logit_test_PCA = panel_subset_logit_PCA[-train.indices,]
+```
+
+3.  Now it's time to run the Logit regression (using `salience` as the
+    dependent variable) and record our results:
+
+```{r, message=FALSE, warning=FALSE}
+panel_logit_PCA <- glm(salience ~ ., 
+                   data = panel_logit_train_PCA, 
+                   family = 'binomial')
+
+summary(panel_logit_PCA)
+```
+
+4.  Now we can generate predictions and assign class labels for the
+    training data to calculate the training error:
+
+```{r, message=FALSE, warning=FALSE}
+#now we need to calculate the errors:
+
+logit_pred_training_PCA <-predict(panel_logit_PCA,
+                              panel_logit_train_PCA,
+                              type="response")
+
+train_maj_rule_logit_PCA <- ifelse(logit_pred_training_PCA > 0.5, 1,0)
+
+calc_error_rate(train_maj_rule_logit_PCA, panel_logit_train_PCA$salience)
+```
+
+5.  Finally, we generate predictions and assign class labels for the
+    test data to calculate the test error:
+
+```{r, message=FALSE, warning=FALSE}
+
+logit_pred_test_PCA <- predict(panel_logit_PCA, 
+                           panel_logit_test_PCA,
+                           type="response")
+
+test_maj_rule_logit_PCA <-ifelse(logit_pred_test_PCA > 0.5,1,0)
+
+calc_error_rate(test_maj_rule_logit_PCA, panel_logit_test_PCA$salience)
+```
+
+## Regular OLS
+
+Now we present the regular OLS model. The full script can be found in the attached script called `ols_regression.R`
+
+1.  First we load the data, and create a subset of the panel that
+    includes only covariates
+
+```{r, message=FALSE, warning=FALSE}
+#load the full apnel
+load("../../02_data_cleaning/full_panel/homeless_panel.RData")
+
+#load the PCA panel
+load("../../02_data_cleaning/full_panel/pca_panels.RData")
+
+set.seed(2700889)
+
+panel_subset <- panel[,c(10:43,76)]  
+
+overall_homeless_models <- model.matrix(homeless_share_pop~., panel_subset)
+```
+
+2.  Now we split the data into training and test sets, we split by using
+    80% of our observations across the four states of CA, TX, Fl, and NY
+    as our training set, and we use the remaining 20% as our test set:
+
+```{r, message=FALSE, warning=FALSE}
+#split 80% of observations into the test set, and 20% into the test set
+train.indices = sample(nrow(overall_homeless_models), round(0.8*nrow(overall_homeless_models)))
+
+panel_ols_train = panel_subset[train.indices,]
+panel_ols_test = panel_subset[-train.indices,]
+```
+
+3.  Now it's time to run the OLS regression (using `homeless_share_pop`
+    as the dependent variable) and record our results
+
+```{r, message=FALSE, warning=FALSE}
+ols_panel <- lm(homeless_share_pop ~ . , data = panel_ols_train)
+
+summary(ols_panel)
+```
+
+4.  Finally, let's look at the MSE's:
+
+```{r, message=FALSE, warning=FALSE}
+MSE_train_ols <- mean(ols_panel$residuals^2)
+
+#The important thing is the MSE on the test data:
+y_predict_test_ols <- predict(ols_panel,panel_ols_test)
+
+MSE_test_ols <- mean((y_predict_test_ols - panel_ols_test$homeless_share_pop)^2)
+MSE_test_ols #This MSE is our main result for OLS!
+```
+
+### Alternative to regular OLS: Regular OLS with PCA variables as covariates
+
+Now we will repeat the same steps as above, but will use the PCA panel
+instead of the regular covariates panel. Since we have a lot of
+independent variables that are correlated, using PCA helps us to get rid
+of some of these and narrow down to a set that are not correlated:
+
+1.  Now we create a subset of the PCA panel that includes only
+    covariates
+
+```{r, message=FALSE, warning=FALSE}
+#with PCA panel now
+set.seed(1687346)
+
+#These are the potential covariates and includes the y (homeless_share_pop)
+panel_subset_PCA <- z_scores_scaled[,c(10:30,56)]  #this is wrong, just need a diff subset!
+
+overall_homeless_modelsPCA <- model.matrix(homeless_share_pop ~., panel_subset_PCA)
+```
+
+2.  Again we split the data into training and test sets, we split by
+    using 80% of our observations across the four states as our training
+    set, and we use the remaining 20% as our test set:
+
+```{r, message=FALSE, warning=FALSE}
+#let's use 80% of our observations to run the training (80% of all total observations across all four states)
+train.indicesPCA = sample(nrow(overall_homeless_modelsPCA), round(0.8*nrow(overall_homeless_modelsPCA)))
+
+panel_ols_train_PCA = panel_subset_PCA[train.indices,]
+panel_ols_test_PCA = panel_subset_PCA[-train.indices,]
+```
+
+3.  Now it's time to run the OLS regression (using `homeless_share_pop`
+    as the dependent variable) and record our results:
+
+```{r, message=FALSE, warning=FALSE}
+ols_panel_PCA <- lm(homeless_share_pop ~ . , data = panel_ols_train_PCA)
+
+summary(ols_panel_PCA)
+```
+
+4.  Now we can take a look at the MSE's:
+
+```{r, message=FALSE, warning=FALSE}
+MSE_train_ols_PCA <- mean(ols_panel_PCA$residuals^2)
+
+#The important thing is the MSE on the test data:
+
+y_predict_test_ols_PCA <- predict(ols_panel_PCA,panel_ols_test_PCA)
+
+MSE_test_ols_PCA <- mean((y_predict_test_ols_PCA - panel_ols_test_PCA$homeless_share_pop)^2)
+MSE_test_ols_PCA
+```
+
+## Lasso
+
+In the attached script called `lasso.R` we explore what the model tells
+us. Our results are difficult to interpret from an economic perspective.
+
+
+1.  First we load the data, and create a subset of the panel that
+    includes only covariates:
+
+```{r, message=FALSE, warning=FALSE}
+#load full panel
+load("../../02_data_cleaning/full_panel/homeless_panel.RData")
+
+#load PC panel
+load("../../02_data_cleaning/full_panel/pca_panels.RData")
+
+set.seed(27061989)
+panel_subset <- panel[,c(10:43,76)]  
+
+overall_homeless_models <- model.matrix(homeless_share_pop~., panel_subset)
+```
+
+2.  Again we split the data into training and test sets, we split by
+    using 80% of our observations across the four states as our training
+    set, and we use the remaining 20% as our test set:
+
+```{r, message=FALSE, warning=FALSE}
+#let's use 80% of our observations to run the training
+train.indices = sample(nrow(overall_homeless_models), round(0.8*nrow(overall_homeless_models)))
+
+x.train=overall_homeless_models[train.indices,]
+y.train=panel_subset[train.indices,]$homeless_share_pop
+x.test=overall_homeless_models[-train.indices,]
+y.test=panel_subset[-train.indices,]$homeless_share_pop
+```
+
+3.  Now we run the lasso regression:
+
+```{r, message=FALSE, warning=FALSE}
+lambda.list.lasso = 2 * exp(seq(0, log(1e-4), length = 100))
+```
+
+4.  And now we run 10-fold cross-validation and examine the
+    coefficients:
+
+```{r, message=FALSE, warning=FALSE}
+set.seed(123)
+
+# 10-fold cv (default)
+cv_out_lasso <- cv.glmnet(x.train, y.train, alpha = 1, lambda = lambda.list.lasso)
+opt_lam_lass <- cv_out_lasso$lambda.min
+
+lasso_mod <- glmnet(x.train, y.train, alpha = 1, lambda = opt_lam_lass)
+coef(lasso_mod)
+```
+
+It's hard to defend the sign of certain coefficients, for example,
+`Population`, `HPI` (housing price index) or `Mintemp`. It makes sense to
+observe a positive coefficient for unemployment and a negative
+coefficient for the dummy variable rural. However, this is not a causal model, therefore, omitted variable bias is a problem. 
+
+5.  Finally, let's take a look at the MSE's:
+
+```{r, message=FALSE, warning=FALSE}
+#training MSE:
+pred_lasso <- predict(lasso_mod, newx = x.train)
+mse_lasso_train <- mean((pred_lasso - y.train)^2)
+mse_lasso_train
+
+#test MSE:
+pred_lasso2 <- predict(lasso_mod, newx = x.test)
+mse_lasso_test <- mean((pred_lasso2 - y.test)^2)
+mse_lasso_test
+```
+
+### Alternative to Regular Lasso: Lasso with PCA variables as covariates
+
+In this subsection we explore a model that can't possibly be
+interpreted. We use the scores (z's) as explanatory variables to predict
+the amount of homeless per person in a given county in a given year:
+
+1.  Create a subset of the PCA panel that includes only covariates:
+
+```{r, message=FALSE, warning=FALSE}
+panel_subset_pca <- z_scores_scaled[,c(10:30,56)]
+overall_homeless_models_pca <- model.matrix(homeless_share_pop~., panel_subset_pca)
+```
+
+2.  Split the data into training and test sets, with 80% of observations
+    in the test set and 20% of observations in the training set:
+
+```{r, message=FALSE, warning=FALSE}
+train.indices = sample(nrow(overall_homeless_models_pca), round(0.8*nrow(overall_homeless_models_pca)))
+
+x.train=overall_homeless_models_pca[train.indices,]
+y.train=panel_subset_pca[train.indices,]$homeless_share_pop
+x.test=overall_homeless_models_pca[-train.indices,]
+y.test=panel_subset_pca[-train.indices,]$homeless_share_pop
+```
+
+3.  Now we run the lasso regression using the PCA panel:
+
+```{r, message=FALSE, warning=FALSE}
+lambda.list.lasso = 2 * exp(seq(0, log(1e-4), length = 100))
+set.seed(27061989)
+```
+
+4.  And now we run 10-fold cross-validation:
+
+```{r, message=FALSE, warning=FALSE}
+# 10-fold cv (default)
+cv_out_lasso_pca <- cv.glmnet(x.train, y.train, alpha = 1, lambda = lambda.list.lasso)
+opt_lam_lass <- cv_out_lasso_pca$lambda.min
+
+lasso_mod_pca <- glmnet(x.train, y.train, alpha = 1, lambda = opt_lam_lass)
+coef(lasso_mod_pca)
+```
+
+Once again, there is no clear interpretation for the coefficients of the
+variables, but we can observe that a subset of them are dropped. 
+
+5.  Finally we can examine the MSE's:
+
+```{r, message=FALSE, warning=FALSE}
+pred_lasso <- predict(lasso_mod_pca, newx = x.train)
+mse_lasso_train_pca <- mean((pred_lasso - y.train)^2)
+
+pred_lasso2 <- predict(lasso_mod_pca, newx = x.test)
+
+mse_lasso_test_pca <- mean((pred_lasso2 - y.test)^2)
+mse_lasso_test_pca
+```
+
+## Ridge
+
+Now we present the results of a ridge regression which is only slightly
+different from lasso: (The whole script with comments can be found in
+the attached script `ridge.R`)
+
+1.  Create a subset of the full panel that includes only covariates and
+    our dependent variable (`homeless_share_pop`):
+
+```{r, message=FALSE, warning=FALSE}
+set.seed(27061989)
+panel_subset <- panel[,c(10:43,76)]   # leave dummy year 2007 out!
+
+overall_homeless_models <- model.matrix(homeless_share_pop~., panel_subset)
+```
+
+2.  Split the data into training and tests sets, again using 80% of
+    observations in the training set, and the remaining 20% for the test
+    set:
+
+```{r, message=FALSE, warning=FALSE}
+#let's use 80% of our observations to run the training
+train.indices = sample(nrow(overall_homeless_models), round(0.8*nrow(overall_homeless_models)))
+
+x.panel.train=overall_homeless_models[train.indices,]
+y.panel.train=panel_subset[train.indices,]$homeless_share_pop
+x.panel.test=overall_homeless_models[-train.indices,]
+y.panel.test=panel_subset[-train.indices,]$homeless_share_pop
+```
+
+3.  Now run the ridge regression:
+
+```{r, message=FALSE, warning=FALSE}
+lambda.list.ridge = 1000 * exp(seq(0, log(1e-5), length = 100))
+```
+
+4.  Now run 5-fold cross-validation:
+
+```{r, message=FALSE, warning=FALSE}
+cv_out_ridge <- cv.glmnet(x.panel.train, y.panel.train, alpha = 0,
+                          lambda = lambda.list.ridge, nfolds = 5)
+
+optimal_lambda <- cv_out_ridge$lambda.min
+
+ridge_mod <- glmnet(x.panel.train, y.panel.train, alpha = 0, lambda = optimal_lambda)
+coef(ridge_mod)
+```
+
+Visual inspection of the other estimated coefficients shows us that
+there is not much of a difference between the lasso and Ridge
+regressions. The signs and magnitude of the coefficients are quite
+similar. As we learned during the quarter, ridge does not set the
+coefficients equal to zero (unlike Lasso which does). However, we can
+see that some of the coefficients from the ridge regression are
+essentialy zero. For example, the coefficient of `gdp_percap` is
+$-0.0000000006131193$, which is very close to zero.
+
+5.  Finally we can examine the MSE from Ridge:
+
+```{r, message=FALSE, warning=FALSE}
+#training:
+pred_ridge <- predict(ridge_mod, newx = x.panel.train)
+mse_ridge_train <- mean((pred_ridge - y.panel.train)^2)
+MSE_train_ridge_full_covariates <- mse_ridge_train
+
+#test:
+pred_ridge_full_covariates <- predict(ridge_mod, newx = x.panel.test)
+MSE_test_ridge_full_covariates <- mean((pred_ridge_full_covariates - y.panel.test)^2)
+MSE_test_ridge_full_covariates
+```
+
+### Alternative to regular Ridge: Ridge with PCA variables as covariates
+
+Similar as in the alternative to Lasso, we explore the z-scores as
+potential covariates for predicting homeless per person of a given
+county on a given year.
+
+1.  Create a subset of the PCA panel that includes only covariates and
+    our dependent variable:
+
+```{r, message=FALSE, warning=FALSE}
+#to do PCA we need:
+
+#randomly split the panel(s) into train and test:
+
+set.seed(27061989)
+
+pca_subset <- z_scores_scaled[,c(10:30,56)]
+
+pca_overall_homeless_models <- model.matrix(homeless_share_pop~., pca_subset)
+
+#let's use 80% of our observations to run the training
+#this is just the same as train.indices
+```
+
+2.  Once again, split the data into training and test sets using 80% of
+    observations in the training set, and the remaining 20% for the test
+    set:
+
+```{r, message=FALSE, warning=FALSE}
+x.pca.train=pca_overall_homeless_models[train.indices,]
+y.pca.train=pca_subset[train.indices,]$homeless_share_pop
+x.pca.test=pca_overall_homeless_models[-train.indices,]
+y.pca.test=pca_subset[-train.indices,]$homeless_share_pop
+```
+
+3.  Run ridge regression:
+
+```{r, message=FALSE, warning=FALSE}
+lambda.list.ridge = 1000 * exp(seq(0, log(1e-5), length = 100))
+```
+
+4.  Run 5-fold cross validation using the PCA panel:
+
+```{r, message=FALSE, warning=FALSE}
+pca_cv_out_ridge <- cv.glmnet(x.pca.train, y.pca.train, alpha = 0,
+                          lambda = lambda.list.ridge, nfolds = 5)
+
+pca_optimal_lambda <- pca_cv_out_ridge$lambda.min
+
+ridge_mod_pca <- glmnet(x.pca.train, y.pca.train, alpha = 0, lambda = pca_optimal_lambda)
+coef(ridge_mod_pca)
+```
+
+Notice these results are slightly different from the Lasso PCA results.
+This makes sense since ridge doesn't set the coefficients to zero.
+
+5.  Now we can look at the MSE's from the ridge regression that used the
+    PCA panel:
+
+```{r, message=FALSE, warning=FALSE}
+
+pca_pred_ridge <- predict(ridge_mod_pca, newx = x.pca.train)
+mse_ridge_pca_train <- mean((pca_pred_ridge - y.pca.train)^2)
+
+pred_ridge_full_pca <- predict(ridge_mod_pca, newx = x.pca.test)
+MSE_test_ridge_full_pca <- mean((pred_ridge_full_pca - y.pca.test)^2)
+MSE_test_ridge_full_pca
+
+```
+
+# Model Selection and Performance
+
+To select our final model we analyze performance based on the MSE. Here you can see the MSE for OLS, Lasso, and Ridge (with and without PCA). Note we didn't include logit since it is a classification problem, so we can't compare it with the others. 
+
+MSE for OLS:
+```{r, message=FALSE, warning=FALSE}
+MSE_test_ols
+```
+
+MSE for OLS (with PCA):
+```{r, message=FALSE, warning=FALSE}
+MSE_test_ols_PCA
+```
+
+MSE for Lasso:
+```{r, message=FALSE, warning=FALSE}
+mse_lasso_test
+```
+
+MSE for Lasso (with PCA):
+```{r, message=FALSE, warning=FALSE}
+mse_lasso_test_pca
+```
+
+MSE for Ridge:
+```{r, message=FALSE, warning=FALSE}
+MSE_test_ridge_full_covariates
+```
+
+MSE for Ridge (with PCA):
+```{r, message=FALSE, warning=FALSE}
+MSE_test_ridge_full_pca
+```
+
+By comparing all of the MSEs can see that lasso regression using the full panel (not PCA) results in the lowest MSE of $0.0001137409$. These results suggests that the Lasso model is the best choice for this prediction.
+
+# Conclusion
+
+From the above analysis we can see that the Lasso regression produces
+the lowest MSE out of all of our models. Thus we can conclude that the best predictive model of homelessness uses the Lasso regression.
+
+# Appendix
+
+## Note on county versus CoC level data:
+
+THe HUD divides areas into regions called Continuums of care (CoC) that
+do not quite align with the the county divisions. The name provided to
+each region is called ["CoC
+area"](https://www.hudexchange.info/programs/coc/gis-tools/)[^1] A very
+informative map can be found
+[here](https://homeless.cnsmaryland.org/2020/05/28/hud-continuum-of-care-coc-areas-for-homelessness-in-the-united-states/)
+. These CoC areas can contain single or multiple counties, a single
+city, or even a state. Given that our covariates are measured at the
+county level, but the homeless count is measured at the CoC area level,
+we had to find a way to get our homeless count into data into county
+level. Notice for example, the case of California:
+
+[^1]: CoC is the acronym of Continuum of Care, a program designed to
+    promote community wide commitment to the goal of ending homelessness
+
+![Figure A.1.](../../06_tables_graphs/coc_map_CA.png)
+
+Since our goal is to capture the variation of homeless people within a
+given set of covariates, our solution was to divide the amount of
+homeless of certain CoC areas that contain several counties. For
+example, if we consider the CoC area called "CA-516 Shasta, Siskiyou,
+Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC", notice this area
+contains 7 different counties within it. We divided the total amount of
+homeless people in that CoC into seven equal parts to account of each
+county. While this division isn't perfect it provides a decent
+approximation.
+
+Another issue is that in some cases, multiple CoC's belong to a county,
+in this case we simply sum up each of these CoCs. For example, the
+cities of Glendale, Pasadena and Long Beach each belong to their own
+CoC, and they all belong to LA county. So we simply sum up the count in
+these 3 cities and include them in LA county.
+
+## Data Sources and panel construction:
+
+A very important part of the project was about constructing the dataset, that consist of several homeless count over the years 2007 to 2020. The data on the homeless population was merged with several other datasets, mainly provided by the federal government and other public insitutions.
+We had to merge those datasets manually, making sure that the geofips, counties and years matched. It's fair to say that this took us a decent 50 % of the time in the project, ending up with a very ambitious datasets of 4930 observations and 84 variables.
+Next, we list the websites from where we got the data:
+
+California Employment Development Department:
+[website](https://www.labormarketinfo.edd.ca.gov/data/industry-employment-and-unemployment-rates-for-counties.html)
+
+GDP data per county (BEA):
+[webpage](https://apps.bea.gov/regional/histdata/releases/1219gdpcounty/index.cfm)
+
+Point in time count:
+[website](https://www.hudexchange.info/programs/coc/coc-homeless-populations-and-subpopulations-reports/)
+
+Temperature:
+[website](https://www.ncdc.noaa.gov/cag/county/time-series)(CA)
+
+USDA Economic Research Service:
+[website](https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/)
+
+Population Data (2006-2009):
+[website](https://www.census.gov/data/tables/time-series/demo/popest/intercensal-2000-2010-counties.html)
+
+Population Data (2010 to 2019):
+[website](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html)
+
+Employment: 
+[website](https://www.bls.gov/lau/home.htm#cntyaa)
+
+Surface, water, and land area:
+[website](https://www.census-charts.com/index.html#density)
+
+Poverty rates data and median household income:
+[website](https://www.census.gov/data-tools/demo/saipe/#/?map_geoSelector=aa_c)
+
+HPI data:
+[website](https://www.fhfa.gov/DataTools/Downloads/Pages/House-Price-Index-Datasets.aspx)
+
