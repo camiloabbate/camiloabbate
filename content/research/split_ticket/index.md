@@ -37,8 +37,7 @@ published: true  # Add this line to indicate it's published
 publishDate: '2025-11-27T00:00:00Z'  # Use the actual date of publication if different
 
 
-abstract: The academic literature on split-ticket voting in Latin America reveals a notable gap: the case of Paraguay. This country represents an outlier since, unlike patterns observed in other countries with hegemonic parties, split ticket voting in Paraguay occurs in the opposite direction: the presidential candidate of the ruling party consistently outperforms the candidates on the national list of their own party. This article conducts a statistical analysis of the 2013 and 2018 general elections using disaggregated data at the
-level of the 258 electoral districts. Through regressions and bivariate correlations, it examines the demographic and socioeconomic characteristics of the 258 districts and their electoral behavior, thus offering a new perspective on electoral behavior in Paraguay
+abstract: The academic literature on split-ticket voting in Latin America reveals a notable gap: the case of Paraguay. This country represents an outlier since, unlike patterns observed in other countries with hegemonic parties, split ticket voting in Paraguay occurs in the opposite direction: the presidential candidate of the ruling party consistently outperforms the candidates on the national list of their own party. This article conducts a statistical analysis of the 2013 and 2018 general elections using disaggregated data at the level of the 258 electoral districts. Through regressions and bivariate correlations, it examines the demographic and socioeconomic characteristics of the 258 districts and their electoral behavior, thus offering a new perspective on electoral behavior in Paraguay
 
 # Summary. An optional shortened abstract.
 # summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
