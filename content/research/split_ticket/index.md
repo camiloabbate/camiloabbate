@@ -1,21 +1,85 @@
 ---
-title: 'Toward an Interpretation of Split-Ticket Voting in Paraguay'
+active: true
+title: 'Ticket Spliting'
+
+# Authors
+# If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
+# and it will be replaced with their full name and linked to their profile.
 authors:
   - admin
-  - Diego Abente Brun
-  - Raushan Zhandayeva
-date: '2025-12-01T00:00:00Z'
-doi: 'https://doi.org/10.26851/RUCP.34.18'
-publication_types: ["2"]
-publication: '*Revista Uruguaya de Ciencia Política*'
-publication_short: '*RUCP*'
-published: true
-publishDate: '2025-12-01T00:00:00Z'
-abstract: This paper is motivated by an overlooked electoral puzzle in Latin America: the systematic divergence between presidential and congressional voting within Paraguay's dominant party, the Asociación Nacional Republicana (Partido Colorado). We document a persistent and counterintuitive empirical pattern: in every national election since the early 1990s, the Colorado Party's presidential candidate consistently receives more votes than the party's own Senate list. Using disaggregated data from Paraguay's 258 electoral districts for the 2013 and 2018 general elections, the paper offers a descriptive statistical analysis that examines how split-ticket voting varies with district characteristics, including size, urbanization, poverty, and historical partisan alignment. Three empirical regularities emerge. First, larger and more urban districts consistently display higher levels of split-ticket voting. Second, districts with lower poverty rates are more likely to defect from the Senate list. Third, the pattern is stable across election cycles.
-tags: ["Political Economy", "Paraguay", "Electoral Behavior"]
+
+
+# Author notes (optional)
+#author_notes:
+#  - 'Equal contribution'
+#  - 'Equal contribution'
+
+date: '2023-11-19T00:00:00Z'
+#doi: 'https://doi.org/10.1002/soej.12731'
+
+# Schedule page publish date (NOT publication's date).
+#publishDate: '2017-01-01T00:00:00Z'
+
+# Publication type.
+# Legend: 0 = Uncategorized; 1 = Conference paper; 2 = Journal article;
+# 3 = Preprint / Working Paper; 4 = Report; 5 = Book; 6 = Book section;
+# 7 = Thesis; 8 = Patent
+publication_types: ["3"]
+
+# Publication name and optional abbreviated publication name.
+#publication: In *Wowchemy Conference*
+#publication_short: In *ICW*
+
+# Indicate the publication status
+published: true  # Add this line to indicate it's published
+publishDate: '2024-06-19T00:00:00Z'  # Use the actual date of publication if different
+
+
+abstract: _forthcoming_
+
+# Summary. An optional shortened abstract.
+# summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
+
+
+# tags: ["policy report"]
+
+# Display this page in the Featured widget?
 featured: false
-url_pdf: ''
+
+# Custom links (uncomment lines below)
+# links:
+# - name: Custom Link
+#   url: http://example.org
+
+url_pdf: 'https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0'
+# url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
+# url_dataset: 'https://github.com/wowchemy/wowchemy-hugo-themes'
+# url_poster: ''
+# url_project: ''
+# url_slides: ''
+# url_source: 'https://github.com/wowchemy/wowchemy-hugo-themes'
+# url_video: 'https://youtube.com'
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
 image:
+  #caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/pLCdAaMFLTE)'
   focal_point: ''
   preview_only: false
+
+# Associated Projects (optional).
+#   Associate this publication with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `internal-project` references `content/project/internal-project/index.md`.
+#   Otherwise, set `projects: []`.
+# projects:
+#  - example
+
+# Slides (optional).
+#   Associate this publication with Markdown slides.
+#   Simply enter your slide deck's filename without extension.
+#   E.g. `slides: "example"` references `content/slides/example/index.md`.
+#   Otherwise, set `slides: ""`.
+# slides: example
 ---
+
