@@ -67,7 +67,7 @@ url_pdf: 'https://revistasfcs.edu.uy/index.php/rucp/en/article/view/285/406'
 image:
   #caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/pLCdAaMFLTE)'
   focal_point: ''
-  preview_only: false
+  preview_only: true
 
 # Associated Projects (optional).
 #   Associate this publication with one or more of your projects.
@@ -84,4 +84,11 @@ image:
 #   Otherwise, set `slides: ""`.
 # slides: example
 ---
+
+
+The academic literature on split ticket voting in Latin America reveals a notable gap: the case of Paraguay. This country represents an outlier since, unlike patterns observed in other countries with hegemonic parties, split ticket voting in Paraguay occurs in the opposite direction: the presidential candidate of the ruling party consistently outperforms the candidates on the national list of their own party. This article conducts a statistical analysis of the 2013 and 2018 general elections using disaggregated data at the level of the 258 electoral districts. Through regressions and bivariate correlations, it examines the demographic and socioeconomic characteristics of the 258 districts and their electoral behavior, thus offering a new perspective on electoral behavior in Paraguay.
+
+
+{{< figure src="featured.png" >}}
+
 

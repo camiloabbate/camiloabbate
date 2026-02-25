@@ -83,3 +83,10 @@ image:
 # slides: example
 ---
 
+Using the staggered rollout of Video Assistant Referee (VAR) technology across the top 5 European leagues as a source of quasi-random variation, I study how heightened scrutiny affects players' violent behavior in soccer. Exploiting minute-by-minute match-level data from the 2008/2009 through 2019/2020 seasons, I examine how fouls, yellow cards, and red cards shifted at the player level following VAR adoption. The findings speak to broader questions about how monitoring shapes behavior in high-stakes, strategic environments.
+
+
+<!-- ONCE YOU GET A FIGURE, UNCOMMENT THIS PART!  -->
+<!-- {{< figure src="featured.png" >}}      -->
+
+

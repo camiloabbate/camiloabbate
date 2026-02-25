@@ -65,7 +65,7 @@ url_pdf: 'https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version
 image:
   #caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/pLCdAaMFLTE)'
   focal_point: ''
-  preview_only: false
+  preview_only: true
 
 # Associated Projects (optional).
 #   Associate this publication with one or more of your projects.
@@ -85,3 +85,4 @@ image:
 
 This paper presents evidence on the effects of intergovernmental transfers on financial outcomes of local governments in Paraguay. By incorporating census adjustments that affected the expected transfers to municipalities, I construct two treatment arms and a comparison group. Municipalities with a 15% or greater decrease in their expected transfers increased their tax revenues by 14%, whereas those with a 15% or greater increase in expected transfers decreased their tax revenues by 26%. Furthermore, total expenditures in the first group increased, but decreased in the latter. Beyond fiscal outcomes, the paper explores the broader implications of these transfers on local development and political dynamics. While enrollment in public schools shows little systematic change, there is a noticeable 8% increase in night lights radiance-a proxy for economic activity-in municipalities with more funds. On the political side, citizens in high-transfer municipalities were significantly less likely to vote in both national and mayoral elections, consistent with political disengagement when local governments rely heavily on external resources. There is also suggestive evidence that mayors in these municipalities were less likely to seek reelection and more likely to transition into central government positions, though these patterns do not reach conventional levels of statistical significance. No systematic effects are observed on mayors’ personal wealth, as measured by self-reported asset disclosures.
 
+{{< figure src="featured.png" >}}
