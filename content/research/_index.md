@@ -1,20 +1,28 @@
 ---
-title: 
+title: Research
 cms_exclude: true
-
-# View.
-#   1 = List
-#   2 = Compact
-#   3 = Card
-#   4 = Citation
 view: 2
-
-# Optional header image (relative to `static/media/` folder).
 header:
   caption: ''
   image: ''
-  
 ---
 
+## Publications
 
+{{< cite page="/research/split_ticket" view="2" >}}
 
+{{< cite page="/research/var_hfa" view="2" >}}
+
+---
+
+## Working Papers
+
+{{< cite page="/research/decentralization" view="2" >}}
+
+{{< cite page="/research/incumbency" view="2" >}}
+
+---
+
+## Work in Progress
+
+{{< cite page="/research/var_violence" view="2" >}}
