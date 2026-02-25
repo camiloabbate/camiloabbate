@@ -35,12 +35,13 @@
 
 [[buttons]]
   id = "whatsapp"
-  url = "whatsapp://send?text={title}%20{url}"
+  url = "https://wa.me/?text={title}%20{url}"
   title = "WhatsApp"
   icon_pack = "fab"
   icon = "whatsapp"
   enable = true
-
+  
+  
 [[buttons]]
   id = "weibo"
   url = "https://service.weibo.com/share/share.php?url={url}&title={title}"
