@@ -1,6 +1,6 @@
 ---
 active: true
-title: 'Ticket Spliting'
+title: "Towards an Interpretation of Ticket-splitting in Paraguay"
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
