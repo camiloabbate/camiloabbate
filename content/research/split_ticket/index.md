@@ -6,7 +6,9 @@ title: 'Ticket Spliting'
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
 # and it will be replaced with their full name and linked to their profile.
 authors:
+  - Diego Abente Brun
   - admin
+  - Raushan Zhandayeva
 
 
 # Author notes (optional)
@@ -15,7 +17,7 @@ authors:
 #  - 'Equal contribution'
 
 date: '2023-11-19T00:00:00Z'
-#doi: 'https://doi.org/10.1002/soej.12731'
+#doi: 'https://doi.org/10.26851/RUCP.34.18'
 
 # Schedule page publish date (NOT publication's date).
 #publishDate: '2017-01-01T00:00:00Z'
@@ -32,7 +34,7 @@ publication_types: ["3"]
 
 # Indicate the publication status
 published: true  # Add this line to indicate it's published
-publishDate: '2024-06-19T00:00:00Z'  # Use the actual date of publication if different
+publishDate: '2025-11-27T00:00:00Z'  # Use the actual date of publication if different
 
 
 abstract: _forthcoming_
@@ -51,7 +53,7 @@ featured: false
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0'
+url_pdf: 'https://revistasfcs.edu.uy/index.php/rucp/en/article/view/285/406'
 # url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_dataset: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_poster: ''
