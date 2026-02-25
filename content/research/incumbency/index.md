@@ -1,6 +1,6 @@
 ---
 active: true
-title: 'Incumbency'
+title: "Incumbency Advantage or Penalty? Evidence from Paraguay's Dominant Party System"
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
@@ -14,7 +14,7 @@ authors:
 #  - 'Equal contribution'
 #  - 'Equal contribution'
 
-date: '2023-11-19T00:00:00Z'
+date: '2026-02-01T00:00:00Z'
 #doi: 'https://doi.org/10.1002/soej.12731'
 
 # Schedule page publish date (NOT publication's date).
@@ -51,7 +51,7 @@ featured: false
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0'
+#url_pdf: 'https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0'
 # url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_dataset: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_poster: ''
