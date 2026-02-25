@@ -3,10 +3,6 @@
 # Documentation: https://wowchemy.com/docs/
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
-# Erase the sharing options, horrible:
-share: false
-
-
 # Appearance
 
 appearance:
