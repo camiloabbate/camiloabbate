@@ -41,6 +41,22 @@
   icon = "whatsapp"
   enable = true
   
+  [[buttons]]
+  id = "bluesky"
+  url = "https://bsky.app/intent/compose?text={title}%20{url}"
+  title = "Bluesky"
+  icon_pack = "fab"
+  icon = "bluesky"
+  enable = true
+  
+  [[buttons]]
+  id = "substack"
+  url = "https://substack.com/share?url={url}&title={title}"
+  title = "Substack"
+  icon_pack = "fas"
+  icon = "rss"
+  enable = true
+  
   
 [[buttons]]
   id = "weibo"

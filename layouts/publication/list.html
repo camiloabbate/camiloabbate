@@ -1,0 +1,149 @@
+{{ define "main" }}
+
+<style>
+  .research-section { margin-bottom: 2.5rem; }
+  .research-section h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.2rem; border-bottom: 1px solid #ddd; padding-bottom: 0.4rem; }
+  .paper { margin-bottom: 1.6rem; }
+  .paper-title { font-size: 1rem; font-weight: 600; color: #2a6496; margin-bottom: 0.15rem; }
+  .paper-title a { color: #2a6496; text-decoration: none; }
+  .paper-title a:hover { text-decoration: underline; }
+  .paper-authors { font-size: 0.9rem; color: #444; margin-bottom: 0.1rem; }
+  .paper-journal { font-size: 0.9rem; color: #444; margin-bottom: 0.4rem; }
+  .paper-buttons { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+  .paper-btn {
+    font-size: 0.78rem;
+    padding: 2px 10px;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .paper-btn:hover { background: #f0f0f0; }
+  .abstract-box {
+    display: none;
+    margin-top: 0.6rem;
+    padding: 0.8rem 1rem;
+    background: #f9f9f9;
+    border-left: 3px solid #2a6496;
+    font-size: 0.88rem;
+    color: #333;
+    line-height: 1.6;
+  }
+</style>
+
+<script>
+  function toggleAbstract(id) {
+    var el = document.getElementById(id);
+    if (el.style.display === 'block') {
+      el.style.display = 'none';
+    } else {
+      el.style.display = 'block';
+    }
+  }
+</script>
+
+<div class="universal-wrapper pt-3">
+
+  <!-- PUBLICATIONS -->
+  <div class="research-section">
+    <h2>Publications</h2>
+
+    <div class="paper">
+      <div class="paper-title"><a href="/research/var_hfa/">Video Assistant Referee and Home Field Advantage: Implications for Referee Bias</a></div>
+      <div class="paper-authors">with Jeffrey Cross and Richard Uhrig</div>
+      <div class="paper-journal"><a href="https://doi.org/10.1002/soej.12731" target="_blank">Southern Economic Journal</a> | 2024</div>
+      <div class="paper-buttons">
+        <button class="paper-btn" onclick="toggleAbstract('abs-var-hfa')">abstract</button>
+        <a class="paper-btn" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4295203" target="_blank">paper ↗</a>
+        <a class="paper-btn" href="/replication-gate.html">replication</a>
+      </div>
+      <div class="abstract-box" id="abs-var-hfa">
+        Previous research has highlighted referee bias as a potential contributor to home field advantage in soccer. We exploit the staggered implementation of Video Assistant Referee (VAR) using data from the top domestic league in 16 countries between 2009 and 2019 to estimate the effect of objective review systems on home field advantage. Surprisingly, VAR had negligible effects on home field advantage and various crucial match statistics despite decreased total offsides and yellow cards. These results provide suggestive evidence regarding the mechanisms through which referee bias might contribute to home field advantage and highlight how scope may limit the effectiveness of review processes in general.
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-title"><a href="/research/split_ticket/">Toward an Interpretation of Split-Ticket Voting in Paraguay</a></div>
+      <div class="paper-authors">with Diego Abente Brun and Raushan Zhandayeva</div>
+      <div class="paper-journal"><a href="#" target="_blank">Revista Uruguaya de Ciencia Política</a> | 2025</div>
+      <div class="paper-buttons">
+        <button class="paper-btn" onclick="toggleAbstract('abs-split')">abstract</button>
+        <a class="paper-btn" href="#" target="_blank">paper ↗</a>
+      </div>
+      <div class="abstract-box" id="abs-split">
+        This paper documents a persistent and counterintuitive electoral pattern in Paraguay: in every national election since the early 1990s, the Colorado Party's presidential candidate consistently outperforms the party's own Senate list. Using disaggregated data from Paraguay's 258 electoral districts for the 2013 and 2018 general elections, we show that split-ticket voting is more pronounced in larger, more urban, and less poor districts, and that the pattern is stable across election cycles.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WORKING PAPERS -->
+  <div class="research-section">
+    <h2>Working Papers</h2>
+
+    <div class="paper">
+      <div class="paper-title"><a href="/research/decentralization/">Decentralization and Governmental Transfers in Developing Countries: The Case of Paraguay</a></div>
+      <div class="paper-authors">Camilo Abbate</div>
+      <div class="paper-journal"><em>Job Market Paper</em></div>
+      <div class="paper-buttons">
+        <button class="paper-btn" onclick="toggleAbstract('abs-decent')">abstract</button>
+        <a class="paper-btn" href="https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0" target="_blank">paper ↗</a>
+      </div>
+      <div class="abstract-box" id="abs-decent">
+        This paper presents causal evidence on the effects of intergovernmental transfers on local government finances in Paraguay. Using census-driven variation in expected transfers, municipalities facing a 15% or greater decrease in transfers increased their own tax revenues by 14%, while those receiving a 15% or greater increase reduced tax revenues by 28%. Beyond fiscal outcomes, the paper documents an 8% increase in night lights radiance in high-transfer municipalities, as well as lower voter turnout in both national and mayoral elections.
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-title"><a href="/research/incumbency/">Incumbency Advantage or Penalty? Evidence from Paraguay's Dominant Party System</a></div>
+      <div class="paper-authors">with Fabrizio Cruz</div>
+      <div class="paper-buttons">
+        <button class="paper-btn" onclick="toggleAbstract('abs-inc')">abstract</button>
+      </div>
+      <div class="abstract-box" id="abs-inc">
+        Using a Regression Discontinuity Design on Paraguayan municipal elections (2001-2021), we document that the average incumbency advantage is statistically indistinguishable from zero. This null result masks a sharp partisan asymmetry: the hegemonic Colorado Party gains a positive incumbency dividend, while opposition parties suffer a systematic incumbency penalty. We attribute this divergence to organizational structure: the ANR leverages a unitary party machine, while opposition forces rely on fragile electoral coalitions that make holding office a liability.
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-title">Institutions Matter: New Electoral Rules and the Autocratization Process in Paraguay</div>
+      <div class="paper-authors">with Diego Abente Brun</div>
+      <div class="paper-buttons">
+        <button class="paper-btn" onclick="toggleAbstract('abs-inst')">abstract</button>
+      </div>
+      <div class="abstract-box" id="abs-inst">
+        This paper analyzes how Paraguay's 2023 elimination of party-list proportional representation reshaped the Colorado Party's electoral performance in senatorial races. We document that a previously observed positive association between social programs and split-ticket voting largely vanished following the reform, and that the ANR's senatorial vote share converged with its presidential vote share.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WORK IN PROGRESS -->
+  <div class="research-section">
+    <h2>Work in Progress</h2>
+
+    <div class="paper">
+      <div class="paper-title">Does Increased Monitoring Reduce Violent Behavior? Evidence from Soccer</div>
+      <div class="paper-authors">Camilo Abbate</div>
+      <div class="paper-buttons">
+        <button class="paper-btn" onclick="toggleAbstract('abs-var-viol')">abstract</button>
+      </div>
+      <div class="abstract-box" id="abs-var-viol">
+        Using the staggered implementation of Video Assistant Referee (VAR) technology as a source of quasi-random variation, this paper analyzes the effects of increased scrutiny on players' violent behavior in soccer. Using minute-by-minute player-level data from the top 5 European leagues (2008/2009-2019/2020), I examine how fouls, yellow cards, and red cards changed following VAR adoption. The findings speak to broader questions about how monitoring shapes behavior in high-stakes, strategic environments.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DATA -->
+  <div class="research-section">
+    <h2>Data</h2>
+    <p style="color: #666; font-style: italic;">Coming soon.</p>
+  </div>
+
+</div>
+
+{{ end }}
