@@ -3,7 +3,7 @@ import { getStore } from "@netlify/blobs";
 const store = getStore({ name: "meditation-tracker", consistency: "strong" });
 const STATE_KEY = "shared-state";
 const ADMIN_EMAIL = (process.env.MEDITATION_ADMIN_EMAIL || "camello187@gmail.com").trim().toLowerCase();
-const ADMIN_PASSWORD = String(process.env.MEDITATION_ADMIN_PASSWORD || "RationalAltruism2026!").trim();
+const ADMIN_PASSWORD = String(process.env.MEDITATION_ADMIN_PASSWORD || "arruabarrena").trim();
 const ALLOWED_NAMES = ["Anna", "Joselyn", "Maria Jose", "Camilo"];
 const ALLOWED_NAME_SET = new Set(ALLOWED_NAMES);
 
@@ -123,6 +123,10 @@ async function handleUpsert(body) {
 }
 
 async function handleBulkUpsert(body) {
+  if (!isAdmin(body.adminEmail) || !hasAdminPassword(body.adminPassword)) {
+    return jsonResponse(403, { error: "Admin access denied." });
+  }
+
   const incomingEntries = Array.isArray(body.entries) ? body.entries : [];
 
   if (!incomingEntries.length) {

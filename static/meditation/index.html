@@ -117,7 +117,8 @@
     }
 
     .hero {
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 0.82fr);
+      align-items: stretch;
       margin-bottom: 18px;
     }
 
@@ -144,6 +145,12 @@
       padding: 24px;
     }
 
+    .hero-copy {
+      display: grid;
+      align-content: start;
+      gap: 18px;
+    }
+
     .eyebrow {
       margin: 0 0 14px;
       color: var(--muted);
@@ -160,11 +167,11 @@
     }
 
     h1 {
-      margin-bottom: 14px;
-      font-size: clamp(2.6rem, 5vw, 4.4rem);
-      line-height: 0.94;
+      margin-bottom: 0;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 0.98;
       letter-spacing: -0.04em;
-      max-width: 10ch;
+      max-width: 12ch;
     }
 
     h2 {
@@ -193,13 +200,13 @@
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 22px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 0;
     }
 
     .stat {
-      padding: 16px;
+      padding: 14px;
       border-radius: 18px;
       border: 1px solid var(--line);
       background: #fcfaf4;
@@ -207,9 +214,9 @@
 
     .stat-value {
       display: block;
-      font-size: 1.8rem;
+      font-size: 1.55rem;
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .stat-label {
@@ -327,7 +334,7 @@
     .plant-panel {
       display: grid;
       align-content: space-between;
-      gap: 18px;
+      gap: 14px;
       min-height: 100%;
     }
 
@@ -338,7 +345,7 @@
 
     .plant-wrap {
       position: relative;
-      min-height: 320px;
+      min-height: 258px;
       border-radius: 20px;
       border: 1px solid var(--line);
       background:
@@ -363,8 +370,8 @@
     }
 
     .plant-svg {
-      width: min(240px, 90%);
-      height: 280px;
+      width: min(210px, 88%);
+      height: 236px;
       overflow: visible;
     }
 
@@ -384,6 +391,91 @@
       gap: 12px;
       color: var(--muted);
       font-size: 0.92rem;
+    }
+
+    .week-garden {
+      display: grid;
+      gap: 10px;
+    }
+
+    .week-garden-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .week-garden-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .mini-plant-card,
+    .mini-plant-empty {
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fcfaf4;
+    }
+
+    .mini-plant-card {
+      padding: 10px 8px 12px;
+      text-align: center;
+    }
+
+    .mini-plant-visual {
+      position: relative;
+      height: 82px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(221, 213, 198, 0.75);
+      background: linear-gradient(180deg, rgba(223, 232, 218, 0.5), rgba(252, 250, 244, 0.95) 54%);
+      overflow: hidden;
+    }
+
+    .mini-plant-visual::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 16px;
+      border-radius: 40px 40px 0 0;
+      background: rgba(213, 191, 163, 0.82);
+    }
+
+    .mini-plant-svg {
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      width: 56px;
+      height: 70px;
+      transform: translateX(-50%);
+      overflow: visible;
+    }
+
+    .mini-plant-label {
+      display: block;
+      font-size: 0.82rem;
+      line-height: 1.2;
+    }
+
+    .mini-plant-meta {
+      color: var(--muted);
+      font-size: 0.79rem;
+    }
+
+    .mini-plant-empty {
+      grid-column: 1 / -1;
+      padding: 14px 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
     }
 
     .weekly-meter {
@@ -490,7 +582,7 @@
     }
 
     .footer-note {
-      margin-top: 18px;
+      margin-top: 14px;
       font-size: 0.94rem;
     }
 
@@ -503,12 +595,17 @@
       .stats {
         grid-template-columns: 1fr 1fr;
       }
+
+      .week-garden-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 720px) {
       .field-row,
       .field-row.two,
-      .stats {
+      .stats,
+      .week-garden-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -550,7 +647,7 @@
     <div class="topbar">
       <a class="brand" href="/">camiloabbate.com</a>
       <div class="topbar-right">
-        <div class="pill">Shared group tracker, no firewall</div>
+        <div class="pill">Shared group tracker</div>
         <button id="secret-door" class="secret-door" type="button" aria-label="Open admin tools"></button>
       </div>
     </div>
@@ -598,7 +695,7 @@
 
         <div class="admin-grid">
           <p class="eyebrow">WhatsApp import</p>
-          <p class="helper">Rudimentary first step: paste an exported WhatsApp chat or load a `.txt` export. The parser looks for lines from your known names that contain values like `20 min` or `45 minutes`.</p>
+          <p class="helper">Paste a WhatsApp export or the copied chat block directly. The parser now understands lines like `[9:46 AM, 4/23/2026] Joselyn Fernandez: 10 min`, plus notes like `ayer hice 15` and `1 hora`.</p>
           <label>
             WhatsApp export text
             <textarea id="whatsapp-text" placeholder="Paste exported chat text here..."></textarea>
@@ -616,11 +713,6 @@
       <article class="panel hero-copy">
         <p class="eyebrow">Meditation circle</p>
         <h1>One calm place for shared minutes.</h1>
-        <p class="lead">
-          There is no login wall for the main experience now. If the typed name matches
-          one of the allowed names exactly, the entry becomes active and can be saved.
-          The group plant grows from the combined weekly practice.
-        </p>
         <div id="member-chips" class="member-chips"></div>
 
         <div class="stats">
@@ -680,6 +772,14 @@
             <span>Weekly cap: 7h</span>
           </div>
         </div>
+
+        <div class="week-garden">
+          <div class="week-garden-header">
+            <span>Previous weeks</span>
+            <span>Little garden</span>
+          </div>
+          <div id="week-garden" class="week-garden-grid"></div>
+        </div>
       </aside>
     </section>
 
@@ -717,8 +817,7 @@
         </form>
 
         <p class="footer-note">
-          The button wakes up once the name matches exactly and the entry is valid. Saving again
-          for the same person and date updates that day's total.
+          Saving again for the same person and date updates that day's total.
         </p>
       </article>
 
@@ -761,16 +860,24 @@
   <script>
     const WEEKLY_CAP = 420;
     const API_ENDPOINT = "/.netlify/functions/meditation-tracker";
+    const ADMIN_UNLOCK_EMAIL = "camello187@gmail.com";
+    const ADMIN_UNLOCK_PASSWORD = "arruabarrena";
     const NAME_ALIASES = {
       anna: "Anna",
+      "anna arruabarrena": "Anna",
+      arruabarrena: "Anna",
       joselyn: "Joselyn",
+      "joselyn fernandez": "Joselyn",
       j: "Joselyn",
       "maria jose": "Maria Jose",
+      "maria jose fernandez": "Maria Jose",
       "maria jose ": "Maria Jose",
       mj: "Maria Jose",
       "mariajose": "Maria Jose",
       "mar a jose": "Maria Jose",
       camilo: "Camilo",
+      "camilo a": "Camilo",
+      "camilo a.": "Camilo",
       camel: "Camilo",
       camello: "Camilo"
     };
@@ -792,6 +899,7 @@
     const intensityChart = document.getElementById("intensity-chart");
     const cumulativeChart = document.getElementById("cumulative-chart");
     const memberChips = document.getElementById("member-chips");
+    const weekGarden = document.getElementById("week-garden");
     const adminPanel = document.getElementById("admin-panel");
     const adminStatus = document.getElementById("admin-status");
     const adminTools = document.getElementById("admin-tools");
@@ -816,6 +924,13 @@
         month: "short",
         day: "numeric",
         year: "numeric"
+      });
+    }
+
+    function formatShortDate(value) {
+      return fromISODate(value).toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric"
       });
     }
 
@@ -873,6 +988,15 @@
     function buildDailyTotals(entries) {
       return entries.reduce(function (acc, entry) {
         acc[entry.date] = (acc[entry.date] || 0) + Number(entry.minutes || 0);
+        return acc;
+      }, {});
+    }
+
+    function buildWeeklyTotals(entries) {
+      return entries.reduce(function (acc, entry) {
+        const date = fromISODate(entry.date);
+        const weekKey = toISODate(getWeekStart(date));
+        acc[weekKey] = (acc[weekKey] || 0) + Number(entry.minutes || 0);
         return acc;
       }, {});
     }
@@ -942,6 +1066,55 @@
 
       ["leaf-left-1", "leaf-right-1", "leaf-left-2", "leaf-right-2", "leaf-top"].forEach(function (id, index) {
         document.getElementById(id).setAttribute("opacity", String(leafOpacity[index]));
+      });
+    }
+
+    function buildMiniPlantSvg(growth) {
+      const clamped = Math.max(0, Math.min(growth, 1));
+      const stemTop = 56 - clamped * 26;
+      const leafOpacity = [
+        Math.max(0, Math.min((clamped - 0.16) / 0.18, 1)),
+        Math.max(0, Math.min((clamped - 0.34) / 0.18, 1)),
+        Math.max(0, Math.min((clamped - 0.58) / 0.18, 1)),
+      ];
+
+      return (
+        "<svg class='mini-plant-svg' viewBox='0 0 60 70' aria-hidden='true'>" +
+          "<line x1='30' y1='60' x2='30' y2='" + stemTop + "' stroke='#5d7156' stroke-width='4' stroke-linecap='round'></line>" +
+          "<path d='M29 46 C19 42, 13 34, 13 25 C23 28, 29 35, 32 43' fill='#8faa84' opacity='" + leafOpacity[0] + "'></path>" +
+          "<path d='M31 38 C41 34, 47 25, 47 17 C37 20, 31 28, 28 35' fill='#78966e' opacity='" + leafOpacity[1] + "'></path>" +
+          "<path d='M30 25 C25 16, 26 9, 30 3 C34 9, 35 16, 30 25' fill='#b7cda7' opacity='" + leafOpacity[2] + "'></path>" +
+        "</svg>"
+      );
+    }
+
+    function renderWeekGarden(entries) {
+      const weeklyTotals = buildWeeklyTotals(entries);
+      const currentWeekKey = toISODate(getWeekStart(new Date()));
+      const weekKeys = Object.keys(weeklyTotals)
+        .filter(function (weekKey) {
+          return weekKey < currentWeekKey;
+        })
+        .sort()
+        .slice(-4);
+
+      weekGarden.innerHTML = "";
+
+      if (!weekKeys.length) {
+        weekGarden.innerHTML = "<div class='mini-plant-empty'>Previous weeks will sprout here as the circle builds momentum.</div>";
+        return;
+      }
+
+      weekKeys.forEach(function (weekKey) {
+        const total = weeklyTotals[weekKey] || 0;
+        const growth = total / WEEKLY_CAP;
+        const card = document.createElement("div");
+        card.className = "mini-plant-card";
+        card.innerHTML =
+          "<div class='mini-plant-visual'>" + buildMiniPlantSvg(growth) + "</div>" +
+          "<strong class='mini-plant-label'>" + formatShortDate(weekKey) + "</strong>" +
+          "<span class='mini-plant-meta'>" + total + " min</span>";
+        weekGarden.appendChild(card);
       });
     }
 
@@ -1092,11 +1265,12 @@
 
     function renderAll() {
       renderMembers();
-      renderStats(calculateStats(state.entries));
+      const stats = calculateStats(state.entries);
+      renderStats(stats);
       renderHistory(state.entries);
       renderIntensityChart(state.entries);
       renderCumulativeChart(state.entries);
-      const stats = calculateStats(state.entries);
+      renderWeekGarden(state.entries);
       updatePlant(stats.weekTotal);
       refreshSubmitState();
     }
@@ -1160,41 +1334,119 @@
       return String(year) + "-" + String(month).padStart(2, "0") + "-" + String(day).padStart(2, "0");
     }
 
+    function shiftISODate(value, amount) {
+      const shifted = fromISODate(value);
+      shifted.setDate(shifted.getDate() + amount);
+      return toISODate(shifted);
+    }
+
+    function parseWhatsAppLineStart(line) {
+      let match = line.match(/^\[(\d{1,2}:\d{2}(?::\d{2})?\s*[APMapm]{2}),\s*(\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4})\]\s*([^:]+):\s*(.*)$/);
+      if (match) {
+        return {
+          dateText: match[2],
+          senderText: match[3],
+          message: match[4]
+        };
+      }
+
+      match = line.match(/^\[?(\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}),\s*[^\]]+\]?\s*-?\s*([^:]+):\s*(.*)$/);
+      if (match) {
+        return {
+          dateText: match[1],
+          senderText: match[2],
+          message: match[3]
+        };
+      }
+
+      return null;
+    }
+
+    function extractMinutesFromMessage(message) {
+      const text = String(message || "").trim();
+      if (!text) {
+        return null;
+      }
+
+      const hourMatch = text.match(/\b(\d{1,2})\s*(h|hr|hrs|hour|hours|hora|horas)\b/i);
+      if (hourMatch) {
+        return Number(hourMatch[1]) * 60;
+      }
+
+      const minuteMatch = text.match(/\b(\d{1,3})\s*(m|min|mins|minute|minutes|minuto|minutos)\b/i);
+      if (minuteMatch) {
+        return Number(minuteMatch[1]);
+      }
+
+      const contextualMatch = text.match(/\b(?:ayer\s+)?(?:yo\s+)?(?:hice|medit(?:e|ed|ated|ation)?)\s+(\d{1,3})\b/i);
+      if (contextualMatch) {
+        return Number(contextualMatch[1]);
+      }
+
+      return null;
+    }
+
     function parseWhatsAppText(text) {
       const lines = String(text || "").split(/\r?\n/);
+      const messages = [];
+      let current = null;
+
+      lines.forEach(function (rawLine) {
+        const line = String(rawLine || "");
+        const parsed = parseWhatsAppLineStart(line.trim());
+
+        if (parsed) {
+          if (current) {
+            messages.push(current);
+          }
+
+          current = {
+            date: normalizeImportedDate(parsed.dateText),
+            sender: canonicalName(parsed.senderText),
+            message: String(parsed.message || "").trim()
+          };
+          return;
+        }
+
+        if (!current) {
+          return;
+        }
+
+        const continuation = line.trim();
+        if (continuation) {
+          current.message += (current.message ? " " : "") + continuation;
+        }
+      });
+
+      if (current) {
+        messages.push(current);
+      }
+
       const found = {};
 
-      lines.forEach(function (line) {
-        let match = line.match(/^\[?(\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}),\s+[^\]]+\]?\s*-?\s*([^:]+):\s*(.+)$/);
-        if (!match) {
+      messages.forEach(function (item) {
+        if (!item.date || !item.sender) {
           return;
         }
 
-        const date = normalizeImportedDate(match[1]);
-        const sender = canonicalName(match[2]);
-        const message = match[3];
-
-        if (!date || !sender) {
-          return;
+        let date = item.date;
+        const message = item.message;
+        const lowered = message.toLowerCase();
+        if (/\bayer\b/.test(lowered)) {
+          date = shiftISODate(date, -1);
         }
 
-        const minuteMatch =
-          message.match(/\b(\d{1,3})\s*(m|min|mins|minute|minutes)\b/i) ||
-          message.match(/\bmeditat(?:ed|ion)?(?:\s+for)?\s+(\d{1,3})\b/i);
-
-        if (!minuteMatch) {
-          return;
-        }
-
-        const minutes = Number(minuteMatch[1]);
+        const minutes = extractMinutesFromMessage(message);
         if (!Number.isFinite(minutes) || minutes < 0 || minutes > 420) {
           return;
         }
 
-        found[sender + "|" + date] = {
-          name: sender,
+        const key = item.sender + "|" + date;
+        const previous = found[key];
+        found[key] = {
+          name: item.sender,
           date: date,
-          minutes: minutes,
+          minutes: previous ? Math.max(previous.minutes, minutes) : minutes,
         };
       });
 
@@ -1253,7 +1505,7 @@
     document.getElementById("admin-unlock").addEventListener("click", function () {
       const email = String(adminEmailInput.value || "").trim().toLowerCase();
       const password = String(adminPasswordInput.value || "").trim();
-      if (email === "camello187@gmail.com" && password === "RationalAltruism2026!") {
+      if (email === ADMIN_UNLOCK_EMAIL && password === ADMIN_UNLOCK_PASSWORD) {
         adminUnlocked = true;
         adminTools.classList.add("is-open");
         setAdminStatus("Admin tools unlocked.", false);
