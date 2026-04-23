@@ -3,6 +3,7 @@ import { getStore } from "@netlify/blobs";
 const store = getStore({ name: "meditation-tracker", consistency: "strong" });
 const STATE_KEY = "shared-state";
 const ADMIN_EMAIL = (process.env.MEDITATION_ADMIN_EMAIL || "camello187@gmail.com").trim().toLowerCase();
+const ADMIN_PASSWORD = String(process.env.MEDITATION_ADMIN_PASSWORD || "RationalAltruism2026!").trim();
 const ALLOWED_NAMES = ["Anna", "Joselyn", "Maria Jose", "Camilo"];
 const ALLOWED_NAME_SET = new Set(ALLOWED_NAMES);
 
@@ -82,6 +83,10 @@ function isAdmin(email) {
   return normalizeEmail(email) === ADMIN_EMAIL;
 }
 
+function hasAdminPassword(password) {
+  return String(password || "").trim() === ADMIN_PASSWORD;
+}
+
 async function handleUpsert(body) {
   const name = normalizeName(body.name);
   const date = String(body.date || "").trim();
@@ -152,7 +157,7 @@ async function handleBulkUpsert(body) {
 }
 
 async function handleResetDay(body) {
-  if (!isAdmin(body.adminEmail)) {
+  if (!isAdmin(body.adminEmail) || !hasAdminPassword(body.adminPassword)) {
     return jsonResponse(403, { error: "Admin access denied." });
   }
 
@@ -173,7 +178,7 @@ async function handleResetDay(body) {
 }
 
 async function handleResetWeek(body) {
-  if (!isAdmin(body.adminEmail)) {
+  if (!isAdmin(body.adminEmail) || !hasAdminPassword(body.adminPassword)) {
     return jsonResponse(403, { error: "Admin access denied." });
   }
 

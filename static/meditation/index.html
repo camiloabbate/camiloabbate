@@ -188,18 +188,7 @@
     }
 
     .member-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .member-chip {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: #fbf8f1;
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.9rem;
+      display: none;
     }
 
     .stats {
@@ -379,6 +368,16 @@
       overflow: visible;
     }
 
+    .cat-svg {
+      position: absolute;
+      left: 20px;
+      bottom: 12px;
+      width: 76px;
+      height: 76px;
+      overflow: visible;
+      opacity: 0.96;
+    }
+
     .plant-caption {
       display: flex;
       justify-content: space-between;
@@ -400,23 +399,6 @@
       border-radius: inherit;
       background: linear-gradient(90deg, #9db593, #5d7156);
       transition: width 220ms ease;
-    }
-
-    .person-totals {
-      display: grid;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .person-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #fcfaf4;
     }
 
     .chart-header {
@@ -590,6 +572,12 @@
             <input id="admin-email" type="email" placeholder="camello187@gmail.com">
           </label>
           <label>
+            Password
+            <input id="admin-password" type="password" placeholder="Enter saved password">
+          </label>
+        </div>
+        <div class="field-row two">
+          <label>
             Anchor date
             <input id="admin-date" type="date">
           </label>
@@ -629,9 +617,9 @@
         <p class="eyebrow">Meditation circle</p>
         <h1>One calm place for shared minutes.</h1>
         <p class="lead">
-          Anna, Joselyn, Maria Jose, and Camilo can add meditation time directly here.
-          There is no login wall for the main experience now. Write your name exactly,
-          log the day, and the group plant grows from the combined weekly practice.
+          There is no login wall for the main experience now. If the typed name matches
+          one of the allowed names exactly, the entry becomes active and can be saved.
+          The group plant grows from the combined weekly practice.
         </p>
         <div id="member-chips" class="member-chips"></div>
 
@@ -671,6 +659,16 @@
             <path id="leaf-right-2" d="M112 156 C140 140, 164 116, 168 84 C134 92, 114 118, 108 150" fill="#6c8a63" opacity="0"></path>
             <path id="leaf-top" d="M110 116 C96 92, 98 66, 110 42 C122 66, 124 92, 110 116" fill="#b7cda7" opacity="0"></path>
           </svg>
+          <svg class="cat-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M32 74 C30 58, 36 46, 50 44 C63 46, 69 58, 67 74 Z" fill="#111111"></path>
+            <path d="M40 48 L46 35 L52 47 Z" fill="#111111"></path>
+            <path d="M49 47 L56 34 L61 48 Z" fill="#111111"></path>
+            <ellipse cx="49" cy="58" rx="18" ry="14" fill="#151515"></ellipse>
+            <ellipse cx="58" cy="77" rx="9" ry="8" fill="#111111"></ellipse>
+            <path d="M64 65 C78 60, 84 48, 82 34 C90 43, 90 60, 74 68" fill="none" stroke="#111111" stroke-width="6" stroke-linecap="round"></path>
+            <circle cx="44" cy="56" r="1.8" fill="#d8d1a5"></circle>
+            <circle cx="54" cy="56" r="1.8" fill="#d8d1a5"></circle>
+          </svg>
         </div>
 
         <div>
@@ -682,8 +680,6 @@
             <span>Weekly cap: 7h</span>
           </div>
         </div>
-
-        <div id="person-totals" class="person-totals"></div>
       </aside>
     </section>
 
@@ -695,8 +691,7 @@
           <div class="field-row">
             <label>
               Your name
-              <input id="entry-name" list="allowed-names" type="text" placeholder="Anna">
-              <datalist id="allowed-names"></datalist>
+              <input id="entry-name" type="text" autocomplete="off" spellcheck="false">
             </label>
             <label>
               Date
@@ -796,13 +791,12 @@
     const historyList = document.getElementById("history-list");
     const intensityChart = document.getElementById("intensity-chart");
     const cumulativeChart = document.getElementById("cumulative-chart");
-    const memberDatalist = document.getElementById("allowed-names");
     const memberChips = document.getElementById("member-chips");
-    const personTotals = document.getElementById("person-totals");
     const adminPanel = document.getElementById("admin-panel");
     const adminStatus = document.getElementById("admin-status");
     const adminTools = document.getElementById("admin-tools");
     const adminEmailInput = document.getElementById("admin-email");
+    const adminPasswordInput = document.getElementById("admin-password");
     const adminDateInput = document.getElementById("admin-date");
     const importStatus = document.getElementById("import-status");
     const whatsappText = document.getElementById("whatsapp-text");
@@ -911,31 +905,8 @@
       };
     }
 
-    function calculatePersonTotals(entries) {
-      const weekStart = getWeekStart(new Date());
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-
-      return state.allowedNames.map(function (name) {
-        const total = entries.reduce(function (sum, entry) {
-          const day = fromISODate(entry.date);
-          if (entry.name === name && day >= weekStart && day <= weekEnd) {
-            return sum + Number(entry.minutes || 0);
-          }
-          return sum;
-        }, 0);
-        return { name: name, total: total };
-      });
-    }
-
     function renderMembers() {
-      memberDatalist.innerHTML = state.allowedNames.map(function (name) {
-        return "<option value='" + name + "'></option>";
-      }).join("");
-
-      memberChips.innerHTML = state.allowedNames.map(function (name) {
-        return "<span class='member-chip'>" + name + "</span>";
-      }).join("");
+      memberChips.innerHTML = "";
     }
 
     function renderStats(stats) {
@@ -974,13 +945,6 @@
       });
     }
 
-    function renderPersonTotals(entries) {
-      const totals = calculatePersonTotals(entries);
-      personTotals.innerHTML = totals.map(function (item) {
-        return "<div class='person-row'><span>" + item.name + "</span><strong>" + item.total + " min</strong></div>";
-      }).join("");
-    }
-
     function renderHistory(entries) {
       const items = entries.slice().sort(function (left, right) {
         if (left.date !== right.date) {
@@ -1000,7 +964,7 @@
         const item = document.createElement("div");
         item.className = "history-item";
         item.innerHTML =
-          "<div><strong>" + entry.name + "</strong><span>" + formatDisplayDate(entry.date) + "</span></div>" +
+          "<div><strong>Logged entry</strong><span>" + formatDisplayDate(entry.date) + "</span></div>" +
           "<span class='history-minutes'>" + entry.minutes + " min</span>";
         item.addEventListener("click", function () {
           entryName.value = entry.name;
@@ -1134,7 +1098,6 @@
       renderCumulativeChart(state.entries);
       const stats = calculateStats(state.entries);
       updatePlant(stats.weekTotal);
-      renderPersonTotals(state.entries);
       refreshSubmitState();
     }
 
@@ -1289,7 +1252,8 @@
 
     document.getElementById("admin-unlock").addEventListener("click", function () {
       const email = String(adminEmailInput.value || "").trim().toLowerCase();
-      if (email === "camello187@gmail.com") {
+      const password = String(adminPasswordInput.value || "").trim();
+      if (email === "camello187@gmail.com" && password === "RationalAltruism2026!") {
         adminUnlocked = true;
         adminTools.classList.add("is-open");
         setAdminStatus("Admin tools unlocked.", false);
@@ -1310,6 +1274,7 @@
         await postAction({
           action: "resetDay",
           adminEmail: adminEmailInput.value,
+          adminPassword: adminPasswordInput.value,
           date: adminDateInput.value,
         });
         setAdminStatus("Selected day cleared.", false);
@@ -1329,6 +1294,7 @@
         await postAction({
           action: "resetWeek",
           adminEmail: adminEmailInput.value,
+          adminPassword: adminPasswordInput.value,
           date: adminDateInput.value,
         });
         setAdminStatus("Selected week cleared.", false);
@@ -1370,6 +1336,7 @@
           action: "bulkUpsert",
           entries: parsed,
           adminEmail: adminEmailInput.value,
+          adminPassword: adminPasswordInput.value,
         });
         setImportStatus("Imported " + parsed.length + " WhatsApp entries.", false);
         setStatus("WhatsApp minutes imported.", false);
