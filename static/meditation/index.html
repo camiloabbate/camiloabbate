@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Meditation Group Dashboard</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    :root {
+      --sand: #efe4d0;
+      --sand-deep: #e5d3b7;
+      --fern: #49645a;
+      --fern-deep: #24372f;
+      --fern-soft: #71897d;
+      --cream: rgba(255, 249, 239, 0.82);
+      --cream-strong: rgba(255, 252, 247, 0.94);
+      --line: rgba(36, 55, 47, 0.12);
+      --gold: #c49a63;
+      --ink: #1e2d28;
+      --muted: #61756b;
+      --shadow: 0 30px 80px rgba(36, 55, 47, 0.15);
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(196, 154, 99, 0.20), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(73, 100, 90, 0.24), transparent 24%),
+        linear-gradient(180deg, #f3e7d5 0%, #ede3d6 36%, #ebe7de 100%);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(8px);
+    }
+
+    body::before {
+      top: 120px;
+      right: -100px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.48), transparent 68%);
+    }
+
+    body::after {
+      bottom: -140px;
+      left: -120px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(73, 100, 90, 0.18), transparent 68%);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--fern-deep);
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.35)),
+        linear-gradient(145deg, rgba(196, 154, 99, 0.55), rgba(73, 100, 90, 0.7));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      font-size: 1.05rem;
+    }
+
+    .brand-copy span {
+      display: block;
+    }
+
+    .brand-copy .site {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .brand-copy .space {
+      font-size: 1.06rem;
+    }
+
+    .topbar-actions,
+    .hero-actions,
+    .status-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      color: #fff8ee;
+      background: linear-gradient(135deg, #345144 0%, #21342d 100%);
+      box-shadow: 0 12px 30px rgba(36, 55, 47, 0.24);
+    }
+
+    .button-secondary {
+      color: var(--fern-deep);
+      background: rgba(255, 250, 242, 0.78);
+      border: 1px solid rgba(36, 55, 47, 0.14);
+    }
+
+    .button-ghost {
+      color: var(--fern-deep);
+      background: rgba(255, 255, 255, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .button.hidden,
+    .hidden {
+      display: none !important;
+    }
+
+    .glass {
+      background: linear-gradient(180deg, rgba(255, 251, 245, 0.82), rgba(255, 248, 240, 0.70));
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      padding: 24px;
+      margin-bottom: 22px;
+      border-radius: 34px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.32), transparent 36%),
+        radial-gradient(circle at 72% 20%, rgba(196, 154, 99, 0.14), transparent 24%);
+      pointer-events: none;
+    }
+
+    .hero-copy,
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      line-height: 0.94;
+      margin-bottom: 16px;
+      max-width: 9ch;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      line-height: 1.05;
+      margin-bottom: 12px;
+    }
+
+    .lead {
+      max-width: 54ch;
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .hero-notes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .hero-note {
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 251, 244, 0.58);
+      border: 1px solid rgba(36, 55, 47, 0.08);
+    }
+
+    .hero-note strong,
+    .stat-value,
+    .session-emphasis {
+      display: block;
+    }
+
+    .hero-note span,
+    .stat-label,
+    .meta,
+    .list p,
+    .timeline-item p,
+    blockquote {
+      color: var(--muted);
+    }
+
+    .hero-visual {
+      min-height: 420px;
+      padding: 20px;
+      display: grid;
+      align-content: space-between;
+      gap: 18px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(255, 249, 240, 0.95), rgba(255, 249, 240, 0.12) 48%),
+        linear-gradient(180deg, rgba(57, 81, 71, 0.92), rgba(25, 39, 34, 0.94));
+      color: #fff8ef;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+    }
+
+    .orbital {
+      position: relative;
+      width: 100%;
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+    }
+
+    .orbital::before,
+    .orbital::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 248, 239, 0.18);
+    }
+
+    .orbital::before {
+      width: 260px;
+      height: 260px;
+    }
+
+    .orbital::after {
+      width: 170px;
+      height: 170px;
+    }
+
+    .lotus {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.98), rgba(250, 231, 199, 0.92) 30%, rgba(196, 154, 99, 0.16) 58%, transparent 64%);
+      box-shadow: 0 0 60px rgba(255, 233, 198, 0.18);
+    }
+
+    .lotus::before,
+    .lotus::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: rgba(255, 246, 228, 0.14);
+    }
+
+    .lotus::before {
+      bottom: 18px;
+      width: 112px;
+      height: 44px;
+    }
+
+    .lotus::after {
+      top: 18px;
+      width: 18px;
+      height: 18px;
+      box-shadow:
+        0 24px 0 14px rgba(255, 246, 228, 0.12),
+        -28px 44px 0 10px rgba(255, 246, 228, 0.10),
+        28px 44px 0 10px rgba(255, 246, 228, 0.10);
+    }
+
+    .session-spotlight {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255, 251, 244, 0.09);
+      border: 1px solid rgba(255, 248, 239, 0.12);
+    }
+
+    .session-spotlight h2 {
+      margin-bottom: 8px;
+      color: #fff9f1;
+    }
+
+    .session-emphasis {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .status {
+      margin-bottom: 22px;
+      padding: 16px 18px;
+      border-radius: 22px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-copy strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .status-copy span {
+      color: var(--muted);
+    }
+
+    .status.is-error {
+      background: rgba(255, 246, 243, 0.95);
+      border: 1px solid rgba(142, 66, 52, 0.12);
+    }
+
+    .status.is-error .status-copy span,
+    .status.is-error .status-copy strong {
+      color: #8a4a38;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+      gap: 18px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel,
+    .card {
+      border-radius: var(--radius-xl);
+      padding: 22px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(36, 55, 47, 0.08);
+    }
+
+    .stat-value {
+      font-size: 1.7rem;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: var(--fern-deep);
+    }
+
+    .list,
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .list li,
+    .timeline-item {
+      position: relative;
+      padding: 16px 16px 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.46);
+      border: 1px solid rgba(36, 55, 47, 0.08);
+      overflow: hidden;
+    }
+
+    .list li::before,
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      top: 16px;
+      left: 0;
+      bottom: 16px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--gold), rgba(73, 100, 90, 0.6));
+    }
+
+    .list strong,
+    .timeline-item strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1.03rem;
+    }
+
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      text-decoration: none;
+      color: var(--fern-deep);
+    }
+
+    .resource-link::after {
+      content: "->";
+      font-size: 0.95rem;
+    }
+
+    .quote-card {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(37, 56, 48, 0.98), rgba(28, 43, 37, 0.98)),
+        rgba(37, 56, 48, 1);
+      color: #fff8ef;
+      overflow: hidden;
+    }
+
+    .quote-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -80px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196, 154, 99, 0.32), transparent 70%);
+      pointer-events: none;
+    }
+
+    blockquote {
+      margin: 0;
+      font-size: 1.18rem;
+      line-height: 1.75;
+      color: rgba(255, 248, 239, 0.88);
+    }
+
+    cite {
+      display: block;
+      margin-top: 12px;
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      color: rgba(255, 248, 239, 0.62);
+    }
+
+    .timeline-item small {
+      display: inline-block;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: var(--fern-soft);
+    }
+
+    .preview-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 248, 239, 0.72);
+      border: 1px solid rgba(36, 55, 47, 0.08);
+      color: var(--fern-deep);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 360px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 18px, 1180px);
+        padding-top: 14px;
+      }
+
+      .hero,
+      .panel,
+      .card {
+        padding: 18px;
+      }
+
+      .hero-notes,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        max-width: 11ch;
+      }
+
+      .orbital::before {
+        width: 220px;
+        height: 220px;
+      }
+
+      .orbital::after {
+        width: 140px;
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">o</span>
+        <span class="brand-copy">
+          <span class="site">camiloabbate.com</span>
+          <span class="space">Meditation Circle</span>
+        </span>
+      </a>
+      <div class="topbar-actions">
+        <button id="login-button" class="button button-primary" type="button">Log in</button>
+        <button id="preview-button" class="button button-secondary" type="button">Preview mode</button>
+        <button id="logout-button" class="button button-ghost hidden" type="button">Log out</button>
+      </div>
+    </div>
+
+    <section class="hero glass">
+      <div class="hero-copy">
+        <p class="eyebrow">Private member space</p>
+        <h1>Quiet structure for your weekly sit.</h1>
+        <p class="lead">
+          A small dashboard for your meditation group with session details, notes, readings,
+          and a calmer place to gather online. Signed-in members see the real content, and you
+          can still preview the full layout locally while we wire up production access.
+        </p>
+        <div class="hero-actions">
+          <button class="button button-primary" type="button" id="hero-login-button">Open member login</button>
+          <button class="button button-secondary" type="button" id="hero-preview-button">View sample dashboard</button>
+          <a class="button button-ghost" href="/">Back to main site</a>
+        </div>
+        <div class="hero-notes">
+          <div class="hero-note">
+            <strong>Invite-only access</strong>
+            <span>Built on Netlify Identity for your two additional members.</span>
+          </div>
+          <div class="hero-note">
+            <strong>Easy to update</strong>
+            <span>Edit one JSON file to change announcements, schedule, and links.</span>
+          </div>
+          <div class="hero-note">
+            <strong>Preview ready</strong>
+            <span>No deploy needed to see the design and content structure.</span>
+          </div>
+        </div>
+      </div>
+      <aside class="hero-visual">
+        <div class="orbital">
+          <div class="lotus"></div>
+        </div>
+        <div class="session-spotlight">
+          <p class="eyebrow">Tonight's shape</p>
+          <span class="session-emphasis" id="spotlight-duration">35 min</span>
+          <h2 id="spotlight-title">Settling, silent sit, and closing reflection</h2>
+          <p class="meta" id="spotlight-text">A gentle rhythm for the group to return to each week.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section id="status" class="status glass">
+      <div class="status-row">
+        <div class="status-copy">
+          <strong id="status-title">Checking your session...</strong>
+          <span id="status-text">Use login for the real member area, or preview mode to see the full design right now.</span>
+        </div>
+        <div class="status-actions">
+          <span id="preview-pill" class="preview-pill hidden">Preview mode is active</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="dashboard hidden">
+      <div class="stack">
+        <article class="panel glass">
+          <p class="eyebrow" id="welcome-eyebrow">Welcome</p>
+          <h2 id="dashboard-title">Meditation Group Dashboard</h2>
+          <p class="lead" id="dashboard-welcome"></p>
+          <div class="stats-grid">
+            <div class="stat">
+              <span class="stat-value" id="stat-members">3</span>
+              <span class="stat-label">Circle members</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" id="stat-duration">35 min</span>
+              <span class="stat-label">Weekly rhythm</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" id="stat-resources">2</span>
+              <span class="stat-label">Shared resources</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel glass">
+          <p class="eyebrow">Group updates</p>
+          <h2>Announcements</h2>
+          <ul id="announcements" class="list"></ul>
+        </article>
+
+        <article class="panel glass">
+          <p class="eyebrow">Practice arc</p>
+          <h2>Session Flow</h2>
+          <ul id="timeline" class="timeline"></ul>
+        </article>
+      </div>
+
+      <div class="stack">
+        <article class="card glass">
+          <p class="eyebrow" id="next-session-label">Next session</p>
+          <h2 id="next-session-date"></h2>
+          <p class="meta" id="next-session-time"></p>
+          <p class="meta" id="next-session-location"></p>
+          <p id="next-session-notes"></p>
+        </article>
+
+        <article class="card glass quote-card">
+          <p class="eyebrow">Centering line</p>
+          <blockquote id="group-quote">
+            Returning to the breath, we return to one another.
+          </blockquote>
+          <cite id="group-quote-source">Meditation Circle</cite>
+        </article>
+
+        <article class="card glass">
+          <p class="eyebrow">Shared links</p>
+          <h2>Resources</h2>
+          <ul id="resources" class="list"></ul>
+        </article>
+
+        <article class="card glass">
+          <p class="eyebrow">Practice library</p>
+          <h2>Formats</h2>
+          <ul id="practice-library" class="list"></ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const demoPayload = {
+      title: "Meditation Group Dashboard",
+      welcome: "A private space for your weekly practice, shared notes, and the small rituals that keep the group grounded.",
+      viewer: {
+        name: "Preview Member",
+        email: "preview@camiloabbate.com"
+      },
+      nextSession: {
+        label: "Next sit",
+        date: "Wednesday, 7:00 PM",
+        time: "35 minutes plus 10 minutes of optional sharing",
+        location: "Living room circle or Zoom room",
+        notes: "This week centers on returning attention gently without trying to force stillness."
+      },
+      announcements: [
+        {
+          title: "Tea and arrival",
+          body: "Doors open 10 minutes early so everyone can settle in before the opening bell."
+        },
+        {
+          title: "Reading for the week",
+          body: "Add a short paragraph, sutra, or article excerpt here to shape the sit."
+        }
+      ],
+      resources: [
+        {
+          title: "Recurring Zoom room",
+          description: "Swap this for your real meeting link before going live.",
+          url: "https://example.com/zoom"
+        },
+        {
+          title: "Shared notes",
+          description: "Point this to a Google Doc, Notion page, or PDF packet.",
+          url: "https://example.com/notes"
+        }
+      ],
+      practiceLibrary: [
+        {
+          name: "Arrival and breath",
+          detail: "5 minutes"
+        },
+        {
+          name: "Silent sit",
+          detail: "20 minutes"
+        },
+        {
+          name: "Reflection circle",
+          detail: "10 minutes"
+        }
+      ],
+      quote: {
+        text: "Stillness does not erase the world; it teaches us how to meet it.",
+        source: "Meditation Group Notes"
+      }
+    };
+
+    const statusNode = document.getElementById("status");
+    const statusTitleNode = document.getElementById("status-title");
+    const statusTextNode = document.getElementById("status-text");
+    const previewPillNode = document.getElementById("preview-pill");
+    const dashboardNode = document.getElementById("dashboard");
+    const loginButton = document.getElementById("login-button");
+    const previewButton = document.getElementById("preview-button");
+    const heroLoginButton = document.getElementById("hero-login-button");
+    const heroPreviewButton = document.getElementById("hero-preview-button");
+    const logoutButton = document.getElementById("logout-button");
+
+    let previewMode = false;
+
+    function setStatus(title, message, isError) {
+      statusTitleNode.textContent = title;
+      statusTextNode.textContent = message;
+      statusNode.classList.toggle("is-error", Boolean(isError));
+    }
+
+    function createListItem(title, body, link) {
+      const item = document.createElement("li");
+      const heading = document.createElement("strong");
+      heading.textContent = title;
+      item.appendChild(heading);
+
+      if (body) {
+        const text = document.createElement("p");
+        text.textContent = body;
+        item.appendChild(text);
+      }
+
+      if (link) {
+        const anchor = document.createElement("a");
+        anchor.href = link;
+        anchor.textContent = "Open resource";
+        anchor.className = "resource-link";
+        anchor.target = "_blank";
+        anchor.rel = "noreferrer";
+        item.appendChild(anchor);
+      }
+
+      return item;
+    }
+
+    function createTimelineItem(step, index) {
+      const item = document.createElement("li");
+      item.className = "timeline-item";
+
+      const stage = document.createElement("small");
+      stage.textContent = "Step " + (index + 1);
+      item.appendChild(stage);
+
+      const heading = document.createElement("strong");
+      heading.textContent = step.name;
+      item.appendChild(heading);
+
+      const detail = document.createElement("p");
+      detail.textContent = step.detail;
+      item.appendChild(detail);
+
+      return item;
+    }
+
+    function renderDashboard(payload) {
+      const practiceCount = (payload.practiceLibrary || []).length;
+      const resourcesCount = (payload.resources || []).length;
+      const totalMinutes = (payload.practiceLibrary || []).reduce(function (sum, item) {
+        const match = String(item.detail || "").match(/(\d+)/);
+        return sum + (match ? Number(match[1]) : 0);
+      }, 0);
+
+      document.getElementById("welcome-eyebrow").textContent = "Signed in as " + (payload.viewer && payload.viewer.name ? payload.viewer.name : "Member");
+      document.getElementById("dashboard-title").textContent = payload.title || "Meditation Group Dashboard";
+      document.getElementById("dashboard-welcome").textContent = payload.welcome || "";
+
+      document.getElementById("next-session-label").textContent = payload.nextSession && payload.nextSession.label ? payload.nextSession.label : "Next session";
+      document.getElementById("next-session-date").textContent = payload.nextSession && payload.nextSession.date ? payload.nextSession.date : "";
+      document.getElementById("next-session-time").textContent = payload.nextSession && payload.nextSession.time ? payload.nextSession.time : "";
+      document.getElementById("next-session-location").textContent = payload.nextSession && payload.nextSession.location ? payload.nextSession.location : "";
+      document.getElementById("next-session-notes").textContent = payload.nextSession && payload.nextSession.notes ? payload.nextSession.notes : "";
+
+      document.getElementById("stat-members").textContent = String((payload.memberCount || 3));
+      document.getElementById("stat-duration").textContent = (totalMinutes ? totalMinutes + " min" : practiceCount + " parts");
+      document.getElementById("stat-resources").textContent = String(resourcesCount);
+      document.getElementById("spotlight-duration").textContent = totalMinutes ? totalMinutes + " min" : "Weekly sit";
+      document.getElementById("spotlight-title").textContent = payload.nextSession && payload.nextSession.label ? payload.nextSession.label : "Weekly session";
+      document.getElementById("spotlight-text").textContent = payload.nextSession && payload.nextSession.notes ? payload.nextSession.notes : "A gentle rhythm for the group to return to each week.";
+
+      document.getElementById("group-quote").textContent = payload.quote && payload.quote.text ? payload.quote.text : "Returning to the breath, we return to one another.";
+      document.getElementById("group-quote-source").textContent = payload.quote && payload.quote.source ? payload.quote.source : "Meditation Circle";
+
+      const announcements = document.getElementById("announcements");
+      announcements.innerHTML = "";
+      (payload.announcements || []).forEach(function (entry) {
+        announcements.appendChild(createListItem(entry.title, entry.body));
+      });
+
+      const resources = document.getElementById("resources");
+      resources.innerHTML = "";
+      (payload.resources || []).forEach(function (entry) {
+        resources.appendChild(createListItem(entry.title, entry.description, entry.url));
+      });
+
+      const practiceLibrary = document.getElementById("practice-library");
+      practiceLibrary.innerHTML = "";
+      (payload.practiceLibrary || []).forEach(function (entry) {
+        practiceLibrary.appendChild(createListItem(entry.name, entry.detail));
+      });
+
+      const timeline = document.getElementById("timeline");
+      timeline.innerHTML = "";
+      (payload.practiceLibrary || []).forEach(function (entry, index) {
+        timeline.appendChild(createTimelineItem(entry, index));
+      });
+
+      dashboardNode.classList.remove("hidden");
+    }
+
+    function activatePreview(message) {
+      previewMode = true;
+      previewPillNode.classList.remove("hidden");
+      logoutButton.classList.add("hidden");
+      renderDashboard(demoPayload);
+      setStatus("Preview ready", message || "You are viewing the sample version of the dashboard. Login will still open the real member flow on Netlify.", false);
+    }
+
+    async function loadDashboard(user) {
+      try {
+        setStatus("Loading your private dashboard...", "Checking your member access and gathering the latest group content.", false);
+        const token = await user.jwt();
+        const response = await fetch("/.netlify/functions/meditation-dashboard", {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        });
+
+        const payload = await response.json();
+
+        if (!response.ok) {
+          throw new Error(payload.error || "Unable to load the dashboard.");
+        }
+
+        previewMode = false;
+        previewPillNode.classList.add("hidden");
+        renderDashboard(payload);
+        logoutButton.classList.remove("hidden");
+        setStatus("Member access confirmed", "You are signed in and seeing the live private dashboard.", false);
+      } catch (error) {
+        activatePreview((error && error.message ? error.message + " " : "") + "Showing the visual preview instead.");
+      }
+    }
+
+    function openLogin() {
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.open("login");
+      } else {
+        activatePreview("Netlify Identity is not available in this environment, so the preview was opened instead.");
+      }
+    }
+
+    function shouldAutoPreview() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("preview") === "1" ||
+        window.location.protocol === "file:" ||
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
+    }
+
+    loginButton.addEventListener("click", openLogin);
+    heroLoginButton.addEventListener("click", openLogin);
+    previewButton.addEventListener("click", function () {
+      activatePreview("You opened the sample dashboard view.");
+    });
+    heroPreviewButton.addEventListener("click", function () {
+      activatePreview("You opened the sample dashboard view.");
+    });
+
+    logoutButton.addEventListener("click", async function () {
+      if (!window.netlifyIdentity) {
+        activatePreview("Signed out of the live flow. Staying in preview mode here.");
+        return;
+      }
+
+      await window.netlifyIdentity.logout();
+      dashboardNode.classList.add("hidden");
+      activatePreview("You have been logged out of the live member area.");
+    });
+
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", function (user) {
+        if (user) {
+          loadDashboard(user);
+          return;
+        }
+
+        if (shouldAutoPreview()) {
+          activatePreview("Preview mode opened automatically for local testing.");
+        } else {
+          setStatus("Login required", "Use your invited account to open the real member dashboard, or preview mode to inspect the design.", false);
+        }
+      });
+
+      window.netlifyIdentity.on("login", function (user) {
+        window.netlifyIdentity.close();
+        loadDashboard(user);
+      });
+
+      window.netlifyIdentity.on("logout", function () {
+        dashboardNode.classList.add("hidden");
+        if (!previewMode) {
+          setStatus("Logged out", "Use your invited account to open the real member dashboard, or preview mode to inspect the design.", false);
+        }
+      });
+
+      window.netlifyIdentity.init();
+    } else {
+      activatePreview("Netlify Identity did not load, so the preview dashboard was opened automatically.");
+    }
+  </script>
+</body>
+</html>

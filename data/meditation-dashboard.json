@@ -1,0 +1,52 @@
+{
+  "title": "Meditation Group Dashboard",
+  "welcome": "A private space for your weekly practice, shared notes, and member resources.",
+  "memberCount": 3,
+  "nextSession": {
+    "label": "Next sit",
+    "date": "Wednesday",
+    "time": "7:00 PM Pacific",
+    "location": "Update this with your living room or Zoom link",
+    "notes": "You can edit this file to add chants, readings, parking details, or the week's theme."
+  },
+  "announcements": [
+    {
+      "title": "Welcome to the private dashboard",
+      "body": "This starter message is here so the page feels complete on first deploy. Replace it with your next group update."
+    },
+    {
+      "title": "Member login is invite-based",
+      "body": "Invite your two members from Netlify Identity, then optionally set MEDITATION_ALLOWED_EMAILS for a stricter email allowlist."
+    }
+  ],
+  "resources": [
+    {
+      "title": "Weekly Zoom link",
+      "description": "Replace this with the recurring meeting URL or a notes page.",
+      "url": "https://example.com"
+    },
+    {
+      "title": "Suggested reading",
+      "description": "Swap in a PDF, Google Doc, or article for the current cycle.",
+      "url": "https://example.com/reading"
+    }
+  ],
+  "practiceLibrary": [
+    {
+      "name": "Opening practice",
+      "detail": "5 minutes of settling and breath awareness."
+    },
+    {
+      "name": "Main sit",
+      "detail": "20 to 30 minutes of silent meditation."
+    },
+    {
+      "name": "Closing reflection",
+      "detail": "Short sharing round or one take-away sentence."
+    }
+  ],
+  "quote": {
+    "text": "Returning to the breath, we return to one another.",
+    "source": "Meditation Circle"
+  }
+}
