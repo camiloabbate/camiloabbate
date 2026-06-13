@@ -1,6 +1,6 @@
 ---
 active: true
-title: 'Decentralization in Developing Countries'
+title: 'Decentralization and Governmental Transfers in Developing Countries: The Case of Paraguay'
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here

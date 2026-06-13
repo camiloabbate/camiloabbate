@@ -1,26 +1,23 @@
 ---
-# An instance of the Pages widget.
-# Documentation: https://wowchemy.com/docs/page-builder/
-widget: collection
-active: false
-
-# This file represents a page section.
+widget: "portfolio"
 headless: true
-
-# Order that this section appears on the page.
-weight: 14
+active: true
+weight: 13
 
 title: Publications
 subtitle: ''
 
 content:
-content:
-  page_type: publication
+  page_type: research
   count: 0
   filters:
     featured_only: false
-    tag: ""
+    author: ''
+    category: ''
+    publication_type: '2'
+    tag: ''
   order: desc
+
 design:
   view: 4
 ---

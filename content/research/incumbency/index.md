@@ -1,6 +1,6 @@
 ---
 active: true
-title: "Incumbency Advantage or Penalty? Evidence from Paraguay's Dominant Party System"
+title: "Incumbency Advantage and Strategic Municipal Subdivision in a Unitary State"
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
