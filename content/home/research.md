@@ -16,7 +16,7 @@ design:
   <div class="hp-paper-meta">Camilo Abbate &nbsp;|&nbsp; <em>Job Market Paper</em></div>
   <div class="hp-paper-buttons">
     <button class="hp-btn" onclick="hpToggle('hp-abs-dec')">abstract</button>
-    <a class="hp-btn" href="https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0" target="_blank">PDF</a>
+    <a class="hp-btn" href="https://www.dropbox.com/scl/fi/y2hh2pqdvssy8f9gocxkv/JMP_CA_decentralization.pdf?rlkey=wo72vhak551pohgmhoatytzz4&st=gw7pdr7s&dl=0" target="_blank">PDF</a>
   </div>
   <div class="hp-abstract-box" id="hp-abs-dec">
     This paper presents causal evidence on the effects of intergovernmental transfers on local government finances in Paraguay. Using census-driven variation in expected transfers, municipalities facing a 15% or greater decrease in transfers increased their own tax revenues by 14%, while those receiving a 15% or greater increase reduced tax revenues by 28%. Beyond fiscal outcomes, the paper documents an 8% increase in night lights radiance in high-transfer municipalities, as well as lower voter turnout in both national and mayoral elections.

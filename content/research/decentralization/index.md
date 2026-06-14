@@ -51,7 +51,7 @@ featured: false
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'https://www.dropbox.com/scl/fi/3kke9pu3blp301ye1qd4k/0main_web_version.pdf?rlkey=qqlwcdig0rr6mced7pkq8sf9n&st=xl78pwn1&dl=0'
+url_pdf: 'https://www.dropbox.com/scl/fi/y2hh2pqdvssy8f9gocxkv/JMP_CA_decentralization.pdf?rlkey=wo72vhak551pohgmhoatytzz4&st=gw7pdr7s&dl=0'
 # url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_dataset: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_poster: ''
