@@ -10,12 +10,10 @@ last_name: Abbate
 superuser: true
 
 # Role/position/tagline
-# role: PhD Candidate in Economics
+role: PhD in Economics
 
 # Organizations/Affiliations to show in About widget
 organizations:
-  - name: ecabbategranada [at] ucsb.edu
-    #url: https://www.ucsb.edu/
     
 # Short bio (displayed in user profile at end of posts)
 bio: 
@@ -75,8 +73,7 @@ email: ''
 highlight_name: true
 ---
 
-Camilo Abbate is a PhD Candidate at the University of California, Santa Barbara. His research interests include Development, Public Economics, and the Economics of Education. 
-His recent work examines how intergovernmental transfers influence local government finances in Paraguay, as well as political outcomes and voter behavior. He holds an MA from Torcuato Di Tella University.
+I am a Visiting Assistant Professor of Economics at Pomona College. My research focuses broadly in Development and Public Economics. My recent work examines how intergovernmental transfers influence local government finances, as well as political outcomes and voter behavior in developing countries.
 
 
 {{< staticref "uploads/CV Enzo Camilo Abbate Granada.pdf" "newtab" >}} Curriculum Vitae {{< /staticref >}}
