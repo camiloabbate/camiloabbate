@@ -457,8 +457,8 @@ async function api(action,extra){
 /* ============================================================
    AUTH
    ============================================================ */
-function saveCreds(){try{localStorage.setItem("econ57_user",creds.user);localStorage.setItem("econ57_pass",creds.password);}catch(e){}}
-function clearCreds(){try{localStorage.removeItem("econ57_user");localStorage.removeItem("econ57_pass");}catch(e){}}
+function saveCreds(){try{localStorage.setItem("camelis_dashboard_user",creds.user);localStorage.setItem("camelis_dashboard_pass",creds.password);}catch(e){}}
+function clearCreds(){try{localStorage.removeItem("camelis_dashboard_user");localStorage.removeItem("camelis_dashboard_pass");}catch(e){}}
 
 async function tryLogin(user,password){
   creds={user,password};
@@ -668,7 +668,7 @@ function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",
    ============================================================ */
 (async function boot(){
   let u="",p="";
-  try{u=localStorage.getItem("econ57_user")||"";p=localStorage.getItem("econ57_pass")||"";}catch(e){}
+  try{u=localStorage.getItem("camelis_dashboard_user")||"";p=localStorage.getItem("camelis_dashboard_pass")||"";}catch(e){}
   if(u&&p){ try{ await tryLogin(u,p); return; }catch(e){ clearCreds(); } }
   document.getElementById("user").focus();
 })();

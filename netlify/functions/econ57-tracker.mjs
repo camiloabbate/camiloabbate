@@ -5,9 +5,10 @@ import { getStore } from "@netlify/blobs";
  * Mirrors the meditation-tracker pattern: Netlify Blobs for storage,
  * env-var credentials, POST actions returning the full state.
  *
- * Credentials (set these in Netlify → Site settings → Environment variables):
- *   ECON57_USER      (default "camilo")
- *   ECON57_PASSWORD  (default "OneWeekAhead!"  — CHANGE THIS)
+ * Credentials — shared across the whole Cameli's Dashboard portal
+ * (set these in Netlify → Site settings → Environment variables):
+ *   CAMELIS_DASHBOARD_USER      (default "camilo")
+ *   CAMELIS_DASHBOARD_PASSWORD  (default "OneWeekAhead!"  — CHANGE THIS)
  *
  * Every request is a POST with { user, password, action, ... }.
  * The page shell is public, but no data is returned or written without
@@ -17,8 +18,8 @@ import { getStore } from "@netlify/blobs";
 const store = getStore({ name: "econ57-tracker", consistency: "strong" });
 const STATE_KEY = "shared-state";
 
-const AUTH_USER = String(process.env.ECON57_USER || "camilo").trim().toLowerCase();
-const AUTH_PASSWORD = String(process.env.ECON57_PASSWORD || "OneWeekAhead!").trim();
+const AUTH_USER = String(process.env.CAMELIS_DASHBOARD_USER || "camilo").trim().toLowerCase();
+const AUTH_PASSWORD = String(process.env.CAMELIS_DASHBOARD_PASSWORD || "OneWeekAhead!").trim();
 
 function jsonResponse(status, payload) {
   return new Response(JSON.stringify(payload), {
