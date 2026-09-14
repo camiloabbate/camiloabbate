@@ -120,6 +120,11 @@ button{font-family:inherit;cursor:pointer}
 .todo-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}
 .todo-links a{font-size:.76rem;color:var(--accent-ink);text-decoration:none;border:1px solid var(--border);padding:3px 9px;border-radius:7px}
 .todo-links a:hover{border-color:var(--accent)}
+.chk-del{flex:none;border:0;background:transparent;color:var(--text-faint);font-size:.9rem;width:28px;height:28px;border-radius:7px;cursor:pointer}
+.chk-del:hover{background:#181824;color:#fca5a5}
+.add-item{display:flex;gap:8px;margin-top:12px}
+.add-item input{flex:1;padding:10px 13px;border-radius:10px;border:1px solid var(--border-2);background:#0d0d16;color:var(--text);outline:none}
+.add-item input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .counter{display:flex;align-items:center;justify-content:center;gap:26px;margin-top:8px}
 .counter .cnum{font-size:3.2rem;font-weight:750;line-height:1;min-width:1.6ch;text-align:center}
 .counter .cunit{color:var(--text-dim);font-size:.85rem;margin-top:6px}
@@ -414,9 +419,10 @@ function currentWeek(){
 }
 
 /* ---- State + derived ---- */
-let STATE={items:{},counters:{},achievements:{}};
+let STATE={items:{},counters:{},lists:{},achievements:{}};
 let creds={user:"",password:""};
 function itemDone(key){return !!(STATE.items&&STATE.items[key]&&STATE.items[key].done);}
+function allTodos(c){ const custom=((STATE.lists&&STATE.lists[c.id])||[]).map(t=>Object.assign({custom:true},t)); return c.todos.concat(custom); }
 
 function isDone(week,id){return !!(STATE.items[week+"|"+id]&&STATE.items[week+"|"+id].done);}
 function weekPrepped(w){const r=reqItems(w);return r.length>0 && r.every(i=>isDone(w.n,i.id));}
@@ -621,7 +627,8 @@ function renderCats(){
 }
 function catMeta(c){
   if(c.type==="todo"){
-    const total=c.todos.length, done=c.todos.filter(t=>itemDone(c.id+"|"+t.id)).length;
+    const list=allTodos(c);
+    const total=list.length, done=list.filter(t=>itemDone(c.id+"|"+t.id)).length;
     const pct=total?Math.round(done/total*100):0, full=done===total&&total>0;
     return `<div class="cat-bar ${full?"full":""}"><i style="width:${pct}%"></i></div><div class="cat-score">${done}/${total} done</div>`;
   }
@@ -641,10 +648,18 @@ function renderCatPanel(){
   if(!activeCat){ p.hidden=true; p.innerHTML=""; return; }
   const c=CATEGORIES.find(x=>x.id===activeCat); p.hidden=false;
   if(c.type==="todo"){
-    p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3><div class="cp-cap">Tick things off as you go.</div>
-      <div class="checklist">${c.todos.map(t=>todoHtml(c.id,t)).join("")}</div>`;
-    p.querySelectorAll(".chk").forEach(el=>el.onclick=()=>toggle(el.dataset.key,!el.classList.contains("on")));
+    const list=allTodos(c);
+    p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3><div class="cp-cap">Tick things off as you go — add your own with the box below.</div>
+      <div class="checklist">${list.map(t=>todoHtml(c.id,t)).join("")}</div>
+      <form class="add-item" data-cat="${c.id}">
+        <input type="text" placeholder="Add an item…" maxlength="140" autocomplete="off" />
+        <button class="btn sm" type="submit">Add</button>
+      </form>`;
+    p.querySelectorAll(".chk").forEach(el=>el.onclick=e=>{ if(e.target.closest(".chk-del"))return; toggle(el.dataset.key,!el.classList.contains("on")); });
+    p.querySelectorAll(".chk-del").forEach(b=>b.onclick=e=>{ e.stopPropagation(); removeItem(b.dataset.cat,b.dataset.id); });
     p.querySelectorAll(".todo-links a").forEach(a=>a.addEventListener("click",e=>e.stopPropagation()));
+    const form=p.querySelector(".add-item");
+    form.onsubmit=e=>{ e.preventDefault(); const inp=form.querySelector("input"); const v=inp.value.trim(); if(v) addItem(c.id,v); };
   }else if(c.type==="counter"){
     const n=(STATE.counters&&STATE.counters[c.counterKey])||0;
     p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3><div class="cp-cap">Tap ＋ each time you finish reading a paper.</div>
@@ -665,9 +680,25 @@ function renderCatPanel(){
 function todoHtml(catId,t){
   const key=catId+"|"+t.id, on=itemDone(key);
   const links=t.links?`<div class="todo-links">${t.links.map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.text)} ↗</a>`).join("")}</div>`:"";
+  const del=t.custom?`<button class="chk-del" data-cat="${catId}" data-id="${t.id}" title="Remove" aria-label="Remove">✕</button>`:"";
   return `<div class="chk ${on?"on":""}" data-key="${key}">
     <span class="box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
-    <span class="lab"><div>${esc(t.label)}</div>${links}</span></div>`;
+    <span class="lab"><div>${esc(t.label)}</div>${links}</span>${del}</div>`;
+}
+async function addItem(cat,label){
+  if(busy)return; busy=true; setSync("Saving…");
+  try{ const data=await api("addItem",{cat,label}); STATE=data; render(); setSync("Synced");
+    const inp=document.querySelector("#catPanel .add-item input"); if(inp) inp.focus(); }
+  catch(ex){ setSync("Sync failed"); toast(ex.status===403?"Session expired — sign in again.":("Couldn't add: "+ex.message),true);
+    if(ex.status===403){clearCreds();setTimeout(()=>location.reload(),1200);} }
+  finally{busy=false;}
+}
+async function removeItem(cat,id){
+  if(busy)return; busy=true; setSync("Saving…");
+  try{ const data=await api("removeItem",{cat,id}); STATE=data; render(); setSync("Synced"); }
+  catch(ex){ setSync("Sync failed"); toast(ex.status===403?"Session expired — sign in again.":"Couldn't remove that item.",true);
+    if(ex.status===403){clearCreds();setTimeout(()=>location.reload(),1200);} }
+  finally{busy=false;}
 }
 
 /* ---------- ECON 57 teaching-prep tracker (its own life area) ---------- */

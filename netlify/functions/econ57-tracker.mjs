@@ -38,7 +38,7 @@ function jsonResponse(status, payload) {
 }
 
 function emptyState() {
-  return { items: {}, counters: {}, achievements: {}, meta: { lastUpdated: null } };
+  return { items: {}, counters: {}, lists: {}, achievements: {}, meta: { lastUpdated: null } };
 }
 
 async function readState() {
@@ -47,6 +47,7 @@ async function readState() {
     return {
       items: saved.items && typeof saved.items === "object" ? saved.items : {},
       counters: saved.counters && typeof saved.counters === "object" ? saved.counters : {},
+      lists: saved.lists && typeof saved.lists === "object" ? saved.lists : {},
       achievements: saved.achievements && typeof saved.achievements === "object" ? saved.achievements : {},
       meta: saved.meta && typeof saved.meta === "object" ? saved.meta : { lastUpdated: null },
     };
@@ -73,6 +74,12 @@ function isValidKey(key) {
 }
 function isValidCounterKey(key) {
   return /^[a-z0-9_]{1,32}$/i.test(String(key || ""));
+}
+function isValidCat(cat) {
+  return /^[a-z0-9]{1,16}$/i.test(String(cat || ""));
+}
+function genId() {
+  return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
 /* ---- Per-IP brute-force lockout (stored in the same blob store) ---- */
@@ -161,6 +168,37 @@ export default async (request, context) => {
     const state = await readState();
     const current = Number(state.counters[body.key]) || 0;
     state.counters[body.key] = Math.max(0, current + delta);
+    return jsonResponse(200, await writeState(state));
+  }
+
+  // Add a custom to-do item to a category list
+  if (action === "addItem") {
+    if (!isValidCat(body.cat)) {
+      return jsonResponse(400, { error: "Invalid category." });
+    }
+    const label = String(body.label || "").trim();
+    if (!label) return jsonResponse(400, { error: "Item can't be empty." });
+    if (label.length > 140) return jsonResponse(400, { error: "Item is too long." });
+    const state = await readState();
+    if (!Array.isArray(state.lists[body.cat])) state.lists[body.cat] = [];
+    if (state.lists[body.cat].length >= 200) {
+      return jsonResponse(400, { error: "That list is full." });
+    }
+    state.lists[body.cat].push({ id: genId(), label });
+    return jsonResponse(200, await writeState(state));
+  }
+
+  // Remove a custom to-do item (and clear its checkbox state)
+  if (action === "removeItem") {
+    if (!isValidCat(body.cat)) {
+      return jsonResponse(400, { error: "Invalid category." });
+    }
+    const id = String(body.id || "");
+    const state = await readState();
+    if (Array.isArray(state.lists[body.cat])) {
+      state.lists[body.cat] = state.lists[body.cat].filter((x) => x.id !== id);
+    }
+    delete state.items[body.cat + "|" + id];
     return jsonResponse(200, await writeState(state));
   }
 
