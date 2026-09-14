@@ -88,7 +88,30 @@ button{font-family:inherit;cursor:pointer}
 .pill.good .dot{background:var(--good)}
 
 /* ---------- Hero cards ---------- */
-.hero{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:16px;margin-top:26px}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:14px}
+
+/* ---------- Life areas ---------- */
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px}
+@media(max-width:720px){.cats{grid-template-columns:1fr 1fr}}
+.cat-card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border);
+  border-radius:14px;padding:16px;cursor:pointer;transition:border-color .18s,transform .12s;box-shadow:var(--shadow)}
+.cat-card:hover{border-color:var(--border-2);transform:translateY(-1px)}
+.cat-card.active{border-color:rgba(139,123,255,.55);box-shadow:0 0 0 1px rgba(139,123,255,.35),var(--shadow)}
+.cat-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:1.2rem;background:#0f0f18;border:1px solid var(--border)}
+.cat-name{font-weight:650;margin-top:12px;font-size:.96rem}
+.cat-shim{height:6px;border-radius:999px;background:#26263a;overflow:hidden;margin-top:11px;position:relative}
+.cat-shim::after{content:"";position:absolute;top:0;bottom:0;left:0;width:38%;border-radius:999px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:shim 1.9s ease-in-out infinite}
+@keyframes shim{0%{transform:translateX(-120%)}100%{transform:translateX(360%)}}
+.cat-score{font-size:.75rem;color:var(--text-faint);margin-top:9px}
+.cat-panel{margin-top:12px;background:linear-gradient(180deg,var(--surface),var(--surface-2));
+  border:1px solid var(--border);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow)}
+.cat-panel h3{font-size:1.05rem;display:flex;align-items:center;gap:9px}
+.cat-panel .cp-cap{color:var(--text-faint);font-size:.85rem;margin:5px 0 18px}
+.cp-chart{display:flex;align-items:flex-end;gap:10px;height:130px;position:relative}
+.cp-chart .cb{flex:1;background:#24243400;background:#242434;border-radius:6px 6px 0 0;opacity:.45}
+.cp-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--text-dim);font-size:.9rem;
+  letter-spacing:.02em;background:linear-gradient(180deg,transparent,rgba(21,21,31,.35))}
 .card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border);
   border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
 .card .k{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);font-weight:700}
@@ -240,33 +263,26 @@ button{font-family:inherit;cursor:pointer}
         <div class="glyph">57</div>
         <div><div class="t1">ECON 57</div><div class="t2">Prep Command</div></div>
       </div>
-      <span class="pill" id="pillLevel"><span class="dot"></span><span id="pillLevelTxt">Level 1</span></span>
       <span class="pill" id="pillAhead"><span class="dot"></span><span id="pillAheadTxt">0 wks ahead</span></span>
       <button class="btn ghost sm" id="logoutBtn">Sign out</button>
     </div>
   </div>
 
   <div class="wrap">
-    <!-- Hero -->
+    <!-- Life areas -->
+    <div class="sec-head" style="margin-top:28px">
+      <h2>Life areas</h2><span class="rule"></span><span class="muted">More coming online soon</span>
+    </div>
+    <div class="cats" id="cats"></div>
+    <div class="cat-panel" id="catPanel" hidden></div>
+
+    <!-- Teaching (ECON 57) -->
+    <div class="sec-head"><h2>🔬 Research · ECON 57</h2><span class="rule"></span></div>
     <div class="hero">
       <div class="card buffer">
-        <div class="mult" id="multBadge">1×</div>
         <div class="k">Your buffer</div>
         <div class="big"><span id="aheadNum" class="tnum">0</span><span class="u" id="aheadUnit">weeks ahead</span></div>
         <div class="sub" id="aheadSub">Goal: stay at least one week ahead.</div>
-      </div>
-
-      <div class="card lvl">
-        <div class="k">Level</div>
-        <div class="ring-wrap">
-          <div class="ring" id="lvlRing"><b id="lvlNum">1</b></div>
-          <div>
-            <div class="lname" id="lvlName">Getting Set Up</div>
-            <div class="lxp"><span id="xpNum" class="tnum">0</span> XP</div>
-          </div>
-        </div>
-        <div class="lbar"><i id="lvlBar" style="width:0%"></i></div>
-        <div class="lnext" id="lvlNext"></div>
       </div>
 
       <div class="card next">
@@ -495,6 +511,7 @@ document.getElementById("logoutBtn").onclick=()=>{clearCreds();location.reload()
 function showApp(){
   document.getElementById("login").style.display="none";
   document.getElementById("app").style.display="block";
+  renderCats();
   render();
 }
 
@@ -503,8 +520,7 @@ function showApp(){
    ============================================================ */
 function render(){
   const d=derive();
-  // pills
-  document.getElementById("pillLevelTxt").textContent="Level "+(d.lvl+1);
+  // pill
   const pa=document.getElementById("pillAhead");
   document.getElementById("pillAheadTxt").textContent=d.ahead+" wk"+(d.ahead===1?"":"s")+" ahead";
   pa.classList.toggle("good",d.ahead>=1);
@@ -516,17 +532,6 @@ function render(){
   else if(d.ahead>=2) sub.textContent="Comfortably ahead — excellent buffer.";
   else if(d.ahead>=1) sub.textContent="On target. Next week is ready to go.";
   else sub.textContent="Goal: get next week fully prepped to build your buffer.";
-  const mb=document.getElementById("multBadge");
-  mb.textContent=(d.mult===1.5?"1.5":d.mult)+"×"; mb.className="mult"+(d.mult===1?" x1":"");
-  // level card
-  document.getElementById("lvlNum").textContent=d.lvl+1;
-  document.getElementById("lvlName").textContent=LEVEL_NAMES[d.lvl];
-  document.getElementById("xpNum").textContent=d.xp.toLocaleString();
-  const base=LEVELS[d.lvl], nextL=LEVELS[d.lvl+1];
-  const pct = nextL? Math.round(((d.xp-base)/(nextL-base))*100) : 100;
-  document.getElementById("lvlBar").style.width=Math.max(3,Math.min(100,pct))+"%";
-  document.getElementById("lvlRing").style.setProperty("--p",Math.max(3,Math.min(100,pct)));
-  document.getElementById("lvlNext").textContent = nextL? ((nextL-d.xp).toLocaleString()+" XP to Level "+(d.lvl+2)) : "Max level reached.";
   // next card
   const nw=document.getElementById("nextWeek"), nt=document.getElementById("nextTopic"), nbtn=document.getElementById("nextBtn");
   if(d.next){ const w=WEEKS[d.next-1];
@@ -543,14 +548,16 @@ function render(){
   document.getElementById("trMuted").textContent=earned+" / "+ACH.length+" earned";
 }
 
+let openWeeks=new Set(); let seededOpen=false;
 function renderWeeks(d){
+  if(!seededOpen){ openWeeks.add(d.next||d.cw); seededOpen=true; }
   const host=document.getElementById("weeks"); host.innerHTML="";
   WEEKS.forEach(w=>{
     const items=itemsFor(w), req=reqItems(w);
     const done=weekReqDone(w), prepped=weekPrepped(w);
     const isCur=w.n===d.cw, isPast=w.n<d.cw && !prepped ? true : (w.n<d.cw);
     const el=document.createElement("div");
-    el.className="week"+(isCur?" current":"")+(prepped?" prepped":"")+(w.n<d.cw&&!isCur?" past":"");
+    el.className="week"+(isCur?" current":"")+(prepped?" prepped":"")+(w.n<d.cw&&!isCur?" past":"")+(openWeeks.has(w.n)?" open":"");
     el.id="week-"+w.n;
     const pct=req.length?Math.round((done/req.length)*100):0;
     let chip = prepped?'<span class="chip done">Prepped</span>' : (isCur?'<span class="chip now">This week</span>':'');
@@ -578,11 +585,13 @@ function renderWeeks(d){
     host.appendChild(el);
   });
   // wire
-  host.querySelectorAll(".wk-head").forEach(h=>h.onclick=()=>h.parentElement.classList.toggle("open"));
+  host.querySelectorAll(".wk-head").forEach(h=>h.onclick=()=>{
+    const el=h.parentElement, n=parseInt(el.id.split("-")[1],10);
+    if(openWeeks.has(n)) openWeeks.delete(n); else openWeeks.add(n);
+    el.classList.toggle("open");
+  });
   host.querySelectorAll(".chk").forEach(c=>c.onclick=()=>toggle(c.dataset.week,c.dataset.id,!c.classList.contains("on")));
   host.querySelectorAll("[data-reset]").forEach(b=>b.onclick=e=>{e.stopPropagation();resetWeek(b.dataset.reset);});
-  // auto-open current + next
-  const cur=document.getElementById("week-"+(d.next||d.cw)); if(cur) cur.classList.add("open");
 }
 function sessionHtml(s){
   if(s.noclass) return `<div class="sess off"><div class="sd">${s.day}</div><div class="st">${esc(s.title)}</div></div>`;
@@ -608,15 +617,46 @@ function renderTrophies(d){
     const el=document.createElement("div");
     el.className="trophy"+(earned?" earned":"");
     el.innerHTML=`<div class="ic">${a.icon}</div><div><div class="tn">${esc(a.name)}</div>
-      <div class="tp">${earned?("+"+a.pts+" XP · earned"):esc(a.desc)}</div></div>`;
+      <div class="tp">${earned?"Earned ✓":esc(a.desc)}</div></div>`;
     host.appendChild(el);
   });
 }
 
 function openWeek(n){
   const el=document.getElementById("week-"+n); if(!el)return;
-  el.classList.add("open");
+  openWeeks.add(n); el.classList.add("open");
   el.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+/* ---------- Life-area cards (placeholders for now) ---------- */
+const CATEGORIES=[
+  {id:"research", icon:"🔬", name:"Research"},
+  {id:"mindbody", icon:"🧘", name:"Mind & Body"},
+  {id:"chores",   icon:"🧹", name:"House Chores"},
+  {id:"finances", icon:"💰", name:"Personal Finances"},
+];
+let activeCat=null;
+function renderCats(){
+  const host=document.getElementById("cats"); host.innerHTML="";
+  CATEGORIES.forEach(c=>{
+    const el=document.createElement("div");
+    el.className="cat-card"+(activeCat===c.id?" active":"");
+    el.innerHTML=`<div class="cat-ic">${c.icon}</div><div class="cat-name">${esc(c.name)}</div>
+      <div class="cat-shim"></div><div class="cat-score">Coming soon</div>`;
+    el.onclick=()=>{ activeCat = activeCat===c.id?null:c.id; renderCats(); renderCatPanel(); };
+    host.appendChild(el);
+  });
+}
+function renderCatPanel(){
+  const p=document.getElementById("catPanel");
+  if(!activeCat){ p.hidden=true; p.innerHTML=""; return; }
+  const c=CATEGORIES.find(x=>x.id===activeCat);
+  const bars=[42,66,50,80,58,72,54].map(h=>`<div class="cb" style="height:${h}%"></div>`).join("");
+  p.hidden=false;
+  p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3>
+    <div class="cp-cap">Progress and charts for this area will live here.</div>
+    <div class="cp-chart">${bars}<div class="cp-empty">No data yet — coming soon</div></div>`;
+  p.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 /* ============================================================
@@ -645,7 +685,7 @@ async function checkAchievements(){
   const d=derive();
   for(const a of ACH){
     if(a.test(d) && !(STATE.achievements&&STATE.achievements[a.id])){
-      try{ const data=await api("achieve",{id:a.id}); STATE=data; celebrate(a.icon+"  "+a.name+"  +"+a.pts+" XP"); }
+      try{ const data=await api("achieve",{id:a.id}); STATE=data; celebrate(a.icon+"  "+a.name); }
       catch(e){}
     }
   }
