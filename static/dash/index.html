@@ -94,15 +94,12 @@ button{font-family:inherit;cursor:pointer}
 .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px}
 @media(max-width:720px){.cats{grid-template-columns:1fr 1fr}}
 .cat-card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border);
-  border-radius:14px;padding:16px;cursor:pointer;transition:border-color .18s,transform .12s;box-shadow:var(--shadow)}
-.cat-card:hover{border-color:var(--border-2);transform:translateY(-1px)}
+  border-radius:14px;padding:16px;cursor:pointer;transition:border-color .15s;box-shadow:var(--shadow)}
+.cat-card:hover{border-color:var(--border-2)}
 .cat-card.active{border-color:rgba(139,123,255,.55);box-shadow:0 0 0 1px rgba(139,123,255,.35),var(--shadow)}
 .cat-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:1.2rem;background:#0f0f18;border:1px solid var(--border)}
 .cat-name{font-weight:650;margin-top:12px;font-size:.96rem}
-.cat-shim{height:6px;border-radius:999px;background:#26263a;overflow:hidden;margin-top:11px;position:relative}
-.cat-shim::after{content:"";position:absolute;top:0;bottom:0;left:0;width:38%;border-radius:999px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:shim 1.9s ease-in-out infinite}
-@keyframes shim{0%{transform:translateX(-120%)}100%{transform:translateX(360%)}}
+.cat-shim{height:6px;border-radius:999px;background:#26263a;margin-top:11px}
 .cat-score{font-size:.75rem;color:var(--text-faint);margin-top:9px}
 .cat-panel{margin-top:12px;background:linear-gradient(180deg,var(--surface),var(--surface-2));
   border:1px solid var(--border);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow)}
@@ -113,8 +110,13 @@ button{font-family:inherit;cursor:pointer}
 .cp-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--text-dim);font-size:.9rem;
   letter-spacing:.02em;background:linear-gradient(180deg,transparent,rgba(21,21,31,.35))}
 .cat-bar{height:6px;border-radius:999px;background:#26263a;overflow:hidden;margin-top:11px}
-.cat-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .5s}
+.cat-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
 .cat-bar.full>i{background:var(--good)}
+.econ-buffer{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 16px;
+  background:#0f0f18;border:1px solid var(--border);border-radius:12px;margin-bottom:10px}
+.econ-buffer .eb-num{font-size:2rem;font-weight:750;color:var(--accent-ink)}
+.econ-buffer .eb-sub{color:var(--text-dim);font-size:.85rem}
+.eb-next{color:var(--text-dim);font-size:.85rem;margin-bottom:14px}
 .todo-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}
 .todo-links a{font-size:.76rem;color:var(--accent-ink);text-decoration:none;border:1px solid var(--border);padding:3px 9px;border-radius:7px}
 .todo-links a:hover{border-color:var(--accent)}
@@ -581,6 +583,7 @@ function openWeek(n){
 
 /* ---------- Life-area cards ---------- */
 const CATEGORIES=[
+  {id:"teaching", icon:"📚", name:"ECON 57", type:"econ57"},
   {id:"research", icon:"🔬", name:"Research", type:"counter", counterKey:"papers", unit:"papers read"},
   {id:"mindbody", icon:"🧘", name:"Mind & Body", type:"soon"},
   {id:"chores", icon:"🧹", name:"House Chores", type:"todo", todos:[
@@ -598,6 +601,7 @@ const CATEGORIES=[
   ]},
 ];
 let activeCat=null;
+let teachOpen=new Set(); let teachSeeded=false;
 function renderCats(){
   const host=document.getElementById("cats"); host.innerHTML="";
   let live=0;
@@ -606,7 +610,11 @@ function renderCats(){
     const el=document.createElement("div");
     el.className="cat-card"+(activeCat===c.id?" active":"");
     el.innerHTML=`<div class="cat-ic">${c.icon}</div><div class="cat-name">${esc(c.name)}</div>${catMeta(c)}`;
-    el.onclick=()=>{ activeCat = activeCat===c.id?null:c.id; render(); };
+    el.onclick=()=>{
+      const opening = activeCat!==c.id;
+      activeCat = opening?c.id:null; render();
+      if(opening){ const p=document.getElementById("catPanel"); if(p&&!p.hidden) p.scrollIntoView({behavior:"smooth",block:"nearest"}); }
+    };
     host.appendChild(el);
   });
   const m=document.getElementById("areasMuted"); if(m) m.textContent=live+" active";
@@ -620,6 +628,11 @@ function catMeta(c){
   if(c.type==="counter"){
     const n=(STATE.counters&&STATE.counters[c.counterKey])||0;
     return `<div class="cat-score" style="margin-top:12px"><b style="color:var(--text);font-size:1.15rem">${n}</b> ${esc(c.unit)}</div>`;
+  }
+  if(c.type==="econ57"){
+    const d=derive(); const pct=Math.round(d.weeksPrepped/15*100);
+    return `<div class="cat-bar ${d.weeksPrepped>=15?"full":""}"><i style="width:${pct}%"></i></div>
+      <div class="cat-score">${d.ahead} wk ahead · ${d.weeksPrepped}/15 prepped</div>`;
   }
   return `<div class="cat-shim"></div><div class="cat-score">Coming soon</div>`;
 }
@@ -641,12 +654,13 @@ function renderCatPanel(){
         <button class="cbtn" data-d="1" aria-label="plus">＋</button>
       </div>`;
     p.querySelectorAll(".cbtn").forEach(b=>b.onclick=()=>changeCounter(c.counterKey,parseInt(b.dataset.d,10)));
+  }else if(c.type==="econ57"){
+    renderEcon57(p);
   }else{
     const bars=[42,66,50,80,58,72,54].map(h=>`<div class="cb" style="height:${h}%"></div>`).join("");
     p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3><div class="cp-cap">Progress and charts for this area will live here.</div>
       <div class="cp-chart">${bars}<div class="cp-empty">No data yet — coming soon</div></div>`;
   }
-  p.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 function todoHtml(catId,t){
   const key=catId+"|"+t.id, on=itemDone(key);
@@ -654,6 +668,61 @@ function todoHtml(catId,t){
   return `<div class="chk ${on?"on":""}" data-key="${key}">
     <span class="box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
     <span class="lab"><div>${esc(t.label)}</div>${links}</span></div>`;
+}
+
+/* ---------- ECON 57 teaching-prep tracker (its own life area) ---------- */
+function renderEcon57(p){
+  const d=derive();
+  if(!teachSeeded){ if(d.next) teachOpen.add(d.next); teachSeeded=true; }
+  const nextTxt = d.next
+    ? "Prep next: Week "+d.next+" — "+WEEKS[d.next-1].sessions.filter(s=>!s.noclass).map(s=>s.title).join(" · ")
+    : "All caught up — every remaining week is prepped.";
+  p.innerHTML=`<h3>📚 ECON 57 — teaching prep</h3>
+    <div class="cp-cap">Goal: stay at least one week ahead of class.</div>
+    <div class="econ-buffer">
+      <div><span class="eb-num tnum">${d.ahead}</span> week${d.ahead===1?"":"s"} ahead</div>
+      <div class="eb-sub">${d.weeksPrepped} / 15 weeks prepped</div>
+    </div>
+    <div class="eb-next">${esc(nextTxt)}</div>
+    <div class="weeks">${WEEKS.map(w=>econWeekHtml(w,d)).join("")}</div>`;
+  p.querySelectorAll(".wk-head").forEach(h=>h.onclick=()=>{
+    const el=h.parentElement, n=parseInt(el.id.split("-")[1],10);
+    if(teachOpen.has(n)) teachOpen.delete(n); else teachOpen.add(n);
+    el.classList.toggle("open");
+  });
+  p.querySelectorAll(".chk").forEach(el=>el.onclick=()=>toggle(el.dataset.key,!el.classList.contains("on")));
+}
+function econWeekHtml(w,d){
+  const items=itemsFor(w), req=reqItems(w);
+  const done=req.filter(i=>isDone(w.n,i.id)).length, prepped=weekPrepped(w);
+  const isCur=w.n===d.cw, pct=req.length?Math.round(done/req.length*100):0;
+  const chip = prepped?'<span class="chip done">Prepped</span>':(isCur?'<span class="chip now">This week</span>':'');
+  const notes=w.deliverables.filter(x=>x.type==="note");
+  return `<div class="week ${isCur?"current":""} ${prepped?"prepped":""} ${teachOpen.has(w.n)?"open":""}" id="week-${w.n}">
+    <div class="wk-head">
+      <div class="wk-num"><small>Week</small><b>${w.n}</b></div>
+      <div class="wk-meta">
+        <div class="wk-title">${esc(w.sessions.filter(s=>!s.noclass)[0].title)} ${chip}</div>
+        <div class="wk-dates">${fmt(w.mon)} – ${fmt(addDays(w.mon,6))}</div>
+      </div>
+      <div class="wk-progress">
+        <div class="wk-mini ${prepped?"done":""}"><i style="width:${pct}%"></i></div>
+        <div class="wk-count">${done}/${req.length}</div>
+        <span class="chev">›</span>
+      </div>
+    </div>
+    <div class="wk-body">
+      <div class="sessions">${w.sessions.map(s=>sessionHtml(s)).join("")}</div>
+      ${notes.length?`<div class="notes">${notes.map(x=>`<span class="note-tag">📌 ${esc(x.label)}</span>`).join("")}</div>`:""}
+      <div class="checklist">${items.map(i=>econChkHtml(w.n,i)).join("")}</div>
+    </div>
+  </div>`;
+}
+function econChkHtml(week,i){
+  const key=week+"|"+i.id, on=isDone(week,i.id);
+  return `<div class="chk ${i.kind==="opt"?"opt":""} ${on?"on":""}" data-key="${key}">
+    <span class="box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+    <span class="lab">${esc(i.label)}</span><span class="tg">${i.tag}</span></div>`;
 }
 
 /* ============================================================
