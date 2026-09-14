@@ -38,7 +38,7 @@ function jsonResponse(status, payload) {
 }
 
 function emptyState() {
-  return { items: {}, achievements: {}, meta: { lastUpdated: null } };
+  return { items: {}, counters: {}, achievements: {}, meta: { lastUpdated: null } };
 }
 
 async function readState() {
@@ -46,6 +46,7 @@ async function readState() {
   if (saved && typeof saved === "object") {
     return {
       items: saved.items && typeof saved.items === "object" ? saved.items : {},
+      counters: saved.counters && typeof saved.counters === "object" ? saved.counters : {},
       achievements: saved.achievements && typeof saved.achievements === "object" ? saved.achievements : {},
       meta: saved.meta && typeof saved.meta === "object" ? saved.meta : { lastUpdated: null },
     };
@@ -66,9 +67,12 @@ function isAuthorized(body) {
   return user === AUTH_USER && password === AUTH_PASSWORD;
 }
 
-// item keys look like "<week>|<itemId>", e.g. "3|tue", "5|hw", "2|opt"
+// item keys look like "<module>|<itemId>", e.g. "chores|couch", "finances|experian", "3|tue"
 function isValidKey(key) {
-  return /^\d{1,2}\|[a-z0-9]{1,12}$/.test(String(key || ""));
+  return /^[a-z0-9]{1,16}\|[a-z0-9_-]{1,32}$/i.test(String(key || ""));
+}
+function isValidCounterKey(key) {
+  return /^[a-z0-9_]{1,32}$/i.test(String(key || ""));
 }
 
 /* ---- Per-IP brute-force lockout (stored in the same blob store) ---- */
@@ -142,6 +146,21 @@ export default async (request, context) => {
     } else {
       delete state.items[body.key];
     }
+    return jsonResponse(200, await writeState(state));
+  }
+
+  // Increment/decrement a numeric counter (e.g. papers read)
+  if (action === "counter") {
+    if (!isValidCounterKey(body.key)) {
+      return jsonResponse(400, { error: "Invalid counter key." });
+    }
+    const delta = Math.trunc(Number(body.delta));
+    if (!Number.isFinite(delta) || Math.abs(delta) > 1000) {
+      return jsonResponse(400, { error: "Invalid delta." });
+    }
+    const state = await readState();
+    const current = Number(state.counters[body.key]) || 0;
+    state.counters[body.key] = Math.max(0, current + delta);
     return jsonResponse(200, await writeState(state));
   }
 

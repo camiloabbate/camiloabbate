@@ -112,6 +112,18 @@ button{font-family:inherit;cursor:pointer}
 .cp-chart .cb{flex:1;background:#24243400;background:#242434;border-radius:6px 6px 0 0;opacity:.45}
 .cp-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--text-dim);font-size:.9rem;
   letter-spacing:.02em;background:linear-gradient(180deg,transparent,rgba(21,21,31,.35))}
+.cat-bar{height:6px;border-radius:999px;background:#26263a;overflow:hidden;margin-top:11px}
+.cat-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .5s}
+.cat-bar.full>i{background:var(--good)}
+.todo-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}
+.todo-links a{font-size:.76rem;color:var(--accent-ink);text-decoration:none;border:1px solid var(--border);padding:3px 9px;border-radius:7px}
+.todo-links a:hover{border-color:var(--accent)}
+.counter{display:flex;align-items:center;justify-content:center;gap:26px;margin-top:8px}
+.counter .cnum{font-size:3.2rem;font-weight:750;line-height:1;min-width:1.6ch;text-align:center}
+.counter .cunit{color:var(--text-dim);font-size:.85rem;margin-top:6px}
+.counter .cbtn{width:52px;height:52px;border-radius:14px;border:1px solid var(--border-2);background:var(--surface-2);
+  color:var(--text);font-size:1.6rem;display:grid;place-items:center;line-height:1;transition:.15s}
+.counter .cbtn:hover{border-color:var(--accent);color:var(--accent-ink)}
 .card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border);
   border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
 .card .k{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);font-weight:700}
@@ -260,52 +272,19 @@ button{font-family:inherit;cursor:pointer}
   <div class="topbar">
     <div class="topbar-in">
       <div class="mark">
-        <div class="glyph">57</div>
-        <div><div class="t1">ECON 57</div><div class="t2">Prep Command</div></div>
+        <div class="glyph" style="font-size:1.15rem">🐫</div>
+        <div><div class="t1">Cameli's Dashboard</div><div class="t2">Personal command center</div></div>
       </div>
-      <span class="pill" id="pillAhead"><span class="dot"></span><span id="pillAheadTxt">0 wks ahead</span></span>
       <button class="btn ghost sm" id="logoutBtn">Sign out</button>
     </div>
   </div>
 
   <div class="wrap">
-    <!-- Life areas -->
     <div class="sec-head" style="margin-top:28px">
-      <h2>Life areas</h2><span class="rule"></span><span class="muted">More coming online soon</span>
+      <h2>Life areas</h2><span class="rule"></span><span class="muted" id="areasMuted"></span>
     </div>
     <div class="cats" id="cats"></div>
     <div class="cat-panel" id="catPanel" hidden></div>
-
-    <!-- Teaching (ECON 57) -->
-    <div class="sec-head"><h2>🔬 Research · ECON 57</h2><span class="rule"></span></div>
-    <div class="hero">
-      <div class="card buffer">
-        <div class="k">Your buffer</div>
-        <div class="big"><span id="aheadNum" class="tnum">0</span><span class="u" id="aheadUnit">weeks ahead</span></div>
-        <div class="sub" id="aheadSub">Goal: stay at least one week ahead.</div>
-      </div>
-
-      <div class="card next">
-        <div class="k">Prep next</div>
-        <div class="nweek" id="nextWeek">—</div>
-        <div class="ntopic" id="nextTopic"></div>
-        <button class="btn sm" id="nextBtn">Jump to it →</button>
-      </div>
-    </div>
-
-    <!-- Semester -->
-    <div class="sec-head">
-      <h2>The semester</h2><span class="rule"></span>
-      <span class="muted" id="semMuted"></span>
-    </div>
-    <div class="weeks" id="weeks"></div>
-
-    <!-- Trophies -->
-    <div class="sec-head">
-      <h2>Trophy case</h2><span class="rule"></span>
-      <span class="muted" id="trMuted"></span>
-    </div>
-    <div class="trophies" id="trophies"></div>
 
     <div class="foot">
       <span id="syncStatus">Synced</span>
@@ -433,8 +412,9 @@ function currentWeek(){
 }
 
 /* ---- State + derived ---- */
-let STATE={items:{},achievements:{}};
+let STATE={items:{},counters:{},achievements:{}};
 let creds={user:"",password:""};
+function itemDone(key){return !!(STATE.items&&STATE.items[key]&&STATE.items[key].done);}
 
 function isDone(week,id){return !!(STATE.items[week+"|"+id]&&STATE.items[week+"|"+id].done);}
 function weekPrepped(w){const r=reqItems(w);return r.length>0 && r.every(i=>isDone(w.n,i.id));}
@@ -511,42 +491,13 @@ document.getElementById("logoutBtn").onclick=()=>{clearCreds();location.reload()
 function showApp(){
   document.getElementById("login").style.display="none";
   document.getElementById("app").style.display="block";
-  renderCats();
   render();
 }
 
 /* ============================================================
    RENDER
    ============================================================ */
-function render(){
-  const d=derive();
-  // pill
-  const pa=document.getElementById("pillAhead");
-  document.getElementById("pillAheadTxt").textContent=d.ahead+" wk"+(d.ahead===1?"":"s")+" ahead";
-  pa.classList.toggle("good",d.ahead>=1);
-  // buffer card
-  document.getElementById("aheadNum").textContent=d.ahead;
-  document.getElementById("aheadUnit").textContent=d.ahead===1?"week ahead":"weeks ahead";
-  const sub=document.getElementById("aheadSub");
-  if(d.cw>15) sub.textContent="Semester complete. 🎓";
-  else if(d.ahead>=2) sub.textContent="Comfortably ahead — excellent buffer.";
-  else if(d.ahead>=1) sub.textContent="On target. Next week is ready to go.";
-  else sub.textContent="Goal: get next week fully prepped to build your buffer.";
-  // next card
-  const nw=document.getElementById("nextWeek"), nt=document.getElementById("nextTopic"), nbtn=document.getElementById("nextBtn");
-  if(d.next){ const w=WEEKS[d.next-1];
-    nw.textContent="Week "+w.n+" · "+fmt(w.mon)+"–"+fmt(addDays(w.mon,6));
-    nt.textContent=w.sessions.filter(s=>!s.noclass).map(s=>s.title).join(" · ");
-    nbtn.style.display=""; nbtn.onclick=()=>openWeek(d.next);
-  } else { nw.textContent="All caught up 🎉"; nt.textContent="Every week from here is prepped. Enjoy the buffer."; nbtn.style.display="none"; }
-  // semester
-  document.getElementById("semMuted").textContent=d.weeksPrepped+" / 15 weeks prepped";
-  renderWeeks(d);
-  // trophies
-  renderTrophies(d);
-  const earned=Object.keys(STATE.achievements||{}).length;
-  document.getElementById("trMuted").textContent=earned+" / "+ACH.length+" earned";
-}
+function render(){ renderCats(); renderCatPanel(); }
 
 let openWeeks=new Set(); let seededOpen=false;
 function renderWeeks(d){
@@ -628,72 +579,108 @@ function openWeek(n){
   el.scrollIntoView({behavior:"smooth",block:"center"});
 }
 
-/* ---------- Life-area cards (placeholders for now) ---------- */
+/* ---------- Life-area cards ---------- */
 const CATEGORIES=[
-  {id:"research", icon:"🔬", name:"Research"},
-  {id:"mindbody", icon:"🧘", name:"Mind & Body"},
-  {id:"chores",   icon:"🧹", name:"House Chores"},
-  {id:"finances", icon:"💰", name:"Personal Finances"},
+  {id:"research", icon:"🔬", name:"Research", type:"counter", counterKey:"papers", unit:"papers read"},
+  {id:"mindbody", icon:"🧘", name:"Mind & Body", type:"soon"},
+  {id:"chores", icon:"🧹", name:"House Chores", type:"todo", todos:[
+    {id:"couch", label:"Couch"},
+    {id:"puf", label:"Puf"},
+    {id:"tv", label:"TV"},
+    {id:"tvstand", label:"TV stand"},
+  ]},
+  {id:"finances", icon:"💰", name:"Personal Finances", type:"todo", todos:[
+    {id:"experian", label:"Call Experian / UCSB about my profile"},
+    {id:"retirement", label:"Call Benefits experts / UCSB about my retirement plan", links:[
+      {url:"https://www.myucretirement.com/", text:"myucretirement.com"},
+      {url:"https://nb.fidelity.com/static/mybenefits/netbenefitslogin/#/login", text:"Fidelity NetBenefits"},
+    ]},
+  ]},
 ];
 let activeCat=null;
 function renderCats(){
   const host=document.getElementById("cats"); host.innerHTML="";
+  let live=0;
   CATEGORIES.forEach(c=>{
+    if(c.type!=="soon") live++;
     const el=document.createElement("div");
     el.className="cat-card"+(activeCat===c.id?" active":"");
-    el.innerHTML=`<div class="cat-ic">${c.icon}</div><div class="cat-name">${esc(c.name)}</div>
-      <div class="cat-shim"></div><div class="cat-score">Coming soon</div>`;
-    el.onclick=()=>{ activeCat = activeCat===c.id?null:c.id; renderCats(); renderCatPanel(); };
+    el.innerHTML=`<div class="cat-ic">${c.icon}</div><div class="cat-name">${esc(c.name)}</div>${catMeta(c)}`;
+    el.onclick=()=>{ activeCat = activeCat===c.id?null:c.id; render(); };
     host.appendChild(el);
   });
+  const m=document.getElementById("areasMuted"); if(m) m.textContent=live+" active";
+}
+function catMeta(c){
+  if(c.type==="todo"){
+    const total=c.todos.length, done=c.todos.filter(t=>itemDone(c.id+"|"+t.id)).length;
+    const pct=total?Math.round(done/total*100):0, full=done===total&&total>0;
+    return `<div class="cat-bar ${full?"full":""}"><i style="width:${pct}%"></i></div><div class="cat-score">${done}/${total} done</div>`;
+  }
+  if(c.type==="counter"){
+    const n=(STATE.counters&&STATE.counters[c.counterKey])||0;
+    return `<div class="cat-score" style="margin-top:12px"><b style="color:var(--text);font-size:1.15rem">${n}</b> ${esc(c.unit)}</div>`;
+  }
+  return `<div class="cat-shim"></div><div class="cat-score">Coming soon</div>`;
 }
 function renderCatPanel(){
   const p=document.getElementById("catPanel");
   if(!activeCat){ p.hidden=true; p.innerHTML=""; return; }
-  const c=CATEGORIES.find(x=>x.id===activeCat);
-  const bars=[42,66,50,80,58,72,54].map(h=>`<div class="cb" style="height:${h}%"></div>`).join("");
-  p.hidden=false;
-  p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3>
-    <div class="cp-cap">Progress and charts for this area will live here.</div>
-    <div class="cp-chart">${bars}<div class="cp-empty">No data yet — coming soon</div></div>`;
+  const c=CATEGORIES.find(x=>x.id===activeCat); p.hidden=false;
+  if(c.type==="todo"){
+    p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3><div class="cp-cap">Tick things off as you go.</div>
+      <div class="checklist">${c.todos.map(t=>todoHtml(c.id,t)).join("")}</div>`;
+    p.querySelectorAll(".chk").forEach(el=>el.onclick=()=>toggle(el.dataset.key,!el.classList.contains("on")));
+    p.querySelectorAll(".todo-links a").forEach(a=>a.addEventListener("click",e=>e.stopPropagation()));
+  }else if(c.type==="counter"){
+    const n=(STATE.counters&&STATE.counters[c.counterKey])||0;
+    p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3><div class="cp-cap">Tap ＋ each time you finish reading a paper.</div>
+      <div class="counter">
+        <button class="cbtn" data-d="-1" aria-label="minus">−</button>
+        <div><div class="cnum tnum">${n}</div><div class="cunit">${esc(c.unit)}</div></div>
+        <button class="cbtn" data-d="1" aria-label="plus">＋</button>
+      </div>`;
+    p.querySelectorAll(".cbtn").forEach(b=>b.onclick=()=>changeCounter(c.counterKey,parseInt(b.dataset.d,10)));
+  }else{
+    const bars=[42,66,50,80,58,72,54].map(h=>`<div class="cb" style="height:${h}%"></div>`).join("");
+    p.innerHTML=`<h3>${c.icon} ${esc(c.name)}</h3><div class="cp-cap">Progress and charts for this area will live here.</div>
+      <div class="cp-chart">${bars}<div class="cp-empty">No data yet — coming soon</div></div>`;
+  }
   p.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function todoHtml(catId,t){
+  const key=catId+"|"+t.id, on=itemDone(key);
+  const links=t.links?`<div class="todo-links">${t.links.map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.text)} ↗</a>`).join("")}</div>`:"";
+  return `<div class="chk ${on?"on":""}" data-key="${key}">
+    <span class="box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+    <span class="lab"><div>${esc(t.label)}</div>${links}</span></div>`;
 }
 
 /* ============================================================
    MUTATIONS
    ============================================================ */
 let busy=false;
-async function toggle(week,id,done){
+async function toggle(key,done){
   if(busy) return; busy=true;
-  const key=week+"|"+id;
-  const before=JSON.parse(JSON.stringify(STATE.items));
-  // optimistic
+  const before=JSON.parse(JSON.stringify(STATE.items||{}));
   if(done) STATE.items[key]={done:true}; else delete STATE.items[key];
   render(); setSync("Saving…");
-  try{
-    const data=await api("toggle",{key,done});
-    STATE=data; setSync("Synced");
-    await checkAchievements();
-    render();
-  }catch(ex){
-    STATE.items=before; render(); setSync("Sync failed");
+  try{ const data=await api("toggle",{key,done}); STATE=data; setSync("Synced"); render(); }
+  catch(ex){ STATE.items=before; render(); setSync("Sync failed");
     toast(ex.status===403?"Session expired — sign in again.":"Couldn't save. Check connection.",true);
-    if(ex.status===403){clearCreds();setTimeout(()=>location.reload(),1200);}
-  }finally{busy=false;}
+    if(ex.status===403){clearCreds();setTimeout(()=>location.reload(),1200);} }
+  finally{busy=false;}
 }
-async function checkAchievements(){
-  const d=derive();
-  for(const a of ACH){
-    if(a.test(d) && !(STATE.achievements&&STATE.achievements[a.id])){
-      try{ const data=await api("achieve",{id:a.id}); STATE=data; celebrate(a.icon+"  "+a.name); }
-      catch(e){}
-    }
-  }
-}
-async function resetWeek(n){
-  if(!confirm("Clear all prep checkmarks for Week "+n+"?"))return;
-  try{ const data=await api("resetWeek",{week:n}); STATE=data; render(); toast("Week "+n+" cleared."); }
-  catch(ex){ toast("Couldn't clear that week.",true); }
+async function changeCounter(key,delta){
+  if(busy) return; busy=true;
+  const before=Object.assign({},STATE.counters||{});
+  STATE.counters=STATE.counters||{}; STATE.counters[key]=Math.max(0,(STATE.counters[key]||0)+delta);
+  render(); setSync("Saving…");
+  try{ const data=await api("counter",{key,delta}); STATE=data; setSync("Synced"); render(); }
+  catch(ex){ STATE.counters=before; render(); setSync("Sync failed");
+    toast(ex.status===403?"Session expired — sign in again.":"Couldn't save. Check connection.",true);
+    if(ex.status===403){clearCreds();setTimeout(()=>location.reload(),1200);} }
+  finally{busy=false;}
 }
 
 /* ============================================================
