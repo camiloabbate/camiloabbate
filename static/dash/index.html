@@ -449,9 +449,9 @@ function derive(){
 async function api(action,extra){
   const res=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},
     body:JSON.stringify(Object.assign({user:creds.user,password:creds.password,action},extra||{}))});
-  if(res.status===403){throw new Error("auth");}
-  if(!res.ok){let m="Something went wrong.";try{m=(await res.json()).error||m;}catch(e){}throw new Error(m);}
-  return res.json();
+  let data=null; try{data=await res.json();}catch(e){}
+  if(!res.ok){ const err=new Error((data&&data.error)||"Something went wrong."); err.status=res.status; err.data=data||{}; throw err; }
+  return data;
 }
 
 /* ============================================================
@@ -470,10 +470,26 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
   const btn=document.getElementById("loginBtn"), err=document.getElementById("loginError");
   const u=document.getElementById("user").value.trim(), p=document.getElementById("pass").value;
   err.textContent=""; btn.disabled=true; btn.textContent="Signing in…";
-  try{ await tryLogin(u,p); }
-  catch(ex){ err.textContent = ex.message==="auth"?"Incorrect username or password.":("Could not reach the server. "+ex.message); }
-  finally{ btn.disabled=false; btn.textContent="Jaharley"; }
+  try{
+    await tryLogin(u,p);
+  }catch(ex){
+    if(ex.status===429 && ex.data && ex.data.lockedUntil){ lockForm(ex.data.lockedUntil); return; }
+    if(ex.status===403){ const n=ex.data&&ex.data.attemptsLeft;
+      err.textContent="Incorrect username or password."+(n!=null?(" "+n+" attempt"+(n===1?"":"s")+" left."):""); }
+    else{ err.textContent="Could not reach the server. "+ex.message; }
+  }
+  btn.disabled=false; btn.textContent="Jaharley";
 });
+function lockForm(until){
+  const u=document.getElementById("user"), p=document.getElementById("pass"),
+        btn=document.getElementById("loginBtn"), err=document.getElementById("loginError");
+  (function tick(){ const left=until-Date.now();
+    if(left<=0){ [u,p,btn].forEach(e=>e.disabled=false); btn.textContent="Jaharley"; err.textContent=""; return; }
+    [u,p,btn].forEach(e=>e.disabled=true); btn.textContent="Locked";
+    err.textContent="Too many attempts. Try again in ~"+Math.ceil(left/60000)+" min.";
+    setTimeout(tick,1000);
+  })();
+}
 document.getElementById("logoutBtn").onclick=()=>{clearCreds();location.reload();};
 
 function showApp(){
@@ -621,8 +637,8 @@ async function toggle(week,id,done){
     render();
   }catch(ex){
     STATE.items=before; render(); setSync("Sync failed");
-    toast(ex.message==="auth"?"Session expired — sign in again.":"Couldn't save. Check connection.",true);
-    if(ex.message==="auth"){clearCreds();setTimeout(()=>location.reload(),1200);}
+    toast(ex.status===403?"Session expired — sign in again.":"Couldn't save. Check connection.",true);
+    if(ex.status===403){clearCreds();setTimeout(()=>location.reload(),1200);}
   }finally{busy=false;}
 }
 async function checkAchievements(){

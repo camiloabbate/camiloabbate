@@ -5,21 +5,30 @@ import { getStore } from "@netlify/blobs";
  * Mirrors the meditation-tracker pattern: Netlify Blobs for storage,
  * env-var credentials, POST actions returning the full state.
  *
- * Credentials — shared across the whole Cameli's Dashboard portal
- * (set these in Netlify → Site settings → Environment variables):
- *   CAMELIS_DASHBOARD_USER      (default "camilo")
- *   CAMELIS_DASHBOARD_PASSWORD  (default "OneWeekAhead!"  — CHANGE THIS)
+ * Credentials — shared across the whole Cameli's Dashboard portal.
+ * REQUIRED: set both in Netlify → Site settings → Environment variables.
+ *   CAMELIS_DASHBOARD_USER
+ *   CAMELIS_DASHBOARD_PASSWORD
+ * If either is unset the function fails closed (all sign-ins denied) —
+ * there is deliberately no fallback password in this source.
  *
  * Every request is a POST with { user, password, action, ... }.
  * The page shell is public, but no data is returned or written without
  * the correct password, so the actual prep data stays private.
+ *
+ * Brute-force protection: after MAX_FAILS wrong sign-ins from one IP the
+ * IP is locked for LOCK_MS. Enforced here (server-side), so it can't be
+ * bypassed by a bot that ignores the page.
  */
 
 const store = getStore({ name: "econ57-tracker", consistency: "strong" });
 const STATE_KEY = "shared-state";
 
-const AUTH_USER = String(process.env.CAMELIS_DASHBOARD_USER || "camilo").trim().toLowerCase();
-const AUTH_PASSWORD = String(process.env.CAMELIS_DASHBOARD_PASSWORD || "OneWeekAhead!").trim();
+const AUTH_USER = String(process.env.CAMELIS_DASHBOARD_USER || "").trim().toLowerCase();
+const AUTH_PASSWORD = String(process.env.CAMELIS_DASHBOARD_PASSWORD || "").trim();
+
+const MAX_FAILS = 5;
+const LOCK_MS = 15 * 60 * 1000; // 15 minutes
 
 function jsonResponse(status, payload) {
   return new Response(JSON.stringify(payload), {
@@ -51,6 +60,7 @@ async function writeState(state) {
 }
 
 function isAuthorized(body) {
+  if (!AUTH_USER || !AUTH_PASSWORD) return false; // not configured → deny everyone
   const user = String(body.user || "").trim().toLowerCase();
   const password = String(body.password || "").trim();
   return user === AUTH_USER && password === AUTH_PASSWORD;
@@ -61,7 +71,22 @@ function isValidKey(key) {
   return /^\d{1,2}\|[a-z0-9]{1,12}$/.test(String(key || ""));
 }
 
-export default async (request) => {
+/* ---- Per-IP brute-force lockout (stored in the same blob store) ---- */
+function clientIP(request, context) {
+  return request.headers.get("x-nf-client-connection-ip")
+    || (context && context.ip)
+    || (request.headers.get("x-forwarded-for") || "").split(",")[0].trim()
+    || "unknown";
+}
+function rlKey(ip) { return "rl-" + String(ip).replace(/[^a-zA-Z0-9]/g, "_"); }
+async function getRL(ip) {
+  const r = await store.get(rlKey(ip), { type: "json" });
+  return (r && typeof r === "object") ? r : { fails: 0, lockedUntil: 0 };
+}
+async function setRL(ip, rec) { await store.setJSON(rlKey(ip), rec); }
+async function clearRL(ip) { try { await store.delete(rlKey(ip)); } catch (_e) {} }
+
+export default async (request, context) => {
   if (request.method !== "POST") {
     return jsonResponse(405, { error: "Method not allowed." });
   }
@@ -73,9 +98,30 @@ export default async (request) => {
     return jsonResponse(400, { error: "Invalid JSON body." });
   }
 
-  if (!isAuthorized(body)) {
-    return jsonResponse(403, { error: "Incorrect username or password." });
+  const ip = clientIP(request, context);
+  const rl = await getRL(ip);
+  const now = Date.now();
+
+  // Currently locked out?
+  if (rl.lockedUntil && now < rl.lockedUntil) {
+    return jsonResponse(429, { error: "Too many attempts. Try again later.", lockedUntil: rl.lockedUntil });
   }
+  // Lock has expired → start fresh
+  if (rl.lockedUntil && now >= rl.lockedUntil) { rl.fails = 0; rl.lockedUntil = 0; }
+
+  if (!isAuthorized(body)) {
+    rl.fails = (rl.fails || 0) + 1;
+    if (rl.fails >= MAX_FAILS) {
+      rl.lockedUntil = now + LOCK_MS;
+      await setRL(ip, rl);
+      return jsonResponse(429, { error: "Too many attempts. Try again later.", lockedUntil: rl.lockedUntil });
+    }
+    await setRL(ip, rl);
+    return jsonResponse(403, { error: "Incorrect username or password.", attemptsLeft: MAX_FAILS - rl.fails });
+  }
+
+  // Correct credentials → clear any failed-attempt record for this IP
+  if (rl.fails || rl.lockedUntil) await clearRL(ip);
 
   const action = String(body.action || "get").trim();
 
