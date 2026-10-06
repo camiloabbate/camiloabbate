@@ -1,0 +1,289 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0}</style></head><body>
+<title>Expected Value from Bins</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: controls bar; two stacked charts (histogram, then the quantity being summed) beside a "how much do we miss" table; stacks on narrow screens.
+   Palette: navy ink, cornflower bars, one red for the exact value / balance point. Type: Newsreader display, Plex Sans body, Plex Mono numbers. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#14202e; --muted:#5b6878; --line:#d6dce4;
+  --navy:#002f5f; --bar:#6495ed; --bar-edge:#2f5fb0; --mark:#c23b3b; --grid:#e6eaf0; --hl:#eaf1fd;
+  --display:'Newsreader',Georgia,'Times New Roman',serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e141c; --surface:#161e29; --fg:#e6ebf2; --muted:#9aa7b8; --line:#2b3645;
+  --navy:#8db4ee; --bar:#5b8de0; --bar-edge:#8db4ee; --mark:#ff7b72; --grid:#202b39; --hl:#1b2b45; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e141c; --surface:#161e29; --fg:#e6ebf2; --muted:#9aa7b8; --line:#2b3645;
+  --navy:#8db4ee; --bar:#5b8de0; --bar-edge:#8db4ee; --mark:#ff7b72; --grid:#202b39; --hl:#1b2b45; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:24px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0;color:var(--navy);text-wrap:balance}
+.lede{margin:6px 0 0;color:var(--muted);max-width:70ch}
+.controls{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:end;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.ctl{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lab{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer}
+button:hover{border-color:var(--bar-edge)}
+button[aria-pressed="true"]{background:var(--navy);color:var(--bg);border-color:var(--navy)}
+:focus-visible{outline:2px solid var(--bar-edge);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.slider{flex:1 1 300px}
+.slider .row{display:flex;align-items:center;gap:12px}
+input[type=range]{flex:1;min-width:0;accent-color:var(--bar-edge)}
+.nval{font-family:var(--mono);font-size:20px;min-width:3.4ch;text-align:right;color:var(--navy);font-weight:500}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.panel h2{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 2px;color:var(--navy)}
+.sub{margin:0 0 6px;color:var(--muted);font-size:13px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.hover{font-family:var(--mono);font-size:12.5px;color:var(--muted);min-height:2.8em;margin:6px 0 0}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:right;padding:4px 6px 8px}
+th:first-child,td:first-child{text-align:left}
+td{font-family:var(--mono);font-size:13px;text-align:right;padding:9px 6px;border-top:1px solid var(--line);white-space:nowrap}
+td:first-child{font-family:var(--body);font-size:13px;color:var(--fg);white-space:normal}
+tr.sel td{background:var(--hl)}
+td.miss{color:var(--mark)}
+.meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:8px}
+.meta b{color:var(--navy);font-weight:500}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);margin-top:4px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:6px}
+.eq{font-family:var(--display);font-size:clamp(17px,2.4vw,22px);text-align:center;padding:6px 0;line-height:1.7}
+.eq b{font-weight:600;color:var(--navy)}
+.eq .num{font-family:var(--mono);font-size:.85em}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Expected value from bins</h1>
+    <p class="lede">A baby's birth weight, in pounds, is modeled as a normal random variable with mean 7.5 and standard deviation 1.1 (illustrative numbers). Replace the smooth curve by a histogram, use one point per bin, add up value × probability, then shrink the bins and watch the sum approach the integral.</p>
+  </header>
+
+  <section class="controls" aria-label="Controls">
+    <div class="ctl slider">
+      <label class="lab" for="n">Number of bins</label>
+      <div class="row"><input id="n" type="range" min="1" max="200" value="5"><span class="nval" id="nval">5</span></div>
+    </div>
+    <div class="ctl">
+      <span class="lab">Jump to</span>
+      <div class="seg" id="presets">
+        <button data-n="3">3</button><button data-n="5">5</button><button data-n="10">10</button><button data-n="25">25</button><button data-n="50">50</button><button data-n="200">200</button>
+        <button id="play" aria-pressed="false">Play ▸</button>
+      </div>
+    </div>
+    <div class="ctl">
+      <span class="lab">Point used in each bin</span>
+      <div class="seg" id="rules">
+        <button data-r="mid" aria-pressed="true">Midpoint</button><button data-r="left" aria-pressed="false">Left edge</button><button data-r="right" aria-pressed="false">Right edge</button>
+      </div>
+    </div>
+    <div class="ctl">
+      <span class="lab">Quantity to sum</span>
+      <div class="seg" id="quants">
+        <button data-q="mean" aria-pressed="true">Mean</button><button data-q="tot" aria-pressed="false">Total probability</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="col">
+      <section class="panel">
+        <h2>1 · The histogram: one value per bin</h2>
+        <p class="sub">Each bar has width Δx and the height of the curve at the chosen point (the dot). Its area f(xᵢ)·Δx stands in for the probability of that bin.</p>
+        <svg id="c1" viewBox="0 0 640 250" role="img" aria-label="Histogram approximation of the normal density"></svg>
+      </section>
+      <section class="panel">
+        <h2 id="t2">2 · Value × probability</h2>
+        <p class="sub" id="s2"></p>
+        <svg id="c2" viewBox="0 0 640 235" role="img" aria-label="Quantity being summed, bin by bin"></svg>
+        <p class="hover" id="hover">Hover over or tap a bar to read off its numbers.</p>
+        <div class="legend">
+          <span><i style="background:var(--bar);opacity:.6"></i>bins</span>
+          <span><i style="background:transparent;border-top:2px solid var(--navy);height:0;width:16px;vertical-align:3px"></i>exact curve</span>
+          <span><i style="background:var(--mark);width:10px;clip-path:polygon(50% 0,100% 100%,0 100%)"></i>mean of the histogram</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="panel">
+        <h2>How much do we miss?</h2>
+        <div class="meta"><span>n = <b id="r-n">5</b> bins</span><span>Δx = <b id="r-dx">2.20</b> lb</span></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Sum</th><th>Estimate</th><th>Integral</th><th>Miss</th></tr></thead>
+            <tbody>
+              <tr data-q="tot"><td>Σ f(xᵢ)Δx<br><small>total probability</small></td><td id="e-tot"></td><td>1.0000</td><td class="miss" id="m-tot"></td></tr>
+              <tr data-q="mean"><td>Σ xᵢ f(xᵢ)Δx<br><small>mean</small></td><td id="e-mean"></td><td>7.5000</td><td class="miss" id="m-mean"></td></tr>
+              <tr data-q="var"><td>Σ (xᵢ−7.5)² f(xᵢ)Δx<br><small>variance</small></td><td id="e-var"></td><td>1.2100</td><td class="miss" id="m-var"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" id="insight"></p>
+      </section>
+      <section class="panel">
+        <h2>Miss vs. number of bins</h2>
+        <p class="sub" id="s3"></p>
+        <svg id="c3" viewBox="0 0 320 170" role="img" aria-label="Estimate against number of bins"></svg>
+      </section>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="eq" id="eq"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  var MU=7.5,SD=1.1,LO=MU-5*SD,HI=MU+5*SD,W=HI-LO;
+  var C=1/(SD*Math.sqrt(2*Math.PI));
+  function f(x){var z=(x-MU)/SD;return C*Math.exp(-0.5*z*z)}
+  var FMAX=f(MU);
+  var Q={
+    tot: {g:function(x){return 1},               exact:1,   name:'Total probability', title:'Σ f(xᵢ)Δx', integral:'∫ f(x) dx = 1', ylab:'f(x)'},
+    mean:{g:function(x){return x},               exact:MU,  name:'Mean',              title:'Σ xᵢ f(xᵢ)Δx', integral:'∫ x f(x) dx = 7.5', ylab:'x·f(x)'},
+    'var':{g:function(x){return (x-MU)*(x-MU)},  exact:SD*SD,name:'Variance',         title:'Σ (xᵢ−7.5)² f(xᵢ)Δx', integral:'∫ (x−7.5)² f(x) dx = 1.21', ylab:'(x−7.5)²·f(x)'}
+  };
+  var st={n:5,rule:'mid',q:'mean',timer:null};
+  var $=function(id){return document.getElementById(id)};
+  function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+  function css(v){return 'var(--'+v+')'}
+  function fmt(v,k){var s=v.toFixed(k==null?4:k);if(/^-0\.0*$/.test(s))s=s.slice(1);return s.replace('-','−')}
+  function rep(i,n,rule){var dx=W/n,a=LO+i*dx;return rule==='left'?a:rule==='right'?a+dx:a+dx/2}
+
+  function est(n,rule){
+    var dx=W/n,t=0,m=0,v=0;
+    for(var i=0;i<n;i++){var x=rep(i,n,rule),p=f(x)*dx;t+=p;m+=x*p;v+=(x-MU)*(x-MU)*p}
+    return {tot:t,mean:m,'var':v};
+  }
+  var cache={};
+  function curveFor(rule,q){var k=rule+q;if(!cache[k]){var a=[];for(var n=1;n<=200;n++)a.push(est(n,rule)[q]);cache[k]=a}return cache[k]}
+
+  function niceStep(max,target){var raw=max/target,p=Math.pow(10,Math.floor(Math.log10(raw))),b=raw/p;return (b<1.5?1:b<3.5?2:b<7.5?5:10)*p}
+  function axes(svg,w,h,m,ymax,ylabel){
+    var iw=w-m.l-m.r,ih=h-m.t-m.b;
+    var X=function(x){return m.l+(x-LO)/W*iw},Y=function(y){return m.t+ih-y/ymax*ih};
+    var step=niceStep(ymax,4);
+    for(var t=0;t<=ymax*1.001;t+=step){
+      el('line',{x1:m.l,x2:m.l+iw,y1:Y(t),y2:Y(t),stroke:css('grid'),'stroke-width':1},svg);
+      var tx=el('text',{x:m.l-8,y:Y(t)+4,'text-anchor':'end'},svg);tx.textContent=(+t.toPrecision(3)).toString();
+    }
+    el('line',{x1:m.l,x2:m.l+iw,y1:Y(0),y2:Y(0),stroke:css('muted'),'stroke-width':1.2},svg);
+    for(var s=Math.ceil(LO);s<=HI+1e-9;s+=1){
+      el('line',{x1:X(s),x2:X(s),y1:Y(0),y2:Y(0)+5,stroke:css('muted')},svg);
+      var lx=el('text',{x:X(s),y:Y(0)+19,'text-anchor':'middle'},svg);lx.textContent=s;
+    }
+    var yl=el('text',{x:4,y:m.t-6,'text-anchor':'start'},svg);yl.textContent=ylabel;
+    var xt=el('text',{x:m.l+iw,y:m.t-6,'text-anchor':'end'},svg);xt.textContent='birth weight (lb)';
+    return {X:X,Y:Y,iw:iw,ih:ih};
+  }
+  function curve(svg,g,fn){
+    var pts=[];for(var i=0;i<=200;i++){var x=LO+i/200*W;pts.push((i?'L':'M')+g.X(x).toFixed(1)+' '+g.Y(fn(x)).toFixed(1))}
+    el('path',{d:pts.join(''),fill:'none',stroke:css('navy'),'stroke-width':2},svg);
+  }
+  function hoverText(i){
+    var n=st.n,dx=W/n,x=rep(i,n,st.rule),fx=f(x),g=Q[st.q].g(x);
+    $('hover').textContent='bin '+(i+1)+' of '+n+':  xᵢ = '+fmt(x,2)+'   f(xᵢ) = '+fmt(fx,5)+'\nprobability f·Δx = '+fmt(fx*dx,4)+'   contribution = '+fmt(g*fx*dx,4);
+  }
+
+  function draw(){
+    var n=st.n,rule=st.rule,qk=st.q,q=Q[qk],dx=W/n,e=est(n,rule),thin=n>60;
+    // chart 1
+    var s1=$('c1');s1.innerHTML='';
+    var g1=axes(s1,640,250,{l:54,r:12,t:20,b:30},FMAX*1.15,'f(x)');
+    for(var i=0;i<n;i++){
+      var xr=rep(i,n,rule),fh=f(xr);
+      var r=el('rect',{x:g1.X(LO+i*dx),y:g1.Y(fh),width:Math.max(g1.iw*dx/W,0.5),height:g1.Y(0)-g1.Y(fh),fill:css('bar'),'fill-opacity':.5,stroke:css('bar-edge'),'stroke-width':thin?0.4:1},s1);
+      (function(i){r.addEventListener('mouseover',function(){hoverText(i)});r.addEventListener('click',function(){hoverText(i)})})(i);
+    }
+    curve(s1,g1,f);
+    if(n<=40){for(var j=0;j<n;j++){var xp=rep(j,n,rule);el('circle',{cx:g1.X(xp),cy:g1.Y(f(xp)),r:n>20?2.2:3.5,fill:css('mark')},s1)}}
+    // chart 2
+    var h=function(x){return q.g(x)*f(x)};
+    var m2=0;for(var k=0;k<=400;k++){m2=Math.max(m2,h(LO+k/400*W))}
+    var s2=$('c2');s2.innerHTML='';
+    var g2=axes(s2,640,235,{l:54,r:12,t:20,b:44},m2*1.15,q.ylab);
+    for(var j2=0;j2<n;j2++){
+      var xx=rep(j2,n,rule),hh=h(xx);
+      var r2=el('rect',{x:g2.X(LO+j2*dx),y:g2.Y(hh),width:Math.max(g2.iw*dx/W,0.5),height:g2.Y(0)-g2.Y(hh),fill:css('bar'),'fill-opacity':.5,stroke:css('bar-edge'),'stroke-width':thin?0.4:1},s2);
+      (function(j2){r2.addEventListener('mouseover',function(){hoverText(j2)});r2.addEventListener('click',function(){hoverText(j2)})})(j2);
+    }
+    curve(s2,g2,h);
+    if(qk==='mean'){
+      el('line',{x1:g2.X(MU),x2:g2.X(MU),y1:g2.Y(0),y2:g2.Y(m2*1.15),stroke:css('mark'),'stroke-dasharray':'4 4','stroke-width':1.2},s2);
+      var tx=g2.X(e.mean);
+      el('path',{d:'M'+tx+' '+(g2.Y(0)-13)+' l-7 12 l14 0 z',fill:css('mark')},s2);
+      var lab=el('text',{x:Math.min(Math.max(tx,110),540),y:g2.Y(0)+36,'text-anchor':'middle'},s2);lab.style.fill='var(--mark)';lab.textContent='histogram mean '+fmt(e.mean,3)+' lb (exact 7.5)';
+    }
+    // chart 3
+    var s3=$('c3');s3.innerHTML='';
+    var vals=curveFor(rule,qk),ex=q.exact;
+    var span=0;for(var a=3;a<200;a++){span=Math.max(span,Math.abs(vals[a]-ex))}
+    var half=Math.max(span*1.25,Math.abs(ex)*1e-3+1e-3);
+    var lo=ex-half,hi=ex+half;
+    var m3={l:56,r:10,t:10,b:28},iw3=320-m3.l-m3.r,ih3=170-m3.t-m3.b;
+    var X3=function(nn){return m3.l+(nn-1)/199*iw3},Y3=function(v){return m3.t+ih3-(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*ih3};
+    [lo,ex,hi].forEach(function(t){var tt=el('text',{x:m3.l-6,y:Y3(t)+4,'text-anchor':'end'},s3);tt.textContent=fmt(t,Math.abs(ex)>10?3:4);el('line',{x1:m3.l,x2:m3.l+iw3,y1:Y3(t),y2:Y3(t),stroke:css('grid')},s3)});
+    el('line',{x1:m3.l,x2:m3.l+iw3,y1:Y3(ex),y2:Y3(ex),stroke:css('mark'),'stroke-dasharray':'4 4'},s3);
+    el('line',{x1:m3.l,x2:m3.l+iw3,y1:m3.t+ih3,y2:m3.t+ih3,stroke:css('muted')},s3);
+    [1,50,100,150,200].forEach(function(t){var tt=el('text',{x:X3(t),y:m3.t+ih3+16,'text-anchor':'middle'},s3);tt.textContent=t});
+    el('path',{d:vals.map(function(v,i){return (i?'L':'M')+X3(i+1).toFixed(1)+' '+Y3(v).toFixed(1)}).join(''),fill:'none',stroke:css('navy'),'stroke-width':2},s3);
+    el('line',{x1:X3(n),x2:X3(n),y1:m3.t,y2:m3.t+ih3,stroke:css('bar-edge'),'stroke-width':1},s3);
+    el('circle',{cx:X3(n),cy:Y3(e[qk]),r:4.5,fill:css('bar-edge')},s3);
+    // text
+    $('nval').textContent=n;$('r-n').textContent=n;$('r-dx').textContent=fmt(dx,3);
+    ['tot','mean','var'].forEach(function(k2){
+      $('e-'+k2).textContent=fmt(e[k2],4);
+      var d=e[k2]-Q[k2].exact;$('m-'+k2).textContent=(d>0.00005?'+':'')+fmt(d,4);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('tbody tr'),function(tr){tr.className=tr.getAttribute('data-q')===qk?'sel':''});
+    $('t2').textContent='2 · Value × probability'+(qk==='tot'?' (here the value is 1)':'');
+    $('s2').textContent='Bar height is '+q.ylab+'. Its area is the bin\'s contribution to the sum, and the total area of the bars is the estimate in the table.';
+    $('s3').textContent='Sum for "'+q.name.toLowerCase()+'" as the number of bins grows. Dashed line: the integral.';
+    var small=Math.abs(e[qk]-q.exact)<0.00005;
+    $('insight').textContent=small
+      ? (rule==='mid'&&qk==='mean'?'The mean estimate is essentially exact: the normal curve is symmetric, so the errors on the two sides of 7.5 cancel.':'At this many bins the estimate matches the integral to four decimals.')
+      : (n<=5?'With so few bins the histogram is a crude stand-in for the curve. Drag the slider to the right.':'The miss shrinks as the bins get thinner.');
+    $('eq').innerHTML='<b>'+q.name+'</b> ≈ '+q.title+' = <span class="num">'+fmt(e[qk],4)+'</span> &nbsp;with '+n+' bins'+
+      '<br>as Δx → 0: &nbsp; <b>'+q.integral+'</b>';
+  }
+  function setN(v){st.n=Math.max(1,Math.min(200,v|0));$('n').value=st.n;draw()}
+  function stop(){if(st.timer){clearInterval(st.timer);st.timer=null}$('play').textContent='Play ▸';$('play').setAttribute('aria-pressed','false')}
+  $('n').addEventListener('input',function(){stop();setN(+this.value)});
+  Array.prototype.forEach.call($('presets').querySelectorAll('button[data-n]'),function(b){b.addEventListener('click',function(){stop();setN(+b.getAttribute('data-n'))})});
+  function seg(id,attr,key){
+    Array.prototype.forEach.call($(id).querySelectorAll('button'),function(b){b.addEventListener('click',function(){
+      st[key]=b.getAttribute(attr);
+      Array.prototype.forEach.call($(id).querySelectorAll('button'),function(o){o.setAttribute('aria-pressed',o===b?'true':'false')});
+      draw();
+    })});
+  }
+  seg('rules','data-r','rule');seg('quants','data-q','q');
+  Array.prototype.forEach.call(document.querySelectorAll('tbody tr[data-q="tot"],tbody tr[data-q="mean"]'),function(tr){tr.style.cursor='pointer';tr.addEventListener('click',function(){
+    var k=tr.getAttribute('data-q');st.q=k;
+    Array.prototype.forEach.call($('quants').querySelectorAll('button'),function(o){o.setAttribute('aria-pressed',o.getAttribute('data-q')===k?'true':'false')});
+    draw();
+  })});
+  $('play').addEventListener('click',function(){
+    if(st.timer){stop();return}
+    if(st.n>=200)setN(1);
+    $('play').textContent='Pause ❚❚';$('play').setAttribute('aria-pressed','true');
+    st.timer=setInterval(function(){
+      var step=st.n<20?1:st.n<60?2:4;
+      if(st.n+step>=200){setN(200);stop()}else setN(st.n+step);
+    },260);
+  });
+  $('hover').style.whiteSpace='pre-line';
+  draw();
+})();
+</script>
+</body></html>
